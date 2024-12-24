@@ -1,15 +1,15 @@
 import { render, screen } from '@testing-library/react'
-import Price from './Price'
+import PriceRange from './PriceRange'
 
-describe('Price', () => {
+describe('PriceRange', () => {
   
   it('Includes a Min Price field', () => {
-    render(<Price price={{ priceMin: null, priceMax: null }} />)
+    render(<PriceRange priceRange={{ priceMin: null, priceMax: null }} />)
     expect(screen.getByRole('textbox', { name: 'Min Price' })).toBeInTheDocument()
   })
 
   it('Includes a Max Price field', () => {
-    render(<Price price={{ priceMin: null, priceMax: null }}  />)
+    render(<PriceRange priceRange={{ priceMin: null, priceMax: null }}  />)
     expect(screen.getByRole('textbox', { name: 'Max Price' })).toBeInTheDocument()
   })
 

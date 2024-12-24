@@ -1,71 +1,68 @@
-import type { PriceRangeFilters } from '../../../store/filters/filtersTypes'
 import { useId } from 'react'
+import { NumericFormat } from 'react-number-format'
+import MenuContainter from '../../design_system/MenuContainter/MenuContainter'
+import MenuDropdown from '../../design_system/MenuDropdown/MenuDropdown'
+import PriceRangeList from '../PriceRangeList/PriceRangeList'
 import styles from './Price.module.css'
 import formStyles from '../../../styles/forms.module.css'
-import { NumericFormat } from 'react-number-format'
-import InputRangeSeparator from '../../design_system/InputRangeSeparator/InputRangeSeparator'
 
 export type PriceProps = {
-  priceRange: PriceRangeFilters
+  label: string
+  placeholder?: string
+  price: number | null
+  menuOpen: boolean
   onFocus?: () => void
   onBlur?: () => void
-  onChange?: (priceRange: Partial<PriceRangeFilters>) => void
+  onClickAway?: () => void
+  onChange?: (price: number | null) => void
+  onMenuItemSelected?: (price: number) => void
 }
 
-// passing null to NumericFormat.value does not clear the input but "" does for some reason
+// Passing null to NumericFormat.value does not clear the input but "" does for
+// some reason
 const normalizePrice = (price: number | null) => (price === null ? '' : price)
 
 const Price: React.FC<PriceProps> = ({
-  priceRange,
+  label,
+  placeholder,
+  price,
+  menuOpen,
   onFocus,
   onBlur,
-  onChange
+  onClickAway,
+  onChange,
+  onMenuItemSelected
 }) => {
   const uniqueID = useId()
-  const priceMinID = `price_min_${uniqueID}`
-  const priceMaxID = `price_max_${uniqueID}`
+  const id = `price_${uniqueID}`
 
   return (
-    <fieldset className={styles.price}>
-      <legend className={styles.legend}>Price Range</legend>
-      <label htmlFor={priceMinID} className={formStyles.accessibleLabel}>
-        Min Price
+    <MenuContainter onClickAway={onClickAway}>
+      <label htmlFor={id} className={formStyles.accessibleLabel}>
+        {label}
       </label>
       <NumericFormat
         prefix={'$'}
         thousandSeparator=','
         allowNegative={false}
         decimalScale={0}
-        value={normalizePrice(priceRange.priceMin)}
-        onValueChange={(v) => onChange?.({ priceMin: v.floatValue || null })}
-        placeholder='Min'
+        value={normalizePrice(price)}
+        // For falsey values we pass null to avoid the input being set to 0
+        onValueChange={({ floatValue }) => onChange?.(floatValue || null)}
+        placeholder={placeholder}
         className={formStyles.input}
-        id={priceMinID}
+        id={id}
         autoComplete='off'
         onFocus={onFocus}
         onBlur={onBlur}
         inputMode='numeric'
       />
-      <InputRangeSeparator />
-      <label htmlFor={priceMaxID} className={formStyles.accessibleLabel}>
-        Max Price
-      </label>
-      <NumericFormat
-        prefix={'$'}
-        thousandSeparator=','
-        allowNegative={false}
-        decimalScale={0}
-        value={normalizePrice(priceRange.priceMax)}
-        onValueChange={(v) => onChange?.({ priceMax: v.floatValue || null })}
-        placeholder='Max'
-        className={formStyles.input}
-        id={priceMaxID}
-        autoComplete='off'
-        onFocus={onFocus}
-        onBlur={onBlur}
-        inputMode='numeric'
-      />
-    </fieldset>
+      <MenuDropdown open={menuOpen}>
+        <div className={styles.priceListMenu}>
+          <PriceRangeList onClick={onMenuItemSelected} />
+        </div>
+      </MenuDropdown>
+    </MenuContainter>
   )
 }
 

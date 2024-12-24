@@ -1,21 +1,5 @@
-@value smallAndUp from '../../../styles/breakpoints.module.css';
-
-.legend {
-  font-size: inherit;
-  margin-bottom: .6rem;
-  font-weight: 600;
-}
-
-.price {
-  display: flex;
-  align-items: center;
-  border: none;
-  margin: 0;
-  padding: 0;
-}
-
-@media smallAndUp {
-  .legend {
-    display: none;
-  }
+.priceListMenu {
+  max-height: 15.6rem;
+  overflow-y: auto;
+  margin: 0 0 0 1rem;
 }
