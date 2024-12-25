@@ -57,7 +57,7 @@ const Price: React.FC<PriceProps> = ({
         onBlur={onBlur}
         inputMode='numeric'
       />
-      <MenuDropdown open={menuOpen}>
+      <MenuDropdown open={menuOpen} fitWidth>
         <div className={styles.priceListMenu}>
           <PriceRangeList onClick={onMenuItemSelected} />
         </div>

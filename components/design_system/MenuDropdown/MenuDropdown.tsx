@@ -1,14 +1,26 @@
 import type { CSSProperties, ReactNode } from 'react'
 import css from 'styled-jsx/css'
 
-interface MenuDropdownProps {
+type Common = {
   open: boolean
   children: ReactNode
   id?: string
   className?: string
-  alignRight?: boolean
   alignBottom?: boolean
 }
+
+type FitWidth = {
+  fitWidth?: boolean
+  alignRight?: never
+}
+
+type AlignRight = {
+  fitWidth?: never
+  alignRight?: boolean
+}
+
+export type MenuDropdownProps = Common &
+  (FitWidth | AlignRight)
 
 const MenuDropdown: React.FC<MenuDropdownProps> = ({
   open = false,
@@ -16,12 +28,14 @@ const MenuDropdown: React.FC<MenuDropdownProps> = ({
   id,
   className,
   alignRight = false,
-  alignBottom = false
+  alignBottom = false,
+  fitWidth = false
 }) => {
   const classNames = `menu ${open ? 'open' : 'closed'} ${className}`.trim()
 
   const computedStyles: CSSProperties = {
-    right: alignRight ? '0' : undefined,
+    left: fitWidth ? '0' : undefined,
+    right: (alignRight || fitWidth) ? '0' : undefined,
     bottom: alignBottom ? '100%' : undefined
   }
 
