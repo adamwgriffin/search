@@ -1,5 +1,4 @@
 import type { CSSProperties, ReactNode } from 'react'
-import { useUpdateEffect } from 'react-use'
 import css from 'styled-jsx/css'
 
 interface MenuDropdownProps {
@@ -9,8 +8,6 @@ interface MenuDropdownProps {
   className?: string
   alignRight?: boolean
   alignBottom?: boolean
-  onOpen?: () => void
-  onClose?: () => void
 }
 
 const MenuDropdown: React.FC<MenuDropdownProps> = ({
@@ -19,14 +16,8 @@ const MenuDropdown: React.FC<MenuDropdownProps> = ({
   id,
   className,
   alignRight = false,
-  alignBottom = false,
-  onOpen,
-  onClose
+  alignBottom = false
 }) => {
-  useUpdateEffect(() => {
-    open ? onOpen?.() : onClose?.()
-  }, [open])
-
   const classNames = `menu ${open ? 'open' : 'closed'} ${className}`.trim()
 
   const computedStyles: CSSProperties = {
