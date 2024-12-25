@@ -6,10 +6,9 @@
 }
 
 .priceListItem {
-  width: 100%;
   padding: .6rem;
   cursor: pointer;
 }
 .priceListItem:hover {
-  background: #f6f6f6;
+  background: var(--primary-light);
 }

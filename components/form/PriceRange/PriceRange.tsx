@@ -28,14 +28,6 @@ const PriceRange: React.FC<PriceRangeProps> = ({
     setMinOpen(true)
   }
 
-  const handleMinClickAway = () => {
-    setMinOpen(false)
-  }
-
-  const handleMaxClickAway = () => {
-    setMaxOpen(false)
-  }
-
   const handleMaxFocus = () => {
     onFocus?.()
     setMinOpen(false)
@@ -53,7 +45,7 @@ const PriceRange: React.FC<PriceRangeProps> = ({
         menuOpen={minOpen}
         onFocus={handleMinFocus}
         onBlur={onBlur}
-        onClickAway={handleMinClickAway}
+        onClickAway={() => setMinOpen(false)}
         onMenuItemSelected={(priceMin) => {
           setMinOpen(false)
           onMenuItemSelected?.({ priceMin })
@@ -70,14 +62,13 @@ const PriceRange: React.FC<PriceRangeProps> = ({
         menuOpen={maxOpen}
         onFocus={handleMaxFocus}
         onBlur={onBlur}
-        onClickAway={handleMaxClickAway}
+        onClickAway={() => setMaxOpen(false)}
         onMenuItemSelected={(priceMax) => {
           setMaxOpen(false)
           onMenuItemSelected?.({ priceMax })
         }}
         onChange={(priceMax) => onChange?.({ priceMax })}
       />
-
     </fieldset>
   )
 }
