@@ -46,8 +46,8 @@ const SearchField: NextPage<SearchFieldProps> = ({
     return activeDescendantKey > -1 && activeDescendantKey < options.length
   }
 
-  // this is used for the aria-activedescendant attribute. it identifies the currently selected item in the dropdown
-  // menu for accessibility purposes.
+  // This is used for the aria-activedescendant attribute. It identifies the
+  // currently selected item in the dropdown menu for accessibility purposes.
   const activeDescendant = () => {
     return listItemSelected()
       ? `search-listbox-${id}-list-item-${activeDescendantKey}`
@@ -64,8 +64,9 @@ const SearchField: NextPage<SearchFieldProps> = ({
     onInput?.(lastInputValue || '')
   }
 
-  // if we select a list item with the keyboard, we want to set the input value to that list item. if the selection
-  // moved past the items in the list menu, which causes nothing to be selected, we want to set the input back to it's
+  // If we select a list item with the keyboard, we want to set the input value
+  // to that list item. If the selection moved past the items in the list menu,
+  // which causes nothing to be selected, we want to set the input back to it's
   // last value before we had made any selections.
   const setInputAccordingToListItemSelection = () => {
     listItemSelected()
@@ -87,17 +88,21 @@ const SearchField: NextPage<SearchFieldProps> = ({
     }
   }
 
-  // activeDescendantKey is allowed to be incremented to values that are one step beyond the actual indexes of the
-  // options array. this allows the user to move the selection down past the last item with the arrow key, which causes
-  // nothing to be selected, but then move the selection back up to select that last item again. or, alternatively, to
-  // move down once more to go back to the first item. this is how google's own autocomplete widget behaves.
+  // The activeDescendantKey variable is allowed to be incremented to values
+  // that are one step beyond the actual indexes of the options array. This
+  // allows the user to move the selection down past the last item with the
+  // arrow key, which causes nothing to be selected, but then move the selection
+  // back up to select that last item again, or alternatively, to move down once
+  // more to go back to the first item. This is how google's autocomplete widget
+  // behaves.
   const moveDown = () => {
     openDropdown()
     if (activeDescendantKey < options.length) {
       setActiveDescendantKey(activeDescendantKey + 1)
       setInputAccordingToListItemSelection()
     } else {
-      // if we are one past the last item in the menu, go back to the beginning, and select the first item again
+      // If we are one past the last item in the menu, go back to the beginning,
+      // and select the first item again
       setActiveDescendantKey(0)
     }
   }
@@ -108,7 +113,8 @@ const SearchField: NextPage<SearchFieldProps> = ({
       setActiveDescendantKey(activeDescendantKey - 1)
       setInputAccordingToListItemSelection()
     } else {
-      // if we are one past the first item in the menu, go down to the end, and select the last item again
+      // If we are one past the first item in the menu, go down to the end, and
+      // select the last item again
       setActiveDescendantKey(options.length - 1)
     }
   }
@@ -191,12 +197,13 @@ const SearchField: NextPage<SearchFieldProps> = ({
   useClickAway(ref, closeDropdown)
 
   useEffect(() => {
-    // we have updated autocomplete options, open the dropdown unless it's currently open
+    // We have updated autocomplete options, open the dropdown unless it's
+    // currently open
     if (options.length && !open) {
       setOpen(true)
       setLastInputValue(value)
     }
-    // update has no autocomplete options, close the dropdown if it's currently open
+    // Update has no autocomplete options, close the dropdown if it's currently open
     if (!options.length && open) {
       setOpen(false)
       deselectListItem()
@@ -258,9 +265,7 @@ const SearchField: NextPage<SearchFieldProps> = ({
             aria-selected={activeDescendantKey === index}
             onClick={() => handleMenuItemClick(option)}
           >
-            <LocationPinFilledIcon
-              active={activeDescendantKey === index}
-            />
+            <LocationPinFilledIcon active={activeDescendantKey === index} />
             <PlacePredictionText prediction={option} />
           </li>
         ))}
