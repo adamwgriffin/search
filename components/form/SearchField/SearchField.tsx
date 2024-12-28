@@ -25,6 +25,8 @@ export interface SearchFieldProps {
   onGetPlaceAutocompletePredictions?: (val: string) => void
 }
 
+const NoSelection = -1
+
 const SearchField: NextPage<SearchFieldProps> = ({
   value,
   placeholder = 'Address, Neighborhood or Zip',
@@ -39,39 +41,18 @@ const SearchField: NextPage<SearchFieldProps> = ({
   const ref = useRef(null)
   const [open, setOpen] = useState(false)
   const [inputHasFocus, setInputHasFocus] = useState(false)
-  const [activeDescendantKey, setActiveDescendantKey] = useState(-1)
+  const [activeDescendantKey, setActiveDescendantKey] = useState(NoSelection)
   const [lastInputValue, setLastInputValue] = useState<string | undefined>()
 
-  const listItemSelected = () => {
-    return activeDescendantKey > -1 && activeDescendantKey < options.length
-  }
+  const aListItemIsCurrentlySelected = () =>
+    activeDescendantKey > NoSelection && activeDescendantKey < options.length
 
   // This is used for the aria-activedescendant attribute. It identifies the
   // currently selected item in the dropdown menu for accessibility purposes.
   const activeDescendant = () => {
-    return listItemSelected()
+    return aListItemIsCurrentlySelected()
       ? `search-listbox-${id}-list-item-${activeDescendantKey}`
       : ''
-  }
-
-  const deselectListItem = () => setActiveDescendantKey(-1)
-
-  const setInputToListItemSelection = () => {
-    onInput?.(options[activeDescendantKey].description)
-  }
-
-  const setInputBackToLastValue = () => {
-    onInput?.(lastInputValue || '')
-  }
-
-  // If we select a list item with the keyboard, we want to set the input value
-  // to that list item. If the selection moved past the items in the list menu,
-  // which causes nothing to be selected, we want to set the input back to it's
-  // last value before we had made any selections.
-  const setInputAccordingToListItemSelection = () => {
-    listItemSelected()
-      ? setInputToListItemSelection()
-      : setInputBackToLastValue()
   }
 
   const openDropdown = () => {
@@ -84,39 +65,58 @@ const SearchField: NextPage<SearchFieldProps> = ({
   const closeDropdown = () => {
     if (open) {
       setOpen(false)
-      deselectListItem()
+      setActiveDescendantKey(NoSelection)
     }
   }
 
-  // The activeDescendantKey variable is allowed to be incremented to values
-  // that are one step beyond the actual indexes of the options array. This
-  // allows the user to move the selection down past the last item with the
-  // arrow key, which causes nothing to be selected, but then move the selection
-  // back up to select that last item again, or alternatively, to move down once
-  // more to go back to the first item. This is how google's autocomplete widget
-  // behaves.
-  const moveDown = () => {
-    openDropdown()
-    if (activeDescendantKey < options.length) {
-      setActiveDescendantKey(activeDescendantKey + 1)
-      setInputAccordingToListItemSelection()
-    } else {
-      // If we are one past the last item in the menu, go back to the beginning,
-      // and select the first item again
-      setActiveDescendantKey(0)
-    }
+  const setInputToNewListItemSelection = (newActiveDescendantKey: number) => {
+    onInput?.(options[newActiveDescendantKey].description)
   }
 
+  const setInputBackToLastValue = () => {
+    onInput?.(lastInputValue || '')
+  }
+
+  const setInputAccordingToListItemSelection = (
+    newActiveDescendantKey: number
+  ) => {
+    newActiveDescendantKey === NoSelection
+      ? setInputBackToLastValue()
+      : setInputToNewListItemSelection(newActiveDescendantKey)
+  }
+
+  // When the arrow keys go up or down the selection cycles through each menu
+  // item in the options array. When the user reaches the end of the top or
+  // bottom of the list, the selection resets, and nothing is selected until
+  // they go up or down again. This is how google's autocomplete widget behaves.
+  // The logic for these functions increments or decrements activeDescendantKey
+  // for the selections and uses NoSelection (-1) to represent this intermediary
+  // state when nothing is selected.
+  //
+  // The reason we use `newActiveDescendantKey` rather than just setting
+  // `activeDescendantKey` and then using it is that
+  // `setInputAccordingToListItemSelection()` runs before the component is
+  // re-rendered so it still has the old value of `activeDescendantKey`
   const moveUp = () => {
     openDropdown()
-    if (activeDescendantKey > -1) {
-      setActiveDescendantKey(activeDescendantKey - 1)
-      setInputAccordingToListItemSelection()
-    } else {
-      // If we are one past the first item in the menu, go down to the end, and
-      // select the last item again
-      setActiveDescendantKey(options.length - 1)
-    }
+    if (options.length === 0) return
+    const newActiveDescendantKey =
+      activeDescendantKey !== NoSelection
+        ? activeDescendantKey - 1
+        : options.length - 1
+    setActiveDescendantKey(newActiveDescendantKey)
+    setInputAccordingToListItemSelection(newActiveDescendantKey)
+  }
+
+  const moveDown = () => {
+    openDropdown()
+    if (options.length === 0) return
+    const newActiveDescendantKey =
+      activeDescendantKey + 1 < options.length
+        ? activeDescendantKey + 1
+        : NoSelection
+    setActiveDescendantKey(newActiveDescendantKey)
+    setInputAccordingToListItemSelection(newActiveDescendantKey)
   }
 
   const initiateSearch = () => {
@@ -128,7 +128,7 @@ const SearchField: NextPage<SearchFieldProps> = ({
   const handleFocus = (e: FocusEvent<HTMLInputElement>) => {
     setInputHasFocus(true)
     e.target.select()
-    if (options.length) openDropdown()
+    openDropdown()
   }
 
   const handleEscape = () => {
@@ -149,7 +149,7 @@ const SearchField: NextPage<SearchFieldProps> = ({
   }
 
   const handleEnter = () => {
-    if (listItemSelected()) {
+    if (aListItemIsCurrentlySelected()) {
       onOptionSelected?.(options[activeDescendantKey])
       onClearPlaceAutocompletePredictions?.()
       closeDropdown()
@@ -186,6 +186,7 @@ const SearchField: NextPage<SearchFieldProps> = ({
   }
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    openDropdown()
     const val = e.target.value
     onInput?.(val)
     val
@@ -195,20 +196,6 @@ const SearchField: NextPage<SearchFieldProps> = ({
   }
 
   useClickAway(ref, closeDropdown)
-
-  useEffect(() => {
-    // We have updated autocomplete options, open the dropdown unless it's
-    // currently open
-    if (options.length && !open) {
-      setOpen(true)
-      setLastInputValue(value)
-    }
-    // Update has no autocomplete options, close the dropdown if it's currently open
-    if (!options.length && open) {
-      setOpen(false)
-      deselectListItem()
-    }
-  }, [options, open, value])
 
   return (
     <div className={styles.comboboxWrapper} ref={ref}>
@@ -242,6 +229,7 @@ const SearchField: NextPage<SearchFieldProps> = ({
             onBlur={handleBlur}
             onKeyUp={handleKeyUp}
             onKeyDown={handleKeyDown}
+            onClick={openDropdown}
           />
         </div>
         <SearchButton onClick={initiateSearch} />
