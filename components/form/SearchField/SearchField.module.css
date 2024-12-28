@@ -45,7 +45,7 @@
   outline: none;
 }
 
-.listboxMenu {
+.listboxOpen {
   position: absolute;
   z-index: 2;
   overflow-x: hidden;
@@ -58,8 +58,8 @@
   padding: 0;
 }
 
-.listboxMenuClosed {
-  composes: listboxMenu;
+.listboxClosed {
+  composes: listboxOpen;
   display: none;
 }
 
@@ -70,7 +70,7 @@
   cursor: pointer;
 }
 
-.listItemActive {
+.listItemSelected {
   composes: listItem;
   background-color: var(--primary-light);
 }

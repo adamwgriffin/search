@@ -1,12 +1,10 @@
-import type { NextPage } from 'next'
 import {
   useState,
-  useEffect,
   useRef,
   useId,
-  FocusEvent,
-  ChangeEvent,
-  KeyboardEvent
+  type FocusEvent,
+  type ChangeEvent,
+  type KeyboardEvent
 } from 'react'
 import { useClickAway } from 'react-use'
 import SearchButton from '../SearchButton/SearchButton'
@@ -14,10 +12,10 @@ import LocationPinFilledIcon from '../../design_system/icons/LocationPinFilledIc
 import PlacePredictionText from '../PlacePredictionText/PlacePredictionText'
 import styles from './SearchField.module.css'
 
-export interface SearchFieldProps {
+export type SearchFieldProps = {
+  options: Array<google.maps.places.AutocompletePrediction>
   value?: string
   placeholder?: string
-  options: Array<google.maps.places.AutocompletePrediction>
   onInput?: (details: string) => void
   onClearPlaceAutocompletePredictions?: () => void
   onSearchInitiated?: () => void
@@ -25,9 +23,9 @@ export interface SearchFieldProps {
   onGetPlaceAutocompletePredictions?: (val: string) => void
 }
 
-const NoSelection = -1
+const UnselectedIndex = -1
 
-const SearchField: NextPage<SearchFieldProps> = ({
+const SearchField: React.FC<SearchFieldProps> = ({
   value,
   placeholder = 'Address, Neighborhood or Zip',
   options,
@@ -41,19 +39,13 @@ const SearchField: NextPage<SearchFieldProps> = ({
   const ref = useRef(null)
   const [open, setOpen] = useState(false)
   const [inputHasFocus, setInputHasFocus] = useState(false)
-  const [activeDescendantKey, setActiveDescendantKey] = useState(NoSelection)
+  const [selectedListItemIndex, setSelectedListItemIndex] =
+    useState(UnselectedIndex)
   const [lastInputValue, setLastInputValue] = useState<string | undefined>()
 
   const aListItemIsCurrentlySelected = () =>
-    activeDescendantKey > NoSelection && activeDescendantKey < options.length
-
-  // This is used for the aria-activedescendant attribute. It identifies the
-  // currently selected item in the dropdown menu for accessibility purposes.
-  const activeDescendant = () => {
-    return aListItemIsCurrentlySelected()
-      ? `search-listbox-${id}-list-item-${activeDescendantKey}`
-      : ''
-  }
+    selectedListItemIndex > UnselectedIndex &&
+    selectedListItemIndex < options.length
 
   const openDropdown = () => {
     if (!open) {
@@ -65,12 +57,12 @@ const SearchField: NextPage<SearchFieldProps> = ({
   const closeDropdown = () => {
     if (open) {
       setOpen(false)
-      setActiveDescendantKey(NoSelection)
+      setSelectedListItemIndex(UnselectedIndex)
     }
   }
 
-  const setInputToNewListItemSelection = (newActiveDescendantKey: number) => {
-    onInput?.(options[newActiveDescendantKey].description)
+  const setInputToNewListItemSelection = (newSelectedListItemIndex: number) => {
+    onInput?.(options[newSelectedListItemIndex].description)
   }
 
   const setInputBackToLastValue = () => {
@@ -78,45 +70,45 @@ const SearchField: NextPage<SearchFieldProps> = ({
   }
 
   const setInputAccordingToListItemSelection = (
-    newActiveDescendantKey: number
+    newSelectedListItemIndex: number
   ) => {
-    newActiveDescendantKey === NoSelection
+    newSelectedListItemIndex === UnselectedIndex
       ? setInputBackToLastValue()
-      : setInputToNewListItemSelection(newActiveDescendantKey)
+      : setInputToNewListItemSelection(newSelectedListItemIndex)
   }
 
   // When the arrow keys go up or down the selection cycles through each menu
-  // item in the options array. When the user reaches the end of the top or
-  // bottom of the list, the selection resets, and nothing is selected until
-  // they go up or down again. This is how google's autocomplete widget behaves.
-  // The logic for these functions increments or decrements activeDescendantKey
-  // for the selections and uses NoSelection (-1) to represent this intermediary
-  // state when nothing is selected.
+  // item in the options array. When the user reaches the beginning or end of
+  // the list, the selection resets, and nothing is selected until they move up
+  // or down again. This is how google's autocomplete widget behaves. The logic
+  // for these functions increments or decrements activeDescendantKey for the
+  // selections and uses UnselectedIndex (-1) to represent this intermediary
+  // state where nothing is selected.
   //
-  // The reason we use `newActiveDescendantKey` rather than just setting
-  // `activeDescendantKey` and then using it is that
+  // The reason we use `newSelectedListItemIndex` rather than just setting
+  // `selectedListItemIndex` and then using it is that
   // `setInputAccordingToListItemSelection()` runs before the component is
-  // re-rendered so it still has the old value of `activeDescendantKey`
-  const moveUp = () => {
+  // re-rendered, so it still has the old value of `selectedListItemIndex`
+  const moveSelectionUp = () => {
     openDropdown()
     if (options.length === 0) return
-    const newActiveDescendantKey =
-      activeDescendantKey !== NoSelection
-        ? activeDescendantKey - 1
+    const newSelectedListItemIndex =
+      selectedListItemIndex !== UnselectedIndex
+        ? selectedListItemIndex - 1
         : options.length - 1
-    setActiveDescendantKey(newActiveDescendantKey)
-    setInputAccordingToListItemSelection(newActiveDescendantKey)
+    setSelectedListItemIndex(newSelectedListItemIndex)
+    setInputAccordingToListItemSelection(newSelectedListItemIndex)
   }
 
-  const moveDown = () => {
+  const moveSelectionDown = () => {
     openDropdown()
     if (options.length === 0) return
-    const newActiveDescendantKey =
-      activeDescendantKey + 1 < options.length
-        ? activeDescendantKey + 1
-        : NoSelection
-    setActiveDescendantKey(newActiveDescendantKey)
-    setInputAccordingToListItemSelection(newActiveDescendantKey)
+    const newSelectedListItemIndex =
+      selectedListItemIndex + 1 < options.length
+        ? selectedListItemIndex + 1
+        : UnselectedIndex
+    setSelectedListItemIndex(newSelectedListItemIndex)
+    setInputAccordingToListItemSelection(newSelectedListItemIndex)
   }
 
   const initiateSearch = () => {
@@ -140,7 +132,7 @@ const SearchField: NextPage<SearchFieldProps> = ({
     setInputHasFocus(false)
   }
 
-  const handleMenuItemClick = (
+  const handleListItemClick = (
     option: google.maps.places.AutocompletePrediction
   ) => {
     onOptionSelected?.(option)
@@ -150,7 +142,7 @@ const SearchField: NextPage<SearchFieldProps> = ({
 
   const handleEnter = () => {
     if (aListItemIsCurrentlySelected()) {
-      onOptionSelected?.(options[activeDescendantKey])
+      onOptionSelected?.(options[selectedListItemIndex])
       onClearPlaceAutocompletePredictions?.()
       closeDropdown()
     } else {
@@ -177,10 +169,10 @@ const SearchField: NextPage<SearchFieldProps> = ({
         closeDropdown()
         break
       case 'ArrowUp':
-        moveUp()
+        moveSelectionUp()
         break
       case 'ArrowDown':
-        moveDown()
+        moveSelectionDown()
         break
     }
   }
@@ -195,7 +187,18 @@ const SearchField: NextPage<SearchFieldProps> = ({
     setLastInputValue(val)
   }
 
+  const listItemId = (index: number) =>
+    `search-listbox-${id}-list-item-${index}`
+
+  const ariaActivedescendant = () => {
+    return aListItemIsCurrentlySelected()
+      ? listItemId(selectedListItemIndex)
+      : ''
+  }
+
   useClickAway(ref, closeDropdown)
+
+  const listboxId = `search-listbox-${id}`
 
   return (
     <div className={styles.comboboxWrapper} ref={ref}>
@@ -207,10 +210,9 @@ const SearchField: NextPage<SearchFieldProps> = ({
               : styles.comboboxInputNoFocus
           }
           role='combobox'
-          aria-controls='search-listbox'
           aria-haspopup='listbox'
           aria-expanded={open}
-          aria-owns={`search-listbox-${id}`}
+          aria-owns={listboxId}
         >
           <input
             id='locationSearchField'
@@ -218,8 +220,8 @@ const SearchField: NextPage<SearchFieldProps> = ({
             className={styles.locationSearchField}
             aria-label='Location Search'
             aria-autocomplete='list'
-            aria-controls={`search-listbox-${id}`}
-            aria-activedescendant={activeDescendant()}
+            aria-controls={listboxId}
+            aria-activedescendant={ariaActivedescendant()}
             type='text'
             autoComplete='off'
             placeholder={placeholder}
@@ -235,25 +237,25 @@ const SearchField: NextPage<SearchFieldProps> = ({
         <SearchButton onClick={initiateSearch} />
       </div>
       <ul
-        id='search-listbox'
-        className={open ? styles.listboxMenu : styles.listboxMenuClosed}
+        id={listboxId}
         role='listbox'
         tabIndex={-1}
+        className={open ? styles.listboxOpen : styles.listboxClosed}
       >
         {options.map((option, index) => (
           <li
+            id={listItemId(index)}
             role='option'
-            id={`search-listbox-${id}-list-item-${index}`}
             key={option.place_id}
             className={
-              activeDescendantKey === index
-                ? styles.listItemActive
+              selectedListItemIndex === index
+                ? styles.listItemSelected
                 : styles.listItem
             }
-            aria-selected={activeDescendantKey === index}
-            onClick={() => handleMenuItemClick(option)}
+            aria-selected={selectedListItemIndex === index}
+            onClick={() => handleListItemClick(option)}
           >
-            <LocationPinFilledIcon active={activeDescendantKey === index} />
+            <LocationPinFilledIcon active={selectedListItemIndex === index} />
             <PlacePredictionText prediction={option} />
           </li>
         ))}
