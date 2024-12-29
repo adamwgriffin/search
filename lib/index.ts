@@ -27,13 +27,13 @@ export const sleep = (ms: number) =>
 /**
  * Similar to `Array.prototype.slice` but can wrap around to the beginning/end of
  * the array.
- * 
+ *
  * @param start The beginning index of the specified portion of the array. If
  * start is a negative number then it wraps around to the end of the array.
  * @param end The end index of the specified portion of the array. This is
  * exclusive of the element at the index 'end'. If end is a negative number
  * then it wraps around to the beginning of the array.
- * 
+ *
  * @example
  * const array = [0, 1, 2, 3, 4];
  * sliceWrap(array, -1, 2); // [4, 0, 1]
@@ -53,4 +53,17 @@ export const sliceWrap = <T>(arr: T[], start: number, end: number) => {
     // Wrap-around case
     return arr.slice(start).concat(arr.slice(0, end))
   }
+}
+
+export const elementIsVisible = (
+  element: HTMLElement,
+  container: HTMLElement
+) => {
+  const elementRect = element.getBoundingClientRect()
+  const containerRect = container.getBoundingClientRect()
+
+  return (
+    elementRect.top >= containerRect.top &&
+    elementRect.bottom <= containerRect.bottom
+  )
 }

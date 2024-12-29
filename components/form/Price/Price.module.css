@@ -1,4 +1,18 @@
-.priceListMenu {
+.priceList {
   max-height: 15.6rem;
   overflow-y: auto;
+  list-style: none;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.priceListItem {
+  padding: .6rem;
+  cursor: pointer;
+}
+
+.priceListItem:hover,
+.priceListItem[aria-selected="true"] {
+  background: var(--primary-light);
 }
