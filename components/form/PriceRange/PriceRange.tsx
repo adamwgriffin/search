@@ -60,7 +60,7 @@ const PriceRange: React.FC<PriceRangeProps> = ({
 
   // We want to prevent the escape key event from bubbling when a menu is open
   // because otherwise the mobile filters modal will receive it and close the
-  // modal when what we really want to close the menu instead
+  // modal when what we really want is to close the menu instead
   const checkPropogationForKey = (
     e: KeyboardEvent<HTMLInputElement>,
     open: boolean
@@ -83,6 +83,7 @@ const PriceRange: React.FC<PriceRangeProps> = ({
         onFocus={handleMinFocus}
         onBlur={onBlur}
         onClickAway={() => setMinOpen(false)}
+        onMenuButtonClick={() => setMinOpen(!minOpen)}
         onKeyUp={(e) => {
           checkPropogationForKey(e, minOpen)
           if (e.key === 'Escape') {
@@ -113,6 +114,7 @@ const PriceRange: React.FC<PriceRangeProps> = ({
         onFocus={handleMaxFocus}
         onBlur={onBlur}
         onClickAway={() => setMaxOpen(false)}
+        onMenuButtonClick={() => setMaxOpen(!maxOpen)}
         onKeyUp={(e) => {
           checkPropogationForKey(e, maxOpen)
           if (e.key === 'Escape') {

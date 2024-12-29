@@ -21,6 +21,7 @@ export type PriceProps = {
   onKeyDown?: (event: KeyboardEvent<HTMLInputElement>) => void
   onChange?: (price: number | null) => void
   onMenuItemSelected?: (price: number) => void
+  onMenuButtonClick?: () => void
 }
 
 // Passing null to NumericFormat.value does not clear the input but "" does for
@@ -39,7 +40,8 @@ const Price: React.FC<PriceProps> = ({
   onKeyUp,
   onKeyDown,
   onChange,
-  onMenuItemSelected
+  onMenuItemSelected,
+  onMenuButtonClick
 }) => {
   const uniqueID = useId()
   const listItemRefs = useRef<(HTMLLIElement | null)[]>([])
@@ -95,7 +97,7 @@ const Price: React.FC<PriceProps> = ({
       <label htmlFor={priceId} className={formStyles.accessibleLabel}>
         {label}
       </label>
-      <div className={styles.priceField} onClick={onFocus}>
+      <div className={styles.priceField}>
         <NumericFormat
           prefix={'$'}
           thousandSeparator=','
@@ -118,7 +120,11 @@ const Price: React.FC<PriceProps> = ({
           onKeyUp={handleKeyUp}
           onKeyDown={handleKeyDown}
         />
-        <div className={styles.menuOpenIcon}>
+        <div
+          role='button'
+          className={styles.menuButton}
+          onClick={onMenuButtonClick}
+        >
           <MenuOpenIcon open={menuOpen} />
         </div>
       </div>

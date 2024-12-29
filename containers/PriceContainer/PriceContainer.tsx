@@ -6,7 +6,7 @@ import { searchWithUpdatedFilters } from '../../store/listingSearch/listingSearc
 import PriceRange from '../../components/form/PriceRange/PriceRange'
 
 /**
- * A Container component to connect the <Price> component to the store.
+ * A Container component to connect the <PriceRange> component to the store.
  */
 const PriceContainer: React.FC = () => {
   const dispatch = useAppDispatch()
