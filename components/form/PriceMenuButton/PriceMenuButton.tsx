@@ -1,39 +1,22 @@
 import { useState } from 'react'
-import css from 'styled-jsx/css'
 import MenuButton from '../../design_system/MenuButton/MenuButton'
 import PriceContainer from '../../../containers/PriceContainer/PriceContainer'
+import styles from './PriceMenuButton.module.css'
 
 const PriceMenuButton: React.FC = () => {
   const [open, setOpen] = useState(false)
 
   return (
-    <>
-      <MenuButton
-        label='Price'
-        open={open}
-        className={className}
-        onClick={() => setOpen(!open)}
-        onClickAway={() => setOpen(false)}
-      >
-        <PriceContainer />
-      </MenuButton>
-      {styles}
-    </>
+    <MenuButton
+      label='Price'
+      open={open}
+      className={styles.menu}
+      onClick={() => setOpen(!open)}
+      onClickAway={() => setOpen(false)}
+    >
+      <PriceContainer />
+    </MenuButton>
   )
 }
-
-const { className, styles } = css.resolve`
-  .menu {
-    right: auto;
-    padding: 1rem;
-    width: 24rem;
-  }
-
-  @media only screen and (min-width: 992px) {
-    .menu {
-      right: 0;
-    }
-  }
-`
 
 export default PriceMenuButton
