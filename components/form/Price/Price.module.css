@@ -3,11 +3,14 @@
   align-items: center;
   border-radius: 0.375rem;
   background-color: var(--input-background);
-  border: 1px solid transparent;
+  border: 1px solid var(--outline);
+  /* The padding stops content from moving around when focus ring is active */
+  padding: 1px;
 }
 
 .priceField:focus-within {
-  border: 1px solid var(--focus);
+  border: 2px solid var(--focus);
+  padding: 0;
 }
 
 .priceInput {

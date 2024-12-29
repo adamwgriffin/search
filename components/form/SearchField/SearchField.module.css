@@ -16,7 +16,7 @@
 
 .comboboxInputNoFocus {
   composes: comboboxInput;
-  /* the margin stops content from moving around when focus ring is active */
+  /* The padding stops content from moving around when focus ring is active */
   padding: 1px;
   border-top: 1px solid var(--outline);
   border-left: 1px solid var(--outline);
