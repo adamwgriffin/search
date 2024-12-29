@@ -26,7 +26,7 @@ const { className, styles } = css.resolve`
   .menu {
     right: auto;
     padding: 1rem;
-    width: 22rem;
+    width: 24rem;
   }
 
   @media only screen and (min-width: 992px) {

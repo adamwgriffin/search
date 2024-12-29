@@ -6,6 +6,7 @@ import MenuContainter from '../../design_system/MenuContainter/MenuContainter'
 import MenuDropdown from '../../design_system/MenuDropdown/MenuDropdown'
 import styles from './Price.module.css'
 import formStyles from '../../../styles/forms.module.css'
+import MenuOpenIcon from '../../design_system/icons/MenuOpenIcon/MenuOpenIcon'
 
 export type PriceProps = {
   label: string
@@ -102,28 +103,33 @@ const Price: React.FC<PriceProps> = ({
       <label htmlFor={priceId} className={formStyles.accessibleLabel}>
         {label}
       </label>
-      <NumericFormat
-        prefix={'$'}
-        thousandSeparator=','
-        allowNegative={false}
-        decimalScale={0}
-        value={normalizePrice(price)}
-        // For falsey values we pass null to avoid the input being set to 0
-        onValueChange={({ floatValue }) => onChange?.(floatValue || null)}
-        placeholder={placeholder}
-        className={formStyles.input}
-        id={priceId}
-        autoComplete='off'
-        inputMode='numeric'
-        role='combobox'
-        aria-controls={priceMenuId}
-        aria-expanded={menuOpen}
-        aria-haspopup='listbox'
-        onFocus={onFocus}
-        onBlur={onBlur}
-        onKeyUp={handleKeyUp}
-        onKeyDown={handleKeyDown}
-      />
+      <div className={styles.priceField} onClick={onFocus}>
+        <NumericFormat
+          prefix={'$'}
+          thousandSeparator=','
+          allowNegative={false}
+          decimalScale={0}
+          value={normalizePrice(price)}
+          // For falsey values we pass null to avoid the input being set to 0
+          onValueChange={({ floatValue }) => onChange?.(floatValue || null)}
+          placeholder={placeholder}
+          id={priceId}
+          className={styles.priceInput}
+          autoComplete='off'
+          inputMode='numeric'
+          role='combobox'
+          aria-controls={priceMenuId}
+          aria-expanded={menuOpen}
+          aria-haspopup='listbox'
+          onFocus={onFocus}
+          onBlur={onBlur}
+          onKeyUp={handleKeyUp}
+          onKeyDown={handleKeyDown}
+        />
+        <div className={styles.menuOpenIcon}>
+          <MenuOpenIcon open={menuOpen} />
+        </div>
+      </div>
       <MenuDropdown open={menuOpen} fitWidth>
         <ul
           id={priceMenuId}
