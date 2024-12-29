@@ -19,8 +19,7 @@ type AlignRight = {
   alignRight?: boolean
 }
 
-export type MenuDropdownProps = Common &
-  (FitWidth | AlignRight)
+export type MenuDropdownProps = Common & (FitWidth | AlignRight)
 
 const MenuDropdown: React.FC<MenuDropdownProps> = ({
   open = false,
@@ -31,11 +30,13 @@ const MenuDropdown: React.FC<MenuDropdownProps> = ({
   alignBottom = false,
   fitWidth = false
 }) => {
-  const classNames = `menu ${open ? 'open' : 'closed'} ${className}`.trim()
+  const classNames = `menu ${open ? 'open' : 'closed'} ${
+    className ? className : ''
+  }`.trim()
 
   const computedStyles: CSSProperties = {
     left: fitWidth ? '0' : undefined,
-    right: (alignRight || fitWidth) ? '0' : undefined,
+    right: alignRight || fitWidth ? '0' : undefined,
     bottom: alignBottom ? '100%' : undefined
   }
 
