@@ -4,14 +4,15 @@ import { formatAbbreviatedPrice } from '../../../lib/listing_helpers'
 import { elementIsVisible } from '../../../lib'
 import MenuContainter from '../../design_system/MenuContainter/MenuContainter'
 import MenuDropdown from '../../design_system/MenuDropdown/MenuDropdown'
+import MenuOpenIcon from '../../design_system/icons/MenuOpenIcon/MenuOpenIcon'
 import styles from './Price.module.css'
 import formStyles from '../../../styles/forms.module.css'
-import MenuOpenIcon from '../../design_system/icons/MenuOpenIcon/MenuOpenIcon'
 
 export type PriceProps = {
   label: string
-  placeholder?: string
   price: number | null
+  options: number[]
+  placeholder?: string
   menuOpen: boolean
   onFocus?: () => void
   onBlur?: () => void
@@ -22,24 +23,15 @@ export type PriceProps = {
   onMenuItemSelected?: (price: number) => void
 }
 
-export const PriceRangeNumbers = [
-  0, 50_000, 100_000, 150_000, 200_000, 250_000, 300_000, 350_000, 400_000,
-  450_000, 500_000, 550_000, 600_000, 650_000, 700_000, 750_000, 800_000,
-  850_000, 900_000, 950_000, 1_000_000, 1_250_000, 1_500_000, 1_750_000,
-  2_000_000, 2_250_000, 2_500_000, 2_750_000, 3_000_000, 3_250_000, 3_500_000,
-  3_750_000, 4_000_000, 4_250_000, 4_500_000, 4_750_000, 5_000_000, 6_000_000,
-  7_000_000, 8_000_000, 9_000_000, 10_000_000, 11_000_000, 12_000_000,
-  13_000_000, 14_000_000, 15_000_000, 16_000_000, 17_000_000, 18_000_000
-]
-
 // Passing null to NumericFormat.value does not clear the input but "" does for
 // some reason
 const normalizePrice = (price: number | null) => (price === null ? '' : price)
 
 const Price: React.FC<PriceProps> = ({
   label,
-  placeholder,
   price,
+  options,
+  placeholder,
   menuOpen,
   onFocus,
   onBlur,
@@ -70,7 +62,7 @@ const Price: React.FC<PriceProps> = ({
   }
 
   const moveSelectionDown = () => {
-    if (selectedListItemIndex === PriceRangeNumbers.length - 1) return
+    if (selectedListItemIndex === options.length - 1) return
     const newIndex = selectedListItemIndex + 1
     setSelectedListItemIndex(newIndex)
     scrollListItemIfNotVisible(newIndex)
@@ -78,8 +70,8 @@ const Price: React.FC<PriceProps> = ({
 
   const handleKeyUp = (e: KeyboardEvent<HTMLInputElement>) => {
     onKeyUp?.(e)
-    if (e.key === 'Enter' && selectedListItemIndex in PriceRangeNumbers) {
-      onMenuItemSelected?.(PriceRangeNumbers[selectedListItemIndex])
+    if (e.key === 'Enter' && selectedListItemIndex in options) {
+      onMenuItemSelected?.(options[selectedListItemIndex])
     }
   }
 
@@ -95,8 +87,8 @@ const Price: React.FC<PriceProps> = ({
     }
   }
 
-  const priceId = `price_${uniqueID}`
-  const priceMenuId = `priceMenu_${uniqueID}`
+  const priceId = `price__${uniqueID}`
+  const priceMenuId = `priceMenu__${uniqueID}`
 
   return (
     <MenuContainter onClickAway={onClickAway}>
@@ -137,7 +129,7 @@ const Price: React.FC<PriceProps> = ({
           role='listbox'
           className={styles.priceList}
         >
-          {PriceRangeNumbers.map((price, index) => (
+          {options.map((price, index) => (
             <li
               key={price}
               ref={(el) => {
