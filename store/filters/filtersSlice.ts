@@ -72,7 +72,9 @@ export const filtersSlice = createSlice({
       state.pageIndex = initialState.pageIndex
     },
 
-    clearFilters: () => initialState
+    clearFilters: ({ locationSearchField }) => {
+      return { ...initialState, locationSearchField }
+    }
   },
 
   extraReducers: (builder) => {
