@@ -11,7 +11,7 @@ import { SearchTypes } from '../../lib/filter'
 
 export const initialState: FiltersState = {
   searchType: SearchTypes.Buy,
-  locationSearchField: 'Fremont, Seattle, WA, USA',
+  locationSearchField: '',
   propertyTypes: [],
   includePending: false,
   openHouse: false,
