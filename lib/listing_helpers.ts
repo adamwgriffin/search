@@ -24,6 +24,16 @@ export const ShortCurrencyFormat: Intl.NumberFormatOptions = {
   notation: 'compact'
 }
 
+/** @example
+ * 3_250_000 => '$3.25M' */
+export const AbbreviatedCurrencyFormat: Intl.NumberFormatOptions = {
+  style: 'currency',
+  currency: 'USD',
+  notation: 'compact',
+  roundingMode: 'floor',
+  roundingPriority: 'morePrecision'
+}
+
 export const ShortDateFormat: Intl.DateTimeFormatOptions = {
   month: 'short',
   day: '2-digit',
@@ -60,6 +70,12 @@ export const formatPrice = (
   return opts.displayInterval && rental
     ? `${priceFormatted}/mo`
     : priceFormatted
+}
+
+export const formatAbbreviatedPrice = (price: number) => {
+  const format =
+    price >= 1_000_000 ? AbbreviatedCurrencyFormat : LongCurrencyFormat
+  return Intl.NumberFormat(Locale, format).format(price)
 }
 
 export const formatPriceFromListing = (

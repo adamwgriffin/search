@@ -1,0 +1,13 @@
+@value largeAndUp from "../../../styles/breakpoints.module.css";
+
+.menu {
+  right: auto;
+  padding: 1rem;
+  width: 24rem;
+}
+
+@media largeAndUp {
+  .menu {
+    right: 0;
+  }
+}

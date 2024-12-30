@@ -3,10 +3,10 @@ import { useRunCallbackIfChanged } from '../../hooks/run_callback_if_changed_hoo
 import { selectPriceRange } from '../../store/filters/filtersSelectors'
 import { setFilters } from '../../store/filters/filtersSlice'
 import { searchWithUpdatedFilters } from '../../store/listingSearch/listingSearchCommon'
-import Price from '../../components/form/Price/Price'
+import PriceRange from '../../components/form/PriceRange/PriceRange'
 
 /**
- * A Container component to connect the <Price> component to the store.
+ * A Container component to connect the <PriceRange> component to the store.
  */
 const PriceContainer: React.FC = () => {
   const dispatch = useAppDispatch()
@@ -17,13 +17,17 @@ const PriceContainer: React.FC = () => {
     )
 
   return (
-    <Price
+    <PriceRange
       priceRange={priceRange}
       onChange={(priceRange) => {
         dispatch(setFilters(priceRange))
       }}
       onFocus={setPreviousPriceRange}
       onBlur={runSearchIfPriceRangeChanged}
+      onMenuItemSelected={(priceRange) => {
+        dispatch(setFilters(priceRange))
+        dispatch(searchWithUpdatedFilters())
+      }}
     />
   )
 }
