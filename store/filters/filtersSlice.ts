@@ -1,5 +1,4 @@
-import type { PayloadAction } from '@reduxjs/toolkit'
-import { createSlice } from '@reduxjs/toolkit'
+import { type PayloadAction, createSlice } from '@reduxjs/toolkit'
 import {
   searchWithUpdatedFilters,
   newLocationGeocodeSearch,
@@ -78,7 +77,7 @@ export const filtersSlice = createSlice({
 
   extraReducers: (builder) => {
     builder.addCase(standaloneSearchInitialized, () => initialState)
-    
+
     builder.addCase(autocompletePredictionSelected, (state, action) => {
       state.locationSearchField = action.payload.description
     })
@@ -93,11 +92,7 @@ export const filtersSlice = createSlice({
   }
 })
 
-export const {
-  setFilters,
-  setSearchType,
-  resetStartIndex,
-  clearFilters,
-} = filtersSlice.actions
+export const { setFilters, setSearchType, resetStartIndex, clearFilters } =
+  filtersSlice.actions
 
 export default filtersSlice.reducer
