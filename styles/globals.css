@@ -36,7 +36,6 @@ body,
   --loading-dots-small: 0.625rem;
   --active-listing: green;
   --sold-listing: red;
-  --slideshow-header-height: 6rem;
   --show-more-background-image: linear-gradient(
     to bottom,
     rgba(255, 255, 255, 0) 0%,
