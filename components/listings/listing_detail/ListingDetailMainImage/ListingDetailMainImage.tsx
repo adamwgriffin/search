@@ -1,4 +1,4 @@
-import { type ImgHTMLAttributes, useState, useCallback } from 'react'
+import { type ImgHTMLAttributes, useState } from 'react'
 import {
   buildSrcSet,
   streetViewImageUrl
@@ -14,8 +14,8 @@ export type ListingDetailMainImageProps = {
   onClick?: () => void
 }
 
-const HeightRatio = 16 / 9
-const MobileHeightRatio = 1 / 1
+const DesktopImageRatio = 16 / 9
+const MobileImageRatio = 1 / 1
 const ImageLoadErrorFallbackUrl =
   '/default_listing_image/default_listing_image_full.jpg'
 const MobileMediaQuery = '(max-width: 576px)'
@@ -44,17 +44,26 @@ const ListingDetailMainImage: React.FC<ListingDetailMainImageProps> = ({
       <picture>
         <source
           media={MobileMediaQuery}
-          srcSet={buildSrcSet(imageUrl, MobileHeightRatio)}
+          srcSet={buildSrcSet(imageUrl, MobileImageRatio)}
         />
         <img
-          srcSet={buildSrcSet(imageUrl, HeightRatio)}
+          srcSet={buildSrcSet(imageUrl, DesktopImageRatio)}
           sizes='800px'
           src={imageUrl}
           onClick={onClick}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') {
+              e.preventDefault()
+              onClick?.()
+            }
+          }}
           // If there is no image for the location the street view service will
           // return an error status that triggers this
           onError={handleImageLoadError}
           alt={alt}
+          tabIndex={0}
+          role='button'
+          aria-haspopup='dialog'
           {...commonImgAttrs}
         />
       </picture>
@@ -72,7 +81,7 @@ const ListingDetailMainImage: React.FC<ListingDetailMainImageProps> = ({
           streetViewLat,
           streetViewLng,
           GoogleStreetViewMaxImageSize,
-          GoogleStreetViewMaxImageSize / HeightRatio
+          GoogleStreetViewMaxImageSize / DesktopImageRatio
         )}
         onError={handleImageLoadError}
         alt={alt}
