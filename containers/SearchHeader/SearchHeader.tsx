@@ -17,7 +17,9 @@ const SearchHeader: NextPage = () => {
       </HideSmallAndDown>
       <SearchFieldContainer
         onSearchInitiated={searchNewLocation}
-        onOptionSelected={searchNewLocation}
+        onOptionSelected={(autocompletePrediction) =>
+          searchNewLocation(autocompletePrediction.description)
+        }
       />
       <div className={styles.controls}>
         <UserMenu />

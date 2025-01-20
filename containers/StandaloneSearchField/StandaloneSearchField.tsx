@@ -22,7 +22,7 @@ const StandaloneSearchField: React.FC = () => {
 
   const searchThenRedirect = useCallback(
     async (locationSearchField: string) => {
-      const res = await searchNewLocation()
+      const res = await searchNewLocation(locationSearchField)
       // The searchNewLocation hook would have already redirected if listingDetail was found
       if (!res.listingDetail) {
         searchWithFilterState({ locationSearchField })

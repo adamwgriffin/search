@@ -1,7 +1,6 @@
 'use client'
 
 import type { FiltersState } from '../../store/filters/filtersTypes'
-import type { NextPage } from 'next'
 import { useState, useCallback, useEffect } from 'react'
 import { useEvent } from 'react-use'
 import isEqual from 'lodash/isEqual'
@@ -13,18 +12,16 @@ import { listingSearchURLParamsToSearchState } from '../../lib/url'
 import { initialState, setFilters } from '../../store/filters/filtersSlice'
 import {
   selectInitialSearchComplete,
-  selectListingSearchRunning
+  selectListingSearchRunning,
+  selectParamsForGeocodeSearch
 } from '../../store/listingSearch/listingSearchSelectors'
 import Search from '../../containers/Search/Search'
 import { selectSearchState } from '../../store/filters/filtersSelectors'
 import { searchCurrentLocation } from '../../store/listingSearch/listingSearchCommon'
 import GoogleMapsProvider from '../../providers/GoogleMapsProvider'
 
-export interface SearchPageProps {
-  params: string[]
-}
-
-const SearchPage: NextPage<SearchPageProps> = () => {
+const SearchPage: React.FC = () => {
+  const paramsForGeocodeSearch = useAppSelector(selectParamsForGeocodeSearch)
   const dispatch = useAppDispatch()
   const listingSearchRunning = useAppSelector(selectListingSearchRunning)
   const initialSearchComplete = useAppSelector(selectInitialSearchComplete)
@@ -58,9 +55,11 @@ const SearchPage: NextPage<SearchPageProps> = () => {
 
   // This useEffect is the entrypoint for getting params from the url and running the first search after the page loads
   useEffect(() => {
-    getSearchParamsAndSetSearchState()
-    searchNewLocation()
-  }, [getSearchParamsAndSetSearchState, searchNewLocation])
+    const newSearchState = getSearchParamsAndSetSearchState()
+    console.log("entrypoint, newSearchState:", newSearchState)
+    console.log("entrypoint, paramsForGeocodeSearch:", paramsForGeocodeSearch)
+    searchNewLocation(newSearchState.locationSearchField)
+  }, [])
 
   // If the user clicks the back or forward button in the browser, we want to get the url that was loaded from the
   // previous/next part of the browser history, and then run a new search to match the url params. The "popstate" event
