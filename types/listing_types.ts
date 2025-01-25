@@ -100,13 +100,17 @@ export interface ListingSearchPagination {
   numberOfPages: number
 }
 
-export interface ListingSearchBoundaryResponse {
+export interface ListingSearchResponse {
   listings: Listing[]
   pagination: ListingSearchPagination
 }
 
+export interface BoundarySearchResponse extends ListingSearchResponse {
+  boundary: BoundaryRecord
+}
+
 export interface ListingSearchGeocodeResponse
-  extends Partial<ListingSearchBoundaryResponse> {
+  extends Partial<ListingSearchResponse> {
   boundary?: BoundaryRecord
   viewport?: ViewportLatLngBounds
   listingDetail?: ListingDetail

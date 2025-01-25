@@ -95,10 +95,11 @@ const SlideShow: React.FC<SlideShowProps> = ({ images, open, onClose }) => {
         {gallerySlice().map((image) => (
           <figure
             key={image._id}
-            className={styles.listingImageFigure}
-            style={{
-              display: image._id === images[currentIndex]._id ? 'block' : 'none'
-            }}
+            className={
+              image._id === images[currentIndex]._id
+                ? styles.figure
+                : styles.figureHidden
+            }
           >
             <img
               srcSet={buildSrcSet(image.url)}
@@ -106,7 +107,7 @@ const SlideShow: React.FC<SlideShowProps> = ({ images, open, onClose }) => {
               fetchPriority={open ? 'auto' : 'low'}
               decoding={open ? 'auto' : 'async'}
               alt={`Listing gallery photo ${currentIndex + 1}`}
-              className={styles.listingImage}
+              className={styles.image}
             />
             <figcaption className={styles.caption}>{image.caption}</figcaption>
           </figure>

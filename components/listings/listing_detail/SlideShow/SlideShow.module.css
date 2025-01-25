@@ -1,16 +1,9 @@
 .slideShow {
-  display: none;
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 100;
-  /* Preventing the image height from overflowing the page proved to be very
-  difficult. Using calc to restrict the height of both the image and it's
-  container seems to be the only thing that works well.  */
-  grid-template-rows: var(--slideshow-header-height) calc(
-      100% - var(--slideshow-header-height)
-    );
-  height: 100vh;
+  z-index: 1;
+  height: 100%;
   width: 100%;
   background-color: black;
   color: white;
@@ -24,12 +17,9 @@
 }
 
 .slideShow[open] {
-  display: grid;
+  display: flex;
+  flex-direction: column;
   animation: open 500ms forwards;
-}
-
-.slideShowClosed {
-  display: none;
 }
 
 @keyframes open {
@@ -51,32 +41,50 @@
 }
 
 .carousel {
+  flex-grow: 1;
   display: flex;
   justify-content: space-between;
 }
 
-.listingImageFigure {
+.figure {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  /* Allows the image & caption to be centered vertically when they do not fill
+  the height of this container */
   justify-content: center;
   margin: 0;
 }
 
-.listingImage {
-  max-width: 100%;
-  max-height: calc(100% - var(--slideshow-header-height));
+.figureHidden {
+  display: none;
+}
+
+.image {
+  display: block;
+  object-fit: contain;
+}
+
+/* This part is essential to the layout. It makes it so that the image never
+grows larger than the available space within it's container. See
+https://stackoverflow.com/questions/36247140/why-dont-flex-items-shrink-past-content-size
+*/
+.slideShow,
+.carousel,
+.figure,
+.image {
+  min-height: 0;
+  min-width: 0;
 }
 
 .header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 2.5rem 0 0 2.5rem;
+  padding: 1rem 2.5rem;
 }
 
 .caption {
-  padding: 0.5rem;
+  padding: 1rem;
   text-align: center;
 }
 

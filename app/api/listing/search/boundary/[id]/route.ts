@@ -5,7 +5,7 @@ import Listing from '../../../../../../models/ListingModel'
 import Boundary from '../../../../../../models/BoundaryModel'
 import { getPaginationParams } from '../../../../../../lib'
 import { getBoundaryGeometryWithBounds } from '../../../../../../lib/listing_search_helpers'
-import listingSearchView from '../../../../../../views/listingSearchView'
+import listingSearchBoundaryView from '../../../../../../views/listingSearchBoundaryView'
 import { boundsSearchQuerySchema } from '../../../../../../zod_schemas/boundsSearchRequestSchema'
 
 export type BoundaryParams = {
@@ -39,5 +39,7 @@ export async function GET(request: NextRequest, { params }: BoundaryParams) {
     searchParams,
     pagination
   )
-  return NextResponse.json(listingSearchView(results, pagination))
+  return NextResponse.json(
+    listingSearchBoundaryView(boundary, results, pagination)
+  )
 }
