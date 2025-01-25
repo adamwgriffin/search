@@ -1,6 +1,8 @@
-import type { GeocodeBoundarySearchResponse } from '../types/listing_search_response_types'
-import type { ListingDetailResultWithSelectedFields } from '../types/listing_search_response_types'
 import { AddressGeometry } from '@googlemaps/google-maps-services-js'
+import type {
+  GeocodeBoundarySearchResponse,
+  ListingDetailResultWithSelectedFields
+} from '../types/listing_search_response_types'
 
 const listingSearchGeocodeNoBoundaryView = (
   viewport: AddressGeometry['viewport'],
