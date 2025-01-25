@@ -21,7 +21,7 @@ import { ListingDetailResultWithSelectedFields } from '../types/listing_search_r
 import { ListingDetailResultProjectionFields } from '../config'
 import Boundary from '../models/BoundaryModel'
 import { getPaginationParams } from '.'
-import listingSearchGeocodeView from '../views/listingSearchGeocodeView'
+import listingSearchBoundaryView from '../views/listingSearchBoundaryView'
 import listingSearchGeocodeNoBoundaryView from '../views/listingSearchGeocodeNoBoundaryView'
 import { listingAddressSchema } from '../zod_schemas/listingSchema'
 
@@ -117,7 +117,7 @@ export const getResponseForPlaceId = async (
     queryParams,
     pagination
   )
-  return listingSearchGeocodeView(boundary, results, pagination)
+  return listingSearchBoundaryView(boundary, results, pagination)
 }
 
 export const getResponseForListingAddress = async ({
@@ -143,7 +143,7 @@ export const getResponseForBoundary = async (
     queryParams,
     pagination
   )
-  return listingSearchGeocodeView(boundary, results, pagination)
+  return listingSearchBoundaryView(boundary, results, pagination)
 }
 
 export const getListingDetail = async (slug: string) => {

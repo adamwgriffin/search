@@ -1,6 +1,7 @@
 import type {
-  ListingSearchBoundaryResponse,
-  ListingSearchGeocodeResponse
+  ListingSearchGeocodeResponse,
+  ListingSearchResponse,
+  BoundarySearchResponse
 } from '../../types/listing_types'
 import { createAction } from '@reduxjs/toolkit'
 import http from '../../lib/http'
@@ -9,6 +10,8 @@ import {
   selectParamsForGeocodeSearch,
   selectParamsForGeospatialSearch
 } from './listingSearchSelectors'
+
+type CurrentLocationResponse = ListingSearchResponse | BoundarySearchResponse
 
 /**
  * Initiates a new request to the Listing Service to geocode what is entered in the search field
@@ -37,14 +40,14 @@ export const newLocationGeocodeSearch =
  * the params we use for this request.
  */
 export const searchCurrentLocation =
-  createAppAsyncThunk<ListingSearchBoundaryResponse>(
+  createAppAsyncThunk<CurrentLocationResponse>(
     'listingSearch/searchCurrentLocation',
     async (_arg, { getState }) => {
       const state = getState()
       const url = state.listingMap.boundaryActive
         ? `/api/listing/search/boundary/${state.listingSearch.boundaryId}`
         : 'api/listing/search/bounds'
-      const response = await http.get<ListingSearchBoundaryResponse>(url, {
+      const response = await http.get<CurrentLocationResponse>(url, {
         params: selectParamsForGeospatialSearch(state)
       })
       return response.data
