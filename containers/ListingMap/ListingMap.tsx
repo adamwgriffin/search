@@ -54,18 +54,14 @@ const ListingMap: NextPage = () => {
   const listingSearchRunning = useAppSelector(selectListingSearchRunning)
   const highlightedMarker = useAppSelector(selectHighlightedMarker)
 
-  // Memoizing bounds is important here because without it we can wind up in an endless loop. With each render, we pass
-  // bounds to the <GoogleMap> bounds prop, which causes <GoogleMap> to call fitBounds(bounds). Calling fitBounds()
-  // triggers an onIdle event from <GoogleMap>, which we handle by dispatching setMap. since setMap changes the
-  // listingtMap store, it may cause <ListingMap> to re-render. without useMemo the bounds can be exactly the same but
-  // will have a new reference ID, which will trigger the cycle again as if there were new bounds.
-  //
-  // We're checking googleLoaded because the getGeoLayerBounds function depends on google being loaded to be able to
-  // create a bounds object. It's also important to track googleLoaded in the dependency array here because we want to
-  // make sure that bounds updates once google is loaded if there are bounds available. If we don't do that the map
-  // sometimes gets zoomed out too far because <GoogleMap> never gets the bounds, and therefore doesn't call
-  // fitBounds(), which would adjust the zoom. This is also why we switched to useMemo instead of createSelector for
-  // this: the bug showed up and there was no simple way to track googleLoaded like this with createSelector.
+  // Memoizing bounds is important here because without it we can wind up in an
+  // endless loop. With each render, we pass bounds to the <GoogleMap> bounds
+  // prop, which causes <GoogleMap> to call fitBounds(bounds). Calling
+  // fitBounds() triggers an onIdle event from <GoogleMap>, which we handle by
+  // dispatching setMap. since setMap changes the listingtMap store, it may
+  // cause <ListingMap> to re-render. without useMemo the bounds can be exactly
+  // the same but will have a new reference ID, which will trigger the cycle
+  // again as if there were new bounds.
   const bounds = useMemo(() => {
     if (mapState.geoLayerCoordinates.length) {
       return getGeoLayerBounds(mapState.geoLayerCoordinates)
