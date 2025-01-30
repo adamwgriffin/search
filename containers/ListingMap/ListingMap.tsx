@@ -135,7 +135,7 @@ const ListingMap: NextPage = () => {
         zoom={mapState.zoom}
         onIdle={handleIdle}
         onDragEnd={handleUserAdjustedMap}
-        onUserChangedZoom={handleUserAdjustedMap}
+        onWheel={handleUserAdjustedMap}
       >
         {listings.map((l, i) => (
           <ListingMarker
