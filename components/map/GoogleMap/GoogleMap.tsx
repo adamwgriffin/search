@@ -70,12 +70,12 @@ const GoogleMap: React.FC<GoogleMapProps> = ({
   useEffect(() => {
     if (!googleMap) return
     const eventListeners: google.maps.MapsEventListener[] = []
-    eventListeners.push(
+    onDragEnd && eventListeners.push(
       google.maps.event.addListener(googleMap, 'dragend', () =>
         onDragEnd?.(getCurrentMapState())
       )
     )
-    eventListeners.push(
+    onUserChangedZoom && eventListeners.push(
       google.maps.event.addListener(googleMap, 'zoom_changed', () => {
         // Make sure we only call this when a user action changed the zoom event
         // rather than the bounds changing
@@ -84,7 +84,7 @@ const GoogleMap: React.FC<GoogleMapProps> = ({
         }
       })
     )
-    eventListeners.push(
+    onIdle && eventListeners.push(
       google.maps.event.addListener(googleMap, 'idle', () => {
         // Reset fitBoundsInProgress after fitBounds() completes and map is
         // idle.
