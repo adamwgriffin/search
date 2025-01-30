@@ -13,12 +13,10 @@ export type GoogleMapProps = {
   bounds?: google.maps.LatLngBoundsLiteral | null
   zoom?: number
   onDragEnd?: (currentMapState: GoogleMapState) => void
-  onUserChangedZoom?: (currentMapState: GoogleMapState) => void
+  onWheel?: (currentMapState: GoogleMapState) => void
   onIdle?: (currentMapState: GoogleMapState) => void
   children: ReactNode
 }
-
-let fitBoundsInProgress = false
 
 const GoogleMap: React.FC<GoogleMapProps> = ({
   options,
@@ -26,7 +24,7 @@ const GoogleMap: React.FC<GoogleMapProps> = ({
   zoom = 12,
   children,
   onDragEnd,
-  onUserChangedZoom,
+  onWheel,
   onIdle
 }) => {
   const mapEl = useRef<HTMLDivElement>(null)
@@ -55,53 +53,44 @@ const GoogleMap: React.FC<GoogleMapProps> = ({
     }
   }, [zoom, googleMap])
 
-  // A side effect of calling fitBounds() is that it may sometimes trigger a
-  // "zoom_changed" event. We only want to call things like the
-  // onUserChangedZoom() event callback if the user actually took some action to
-  // trigger "zoom_changed," so we set the fitBoundsInProgress flag and unset it
-  // later so we can tell the difference.
   useEffect(() => {
     if (bounds && googleMap) {
-      fitBoundsInProgress = true
       googleMap.fitBounds(bounds)
     }
   }, [bounds, googleMap])
 
+  const onWheelCallback = useCallback(
+    () => onWheel?.(getCurrentMapState()),
+    [getCurrentMapState, onWheel]
+  )
+
   useEffect(() => {
     if (!googleMap) return
-    const eventListeners: google.maps.MapsEventListener[] = []
-    eventListeners.push(
-      google.maps.event.addListener(googleMap, 'dragend', () =>
-        onDragEnd?.(getCurrentMapState())
+    const mapEventListeners: google.maps.MapsEventListener[] = []
+    onDragEnd &&
+      mapEventListeners.push(
+        google.maps.event.addListener(googleMap, 'dragend', () =>
+          onDragEnd?.(getCurrentMapState())
+        )
       )
-    )
-    eventListeners.push(
-      google.maps.event.addListener(googleMap, 'zoom_changed', () => {
-        // Make sure we only call this when a user action changed the zoom event
-        // rather than the bounds changing
-        if (!fitBoundsInProgress) {
-          onUserChangedZoom?.(getCurrentMapState())
-        }
-      })
-    )
-    eventListeners.push(
-      google.maps.event.addListener(googleMap, 'idle', () => {
-        // Reset fitBoundsInProgress after fitBounds() completes and map is
-        // idle.
-        fitBoundsInProgress = false
-        onIdle?.(getCurrentMapState())
-      })
-    )
+    onIdle &&
+      mapEventListeners.push(
+        google.maps.event.addListener(googleMap, 'idle', () => {
+          onIdle?.(getCurrentMapState())
+        })
+      )
+    onWheel && googleMap.getDiv().addEventListener('wheel', onWheelCallback)
     // The events get re-added each time a dependency changes in this useEffect,
     // so we have to clean them up, otherwise they will multiply quickly and
     // cause many unecessary api requests.
     return () => {
-      eventListeners.forEach((eventListener) =>
+      mapEventListeners.forEach((eventListener) =>
         google.maps.event.removeListener(eventListener)
       )
-      eventListeners.length = 0
+      googleMap.getDiv().removeEventListener('wheel', onWheelCallback)
+      mapEventListeners.length = 0
     }
-  }, [getCurrentMapState, googleMap, onDragEnd, onIdle, onUserChangedZoom])
+  }, [getCurrentMapState, googleMap, onDragEnd, onIdle, onWheel, onWheelCallback])
 
   return (
     <div ref={mapEl} id={styles.googleMap}>
