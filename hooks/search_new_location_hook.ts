@@ -1,7 +1,7 @@
-import type { ViewportLatLngBounds } from '../store/listingMap/listingMapTypes'
 import type { ListingSearchGeocodeResponse } from '../types/listing_types'
 import { useCallback } from 'react'
 import { useRouter } from 'next/navigation'
+import { unwrapResult } from '@reduxjs/toolkit'
 import isEqual from 'lodash/isEqual'
 import { useAppSelector, useAppDispatch } from './app_hooks'
 import {
@@ -14,7 +14,6 @@ import {
 } from '../store/listingSearch/listingSearchSlice'
 import { listingFoundForAddressSearch } from '../store/listingSearch/listingSearchSlice'
 import { selectViewportBounds } from '../store/listingMap/listingMapSelectors'
-import { unwrapResult } from '@reduxjs/toolkit'
 
 /**
  * Makes a new request to the Listing Service to geocode what is entered in the search field then dispatches the
