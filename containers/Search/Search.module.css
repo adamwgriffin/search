@@ -1,9 +1,9 @@
 @value smallAndUp from '../../styles/breakpoints.module.css';
 
 .search {
-  display: grid;
-  /* requires all parent elements to also be height: 100% in order to work */
+  /* Requires all parent elements to also be height: 100% in order to work */
   height: 100%;
+  display: grid;
   grid-template-rows: auto 1fr;
 }
 
@@ -18,10 +18,12 @@
 }
 
 .searchResults {
-  /* allows .searchResults to be layered on top of .listingMap. we use z-index to display one or the other. we want to
-  avoid actually hiding them with display: none because we want to be able to have the bounds on the map to be accurate
-  when sending to the listing service. if the map is set to display: none, the bounds will be wrong and the listing
-  service will return nothing after we click the pagination buttons. */
+  /* Allows .searchResults to be layered on top of .listingMap on mobile. we use
+  z-index to display one or the other. we want to avoid actually hiding them
+  with display: none because we want to be able to have the bounds on the map to
+  be accurate when sending to the listing service. if the map is set to display:
+  none, the bounds will be wrong and the listing service will return nothing
+  after we click the pagination buttons. */
   position: absolute;
   top: 0;
   left: 0;
@@ -36,7 +38,6 @@
 
 .resultsListView .searchResults,
 .resultsMapView .listingMap {
-  /* have to use 2, otherwise the boundary control on the map shows through because it's z-index 1 */
   z-index: 1;
 }
 
@@ -44,10 +45,11 @@
   .resultsListView,
   .resultsMapView {
     display: grid;
-    /* 1fr means it will fill the remaining space for each of these. auto grows as large as it's content */
     grid-template-columns: 50% 1fr;
-    /* these prevent the results container from overlowing off the screen when the content of .searchResults overflows
-    the window height. we only want .searchResults to scroll, not the entire window */
+    /* Setting min-height/min-width prevents the results container from
+    overlowing off the screen when the content of .searchResults overflows the
+    window height. We only want .searchResults to scroll, not the entire window
+    */
     min-height: 0;
     min-width: 0;
     padding-bottom: 1rem;
