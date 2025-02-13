@@ -203,37 +203,27 @@ const SearchField: React.FC<SearchFieldProps> = ({
   return (
     <div className={styles.comboboxWrapper} ref={ref}>
       <div className={styles.searchFieldElements}>
-        <div
-          className={
-            inputHasFocus
-              ? styles.comboboxInputHasFocus
-              : styles.comboboxInputNoFocus
-          }
+        <input
+          id='locationSearchField'
+          name='locationSearchField'
+          className={styles.locationSearchField}
           role='combobox'
-          aria-haspopup='listbox'
+          aria-controls={listboxId}
           aria-expanded={open}
-          aria-owns={listboxId}
-        >
-          <input
-            id='locationSearchField'
-            name='locationSearchField'
-            className={styles.locationSearchField}
-            aria-label='Location Search'
-            aria-autocomplete='list'
-            aria-controls={listboxId}
-            aria-activedescendant={ariaActivedescendant()}
-            type='text'
-            autoComplete='off'
-            placeholder={placeholder}
-            value={value}
-            onChange={handleChange}
-            onFocus={handleFocus}
-            onBlur={handleBlur}
-            onKeyUp={handleKeyUp}
-            onKeyDown={handleKeyDown}
-            onClick={openDropdown}
-          />
-        </div>
+          aria-label='Location Search'
+          aria-autocomplete='list'
+          aria-activedescendant={ariaActivedescendant()}
+          type='text'
+          autoComplete='off'
+          placeholder={placeholder}
+          value={value}
+          onChange={handleChange}
+          onFocus={handleFocus}
+          onBlur={handleBlur}
+          onKeyUp={handleKeyUp}
+          onKeyDown={handleKeyDown}
+          onClick={openDropdown}
+        />
         <SearchButton onClick={initiateSearch} />
       </div>
       <ul
