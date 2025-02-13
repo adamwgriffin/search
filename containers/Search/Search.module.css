@@ -48,7 +48,7 @@
     display: grid;
     grid-template-columns: 50% 1fr;
     /* Setting min-height/min-width prevents the results container from
-    overlowing off the screen when the content of .searchResults overflows the
+    overflowing off the screen when the content of .searchResults overflows the
     window height. We only want .searchResults to scroll, not the entire window
     */
     min-height: 0;
@@ -58,7 +58,6 @@
 
   .searchResults {
     position: static;
-    padding: 0 1rem 0 1rem;
   }
 
   .listingMap {
