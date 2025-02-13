@@ -7,7 +7,7 @@ import { useEvent } from 'react-use'
 import isEqual from 'lodash/isEqual'
 import { useAppSelector, useAppDispatch } from '../../hooks/app_hooks'
 import { useGetCurrentUserIfAuthenticated } from '../../hooks/get_current_user_if_authenticated_hook'
-import { useSearchWithFilterState } from '../../hooks/search_with_filter_state_hook'
+import { useRedirectToSearch } from '../../hooks/redirect_to_search_hook'
 import { useSearchNewLocation } from '../../hooks/search_new_location_hook'
 import { listingSearchURLParamsToSearchState } from '../../lib/url'
 import { initialState, setFilters } from '../../store/filters/filtersSlice'
@@ -28,7 +28,7 @@ const SearchPage: NextPage<SearchPageProps> = () => {
   const dispatch = useAppDispatch()
   const listingSearchRunning = useAppSelector(selectListingSearchRunning)
   const initialSearchComplete = useAppSelector(selectInitialSearchComplete)
-  const searchWithFilterState = useSearchWithFilterState()
+  const redirectToSearch = useRedirectToSearch()
   const searchNewLocation = useSearchNewLocation()
   // We want to get the currentUser so that we can display their favorites on the listing cards
   useGetCurrentUserIfAuthenticated()
@@ -97,7 +97,7 @@ const SearchPage: NextPage<SearchPageProps> = () => {
       // Avoid updating unless the searchState changed, otherwise clicking the back button will not change the url
       !isEqual(searchState, previousSearchState)
     if (shouldUpdateURL) {
-      searchWithFilterState(searchState)
+      redirectToSearch(searchState)
       setPreviousSearchState(searchState)
     }
   }, [
@@ -105,7 +105,7 @@ const SearchPage: NextPage<SearchPageProps> = () => {
     initialSearchComplete,
     searchState,
     previousSearchState,
-    searchWithFilterState
+    redirectToSearch
   ])
 
   return (
