@@ -23,6 +23,7 @@ import {
 } from '../../store/filters/filtersSelectors'
 import ListingCards from '../../components/listings/ListingCards/ListingCards'
 import NoResults from '../../components/listings/NoResults/NoResults'
+import { useEffect, useRef } from 'react'
 
 const SearchResults: NextPage = () => {
   const dispatch = useAppDispatch()
@@ -33,6 +34,13 @@ const SearchResults: NextPage = () => {
   const initialSearchComplete = useAppSelector(selectInitialSearchComplete)
   const listingSearchRunning = useAppSelector(selectListingSearchRunning)
   const openListingDetail = useOpenListingDetail(false)
+  const searchResultsRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    if (listingSearchRunning && searchResultsRef?.current?.scrollTop) {
+      searchResultsRef.current.scrollTop = 0
+    }
+  }, [listingSearchRunning])
 
   const handleSortMenuChange = (sortParams: SortFilters) => {
     dispatch(setFilters(sortParams))
@@ -58,7 +66,7 @@ const SearchResults: NextPage = () => {
   }
 
   return (
-    <div className={styles.searchResults}>
+    <div ref={searchResultsRef} className={styles.searchResults}>
       <ListingResultsHeader
         totalListings={pagination.total}
         listingSearchRunning={listingSearchRunning}

@@ -29,9 +29,10 @@
   left: 0;
   right: 0;
   bottom: 0;
-  /* overflow needs to be on the main parent for SearchResults. adding it to the SearchResults component just causes the
-  page height to increase instead of making the content scroll */
-  overflow-y: auto;
+  /* Don't grow larger than window height when search results child content
+  overflows to scroll the results. */
+  min-height: 0;
+  min-width: 0;
   padding: 0 1rem 1rem 1rem;
   background-color: var(--background);
 }
