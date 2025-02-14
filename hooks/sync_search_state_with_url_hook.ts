@@ -3,7 +3,7 @@ import { useState, useCallback, useEffect } from 'react'
 import { useEvent } from 'react-use'
 import isEqual from 'lodash/isEqual'
 import { useAppSelector, useAppDispatch } from './app_hooks'
-import { useRedirectToSearch } from './redirect_to_search_hook'
+import { usePushParamsToSearchUrl } from './push_params_to_search_url_hook'
 import { useSearchNewLocation } from './search_new_location_hook'
 import { listingSearchURLParamsToSearchState } from '../lib/url'
 import { initialState, setFilters } from '../store/filters/filtersSlice'
@@ -18,7 +18,7 @@ export const useSyncSearchStateWithUrl = () => {
   const dispatch = useAppDispatch()
   const listingSearchRunning = useAppSelector(selectListingSearchRunning)
   const initialSearchComplete = useAppSelector(selectInitialSearchComplete)
-  const redirectToSearch = useRedirectToSearch()
+  const pushParamsToSearchUrl = usePushParamsToSearchUrl()
   const searchNewLocation = useSearchNewLocation()
   const searchState = useAppSelector(selectSearchState)
   const [previousSearchState, setPreviousSearchState] =
@@ -92,7 +92,7 @@ export const useSyncSearchStateWithUrl = () => {
       // back button will not change the url
       !isEqual(searchState, previousSearchState)
     if (shouldUpdateURL) {
-      redirectToSearch(searchState)
+      pushParamsToSearchUrl(searchState)
       setPreviousSearchState(searchState)
     }
   }, [
@@ -100,6 +100,6 @@ export const useSyncSearchStateWithUrl = () => {
     initialSearchComplete,
     searchState,
     previousSearchState,
-    redirectToSearch
+    pushParamsToSearchUrl
   ])
 }
