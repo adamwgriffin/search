@@ -39,9 +39,11 @@ export const addUrlToBrowserHistory = (url: string) => {
   history.replaceState({}, '', currentUrl)
 }
 
-// we need to sync the FilterState with the search url. each time the location changes, or a filter is added or removed,
-// we need to update the url with the minimum amount of params that are needed to represent the new state. this means
-// that we don't want to add any params to the url that are the same as the default state.
+// We need to sync the FilterState with the search url. each time the location
+// changes, or a filter is added or removed, we need to update the url with the
+// minimum amount of params that are needed to represent the new state. This
+// means that we don't want to add any params to the url that are the same as
+// the default state.
 export const searchStateToListingSearchURLParams = (
   filterState: Partial<FiltersState>
 ) => {
@@ -67,8 +69,8 @@ export const searchStateToListingSearchURLParams = (
   return filterParams
 }
 
-// on first load, we need to get the url, parse it's params and map then them to the state so that we can do the initial
-// search correctly
+// On first load, we need to get the url, parse it's params and map then them to
+// the state so that we can do the initial search correctly
 export const listingSearchURLParamsToSearchState = (
   urlSearchParams: URLSearchParams
 ): Partial<FiltersState> => {
