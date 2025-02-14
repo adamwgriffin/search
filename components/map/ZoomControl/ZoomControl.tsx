@@ -12,10 +12,14 @@ const ZoomControl: NextPage<ZoomControlProps> = ({ onZoomIn, onZoomOut }) => {
   return (
     <div className={styles.zoomControl}>
       <button aria-label='Zoom in' className={styles.zoomIn} onClick={onZoomIn}>
-        <PlusIcon />
+        <PlusIcon className={styles.icon} />
       </button>
-      <button aria-label='Zoom out' className={styles.zoomOut} onClick={onZoomOut}>
-        <MinusIcon />
+      <button
+        aria-label='Zoom out'
+        className={styles.zoomOut}
+        onClick={onZoomOut}
+      >
+        <MinusIcon className={styles.icon} />
       </button>
     </div>
   )

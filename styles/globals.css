@@ -65,7 +65,7 @@ body,
 
 [data-theme='dark'] {
   --background: #22272e;
-  --input-background: black;
+  --input-background: #49494e;
   --foreground: #e0e0e0;
   --foreground-disabled: #b3b3b3;
   --primary: #b79bf0;
@@ -75,8 +75,8 @@ body,
   --listing-marker-foreground: #e0e0e0;
   --listing-marker-background-visited: #5a5a5a;
   --listing-marker-foreground-visited: #e0e0e0;
-  --logo: white;
-  --map-control: rgba(34, 39, 46, 0.8);
+  --logo: var(--primary);
+  --map-control: #49494e;
   --show-more-background-image: linear-gradient(
     to bottom,
     rgb(34, 39, 46, 1) 0%,
