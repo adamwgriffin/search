@@ -1,5 +1,13 @@
+@value smallAndUp from '../../../styles/breakpoints.module.css';
+
 #googleMap {
-  /* 100% height required for both ListingMap and GoogleMap, otherwise it doesn't display */
+  /* 100% height required for both ListingMap and GoogleMap, otherwise it
+  doesn't display */
   height: 100%;
-  border-radius: .5rem;
+}
+
+@media smallAndUp {
+  #googleMap {
+    border-radius: 0.5rem;
+  }
 }
