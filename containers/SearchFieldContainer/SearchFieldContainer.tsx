@@ -48,6 +48,7 @@ const SearchFieldContainer: NextPage<SearchFieldContainerProps> = ({
       }
       onSearchInitiated={() => locationSearchField && onSearchInitiated?.()}
       onOptionSelected={handleOnOptionSelected}
+      placeholder='Search Seattle'
     />
   )
 }
