@@ -9,7 +9,7 @@ import {
 import { ListingMapState } from './listingMapTypes'
 
 export const initialState: ListingMapState = {
-  boundaryActive: true,
+  boundaryActive: false,
   boundsNorth: 47.745274294284506,
   boundsEast: -122.38844700157635,
   boundsSouth: 47.610393280504454,

@@ -47,9 +47,11 @@ export const useSyncSearchStateWithUrl = () => {
   // This useEffect is the entrypoint for getting params from the url and
   // running the first search after the page loads
   useEffect(() => {
-    getSearchParamsAndSetSearchState()
-    searchNewLocation()
-  }, [getSearchParamsAndSetSearchState, searchNewLocation])
+    const searchState = getSearchParamsAndSetSearchState()
+    if (searchState.locationSearchField) {
+      searchNewLocation()
+    } else dispatch(searchCurrentLocation())
+  }, [dispatch, getSearchParamsAndSetSearchState, searchNewLocation])
 
   // If the user clicks the back or forward button in the browser, we want to
   // get the url that was loaded from the previous/next part of the browser
