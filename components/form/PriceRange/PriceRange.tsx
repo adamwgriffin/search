@@ -43,7 +43,7 @@ const PriceRange: React.FC<PriceRangeProps> = ({
     const { priceMin } = priceRange
     return priceMin === null
       ? prices
-      : prices.filter((price) => price > priceMin)
+      : prices.filter((price) => price === 0 || price > priceMin) // Always keep 0 for "Any"
   }
 
   const handleMinFocus = () => {
