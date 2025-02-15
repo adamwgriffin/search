@@ -38,7 +38,6 @@ const SearchField: React.FC<SearchFieldProps> = ({
   const id = useId()
   const ref = useRef(null)
   const [open, setOpen] = useState(false)
-  const [inputHasFocus, setInputHasFocus] = useState(false)
   const [selectedListItemIndex, setSelectedListItemIndex] =
     useState(UnselectedIndex)
   const [lastInputValue, setLastInputValue] = useState<string | undefined>()
@@ -118,7 +117,6 @@ const SearchField: React.FC<SearchFieldProps> = ({
   }
 
   const handleFocus = (e: FocusEvent<HTMLInputElement>) => {
-    setInputHasFocus(true)
     e.target.select()
     openDropdown()
   }
@@ -126,10 +124,6 @@ const SearchField: React.FC<SearchFieldProps> = ({
   const handleEscape = () => {
     closeDropdown()
     setInputBackToLastValue()
-  }
-
-  const handleBlur = () => {
-    setInputHasFocus(false)
   }
 
   const handleListItemClick = (
@@ -219,7 +213,6 @@ const SearchField: React.FC<SearchFieldProps> = ({
           value={value}
           onChange={handleChange}
           onFocus={handleFocus}
-          onBlur={handleBlur}
           onKeyUp={handleKeyUp}
           onKeyDown={handleKeyDown}
           onClick={openDropdown}
