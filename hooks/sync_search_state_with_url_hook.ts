@@ -13,6 +13,7 @@ import {
 } from '../store/listingSearch/listingSearchSelectors'
 import { selectSearchState } from '../store/filters/filtersSelectors'
 import { searchCurrentLocation } from '../store/listingSearch/listingSearchCommon'
+import { setDoListingSearchOnMapIdle } from '../store/listingSearch/listingSearchSlice'
 
 export const useSyncSearchStateWithUrl = () => {
   const dispatch = useAppDispatch()
@@ -50,7 +51,9 @@ export const useSyncSearchStateWithUrl = () => {
     const searchState = getSearchParamsAndSetSearchState()
     if (searchState.locationSearchField) {
       searchNewLocation()
-    } else dispatch(searchCurrentLocation())
+    } else {
+      dispatch(setDoListingSearchOnMapIdle(true))
+    }
   }, [dispatch, getSearchParamsAndSetSearchState, searchNewLocation])
 
   // If the user clicks the back or forward button in the browser, we want to
