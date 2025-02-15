@@ -1,6 +1,3 @@
-/* setting 100% height on all parent elements makes it so we can set height: 100% on .search instead of having to do
-height: calc(100vh - 2rem) to account for the padding on <body> below. it works either way, but using calc() feels sort
-of awkward */
 html,
 body,
 #__next {
@@ -83,6 +80,10 @@ body,
     rgba(255, 255, 255, 0) 95%
   );
   --listing-details-name-foreground: #9f9e9e;
+  ::placeholder {
+    color: var(--foreground-disabled);
+    opacity: 1; /* For Firefox */
+  }
 }
 
 body {
