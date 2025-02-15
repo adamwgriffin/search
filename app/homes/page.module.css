@@ -7,46 +7,15 @@
   grid-template-rows: auto 1fr;
 }
 
-.resultsListView,
-.resultsMapView {
+.results {
   height: 100%;
   position: relative;
 }
 
-.listingMap {
-  height: 100%;
-}
-
-.searchResults {
-  /* Allows .searchResults to be layered on top of .listingMap on mobile. we use
-  z-index to display one or the other. we want to avoid actually hiding them
-  with display: none because we want to be able to have the bounds on the map to
-  be accurate when sending to the listing service. if the map is set to display:
-  none, the bounds will be wrong and the listing service will return nothing
-  after we click the pagination buttons. */
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  /* Don't grow larger than window height when search results child content
-  overflows to scroll the results. */
-  min-height: 0;
-  min-width: 0;
-  padding: 0 1rem 1rem 1rem;
-  background-color: var(--background);
-}
-
-.resultsListView .searchResults,
-.resultsMapView .listingMap {
-  z-index: 1;
-}
-
 @media smallAndUp {
-  .resultsListView,
-  .resultsMapView {
+  .results {
     display: grid;
-    grid-template-columns: 50% 1fr;
+    grid-template-columns: 1fr 1fr;
     /* Setting min-height/min-width prevents the results container from
     overflowing off the screen when the content of .searchResults overflows the
     window height. We only want .searchResults to scroll, not the entire window
@@ -55,27 +24,10 @@
     min-width: 0;
     padding-bottom: 1rem;
   }
-
-  .searchResults {
-    position: static;
-  }
-
-  .listingMap {
-    padding: 0 1rem 0 0;
-  }
-
-  .resultsListView .searchResults {
-    z-index: auto;
-  }
-
-  .resultsMapView .listingMap {
-    z-index: auto;
-  }
 }
 
 @media largeAndUp {
-  .resultsListView,
-  .resultsMapView {
+  .results {
     grid-template-columns: 55% 1fr;
   }
 }
