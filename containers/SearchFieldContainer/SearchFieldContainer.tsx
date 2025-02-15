@@ -16,7 +16,7 @@ export interface SearchFieldContainerProps {
   onOptionSelected?: (option: google.maps.places.AutocompletePrediction) => void
 }
 
-// a container that simply wraps SearchField and connects it to the redux store
+// A container that simply wraps SearchField and connects it to the redux store
 const SearchFieldContainer: NextPage<SearchFieldContainerProps> = ({
   onSearchInitiated,
   onOptionSelected
@@ -46,7 +46,7 @@ const SearchFieldContainer: NextPage<SearchFieldContainerProps> = ({
       onClearPlaceAutocompletePredictions={() =>
         dispatch(resetAutcompletePlacePredictions())
       }
-      onSearchInitiated={onSearchInitiated}
+      onSearchInitiated={() => locationSearchField && onSearchInitiated?.()}
       onOptionSelected={handleOnOptionSelected}
     />
   )
