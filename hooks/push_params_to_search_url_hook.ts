@@ -7,7 +7,7 @@ export const usePushParamsToSearchUrl = () => {
 
   return (filterState: Partial<FiltersState>) => {
     router.push(
-      '/homes?' +
+      '/?' +
         new URLSearchParams(searchStateToListingSearchURLParams(filterState))
     )
   }

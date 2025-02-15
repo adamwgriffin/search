@@ -15,7 +15,8 @@ const StandaloneSearchField: React.FC = () => {
   const pushParamsToSearchUrl = usePushParamsToSearchUrl()
   const dispatch = useAppDispatch()
 
-  // Reset the filters back to defaults in case a previous search on the /homes page changed them
+  // Reset the filters back to defaults in case a previous search on the search
+  // page changed them
   useEffect(() => {
     dispatch(standaloneSearchInitialized())
   }, [dispatch])
