@@ -2,7 +2,7 @@ import type { AppState } from '..'
 import type { PayloadAction } from '@reduxjs/toolkit'
 import { createSlice } from '@reduxjs/toolkit'
 
-export type ViewType = 'list' | 'map'
+export type MobileViewType = 'list' | 'map'
 
 export type ModalType =
   | 'filters'
@@ -17,7 +17,7 @@ export type ListingDetailModalProps = {
 export type ModalPropsTypes = ListingDetailModalProps | null
 
 export type ApplicationState = {
-  viewType: ViewType
+  mobileViewType: MobileViewType
   modalType: ModalType | null
   modalProps: ModalPropsTypes
   modalOpen: boolean
@@ -29,7 +29,7 @@ export type OpenModalPayload = {
 }
 
 const initialState: ApplicationState = {
-  viewType: 'list',
+  mobileViewType: 'list',
   modalType: null,
   modalProps: null,
   modalOpen: false
@@ -41,8 +41,8 @@ export const applicationSlice = createSlice({
   initialState,
 
   reducers: {
-    setViewType(state, action: PayloadAction<ViewType>) {
-      state.viewType = action.payload
+    toggleMobileViewType(state, action: PayloadAction<MobileViewType>) {
+      state.mobileViewType = action.payload
     },
 
     openModal(state, action: PayloadAction<OpenModalPayload>) {
@@ -64,13 +64,13 @@ export const applicationSlice = createSlice({
   }
 })
 
-export const { setViewType, openModal, closeModal, resetModal } =
+export const { toggleMobileViewType, openModal, closeModal, resetModal } =
   applicationSlice.actions
 
 const modalTypeOpen = (state: AppState, modalType: ModalType) =>
   state.application.modalType === modalType && state.application.modalOpen
 
-export const selectViewType = (state: AppState) => state.application.viewType
+export const selectMobileViewType = (state: AppState) => state.application.mobileViewType
 
 export const selectListingModalSlug = (state: AppState) =>
   state.application.modalProps?.listingSlug

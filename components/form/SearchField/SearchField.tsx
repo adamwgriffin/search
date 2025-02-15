@@ -38,7 +38,6 @@ const SearchField: React.FC<SearchFieldProps> = ({
   const id = useId()
   const ref = useRef(null)
   const [open, setOpen] = useState(false)
-  const [inputHasFocus, setInputHasFocus] = useState(false)
   const [selectedListItemIndex, setSelectedListItemIndex] =
     useState(UnselectedIndex)
   const [lastInputValue, setLastInputValue] = useState<string | undefined>()
@@ -118,7 +117,6 @@ const SearchField: React.FC<SearchFieldProps> = ({
   }
 
   const handleFocus = (e: FocusEvent<HTMLInputElement>) => {
-    setInputHasFocus(true)
     e.target.select()
     openDropdown()
   }
@@ -126,10 +124,6 @@ const SearchField: React.FC<SearchFieldProps> = ({
   const handleEscape = () => {
     closeDropdown()
     setInputBackToLastValue()
-  }
-
-  const handleBlur = () => {
-    setInputHasFocus(false)
   }
 
   const handleListItemClick = (
@@ -203,37 +197,26 @@ const SearchField: React.FC<SearchFieldProps> = ({
   return (
     <div className={styles.comboboxWrapper} ref={ref}>
       <div className={styles.searchFieldElements}>
-        <div
-          className={
-            inputHasFocus
-              ? styles.comboboxInputHasFocus
-              : styles.comboboxInputNoFocus
-          }
+        <input
+          id='locationSearchField'
+          name='locationSearchField'
+          className={styles.locationSearchField}
           role='combobox'
-          aria-haspopup='listbox'
+          aria-controls={listboxId}
           aria-expanded={open}
-          aria-owns={listboxId}
-        >
-          <input
-            id='locationSearchField'
-            name='locationSearchField'
-            className={styles.locationSearchField}
-            aria-label='Location Search'
-            aria-autocomplete='list'
-            aria-controls={listboxId}
-            aria-activedescendant={ariaActivedescendant()}
-            type='text'
-            autoComplete='off'
-            placeholder={placeholder}
-            value={value}
-            onChange={handleChange}
-            onFocus={handleFocus}
-            onBlur={handleBlur}
-            onKeyUp={handleKeyUp}
-            onKeyDown={handleKeyDown}
-            onClick={openDropdown}
-          />
-        </div>
+          aria-label='Location Search'
+          aria-autocomplete='list'
+          aria-activedescendant={ariaActivedescendant()}
+          type='text'
+          autoComplete='off'
+          placeholder={placeholder}
+          value={value}
+          onChange={handleChange}
+          onFocus={handleFocus}
+          onKeyUp={handleKeyUp}
+          onKeyDown={handleKeyDown}
+          onClick={openDropdown}
+        />
         <SearchButton onClick={initiateSearch} />
       </div>
       <ul

@@ -3,7 +3,7 @@ import PriceMenuButton from '../../components/form/PriceMenuButton/PriceMenuButt
 import BedsAndBathsMenuButton from '../../components/form/BedsAndBathsMenuButton/BedsAndBathsMenuButton'
 import MoreMenuButton from '../../components/form/MoreMenuButton/MoreMenuButton'
 import FiltersButton from '../../components/form/FiltersButton/FiltersButton'
-import ViewSwitcher from '../../components/form/ViewSwitcher/ViewSwitcher'
+import MobileViewSwitcher from '../../components/form/MobileViewSwitcher/MobileViewSwitcher'
 import SaveSearchButton from '../../components/form/SaveSearchButton/SaveSearchButton'
 
 const Filters: React.FC = () => {
@@ -14,7 +14,7 @@ const Filters: React.FC = () => {
       <MoreMenuButton />
       <FiltersButton />
       <SaveSearchButton />
-      <ViewSwitcher />
+      <MobileViewSwitcher />
     </div>
   )
 }

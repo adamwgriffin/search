@@ -1,32 +1,33 @@
 @value smallAndUp from '../styles/breakpoints.module.css';
 
-.home {
+.search {
+  /* Requires all parent elements to also be height: 100% in order to work */
+  height: 100%;
   display: grid;
   grid-template-rows: auto 1fr;
+}
+
+.results {
   height: 100%;
-}
-
-.body {
-  margin: 1rem;
-}
-
-.hero {
-  background-color: #e1d8f1;
-  padding: 10% 5%;
-  text-align: center;
-  border-radius: 0.8rem;
-}
-
-.mainContent {
-  margin: 1rem;
+  position: relative;
 }
 
 @media smallAndUp {
-  .hero {
-    padding: 10% 20%;
+  .results {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    /* Setting min-height/min-width prevents the results container from
+    overflowing off the screen when the content of .searchResults overflows the
+    window height. We only want .searchResults to scroll, not the entire window
+    */
+    min-height: 0;
+    min-width: 0;
+    padding-bottom: 1rem;
   }
+}
 
-  .mainContent {
-    margin: 4rem 20%;
+@media largeAndUp {
+  .results {
+    grid-template-columns: 55% 1fr;
   }
 }

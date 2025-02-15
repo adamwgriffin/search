@@ -23,6 +23,8 @@ import {
 } from '../../store/filters/filtersSelectors'
 import ListingCards from '../../components/listings/ListingCards/ListingCards'
 import NoResults from '../../components/listings/NoResults/NoResults'
+import { useEffect, useRef } from 'react'
+import { selectMobileViewType } from '../../store/application/applicationSlice'
 
 const SearchResults: NextPage = () => {
   const dispatch = useAppDispatch()
@@ -33,6 +35,14 @@ const SearchResults: NextPage = () => {
   const initialSearchComplete = useAppSelector(selectInitialSearchComplete)
   const listingSearchRunning = useAppSelector(selectListingSearchRunning)
   const openListingDetail = useOpenListingDetail(false)
+  const searchResultsRef = useRef<HTMLDivElement>(null)
+  const mobileViewType = useAppSelector(selectMobileViewType)
+
+  useEffect(() => {
+    if (listingSearchRunning && searchResultsRef?.current?.scrollTop) {
+      searchResultsRef.current.scrollTop = 0
+    }
+  }, [listingSearchRunning])
 
   const handleSortMenuChange = (sortParams: SortFilters) => {
     dispatch(setFilters(sortParams))
@@ -57,8 +67,13 @@ const SearchResults: NextPage = () => {
     dispatch(searchWithUpdatedFilters())
   }
 
+  const resultsClassName =
+    mobileViewType === 'list'
+      ? styles.searchResultsMobileListView
+      : styles.searchResults
+
   return (
-    <div className={styles.searchResults}>
+    <div ref={searchResultsRef} className={resultsClassName}>
       <ListingResultsHeader
         totalListings={pagination.total}
         listingSearchRunning={listingSearchRunning}

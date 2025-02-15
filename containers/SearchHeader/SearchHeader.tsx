@@ -1,4 +1,3 @@
-import type { NextPage } from 'next'
 import { useSearchNewLocation } from '../../hooks/search_new_location_hook'
 import styles from './SearchHeader.module.css'
 import Logo from '../../components/header/Logo/Logo'
@@ -7,7 +6,7 @@ import Filters from '../Filters/Filters'
 import UserMenu from '../UserMenu/UserMenu'
 import HideSmallAndDown from '../../components/HideSmallAndDown/HideSmallAndDown'
 
-const SearchHeader: NextPage = () => {
+const SearchHeader: React.FC = () => {
   const searchNewLocation = useSearchNewLocation()
 
   return (

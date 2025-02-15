@@ -14,8 +14,7 @@ const SearchButton: NextPage<SearchButtonProps> = ({ onClick }) => {
       form="search-form"
       value="Submit"
       tabIndex={0}
-      title="Execute search"
-      aria-label="Execute search"
+      aria-label="Search"
       onClick={onClick}
     >
       <SearchButtonIcon />

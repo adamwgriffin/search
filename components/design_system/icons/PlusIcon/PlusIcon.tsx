@@ -1,6 +1,4 @@
-import type { NextPage } from 'next'
-
-const PlusIcon: NextPage = () => {
+const PlusIcon: React.FC<{ className?: string }> = ({ className }) => {
   return (
     <svg
       viewBox='0 0 16 16'
@@ -9,6 +7,7 @@ const PlusIcon: NextPage = () => {
       focusable='false'
       aria-hidden='true'
       role='presentation'
+      className={className}
     >
       <path
         fillRule='evenodd'

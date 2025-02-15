@@ -4,7 +4,7 @@ import { useEffect } from 'react'
 import toast from 'react-hot-toast'
 import { useAppSelector, useAppDispatch } from '../../hooks/app_hooks'
 import { selectGetSavedSearchesLoading } from '../../store/user/userSlice'
-import { useSearchWithFilterState } from '../../hooks/search_with_filter_state_hook'
+import { usePushParamsToSearchUrl } from '../../hooks/push_params_to_search_url_hook'
 import { useGetCurrentUserIfAuthenticated } from '../../hooks/get_current_user_if_authenticated_hook'
 import {
   getSavedSearches,
@@ -19,7 +19,7 @@ import styles from './SavedSearchList.module.css'
 const SavedSearchList: React.FC = () => {
   const dispatch = useAppDispatch()
   const currentUser = useGetCurrentUserIfAuthenticated()
-  const searchWithFilterState = useSearchWithFilterState()
+  const pushParamsToSearchUrl = usePushParamsToSearchUrl()
   const getSavedSearchesLoading = useAppSelector(selectGetSavedSearchesLoading)
   const savedSearches = useAppSelector(selectSavedSearches)
 
@@ -36,7 +36,7 @@ const SavedSearchList: React.FC = () => {
           <li key={savedSearch.id}>
             <SavedSearchCard
               savedSearch={savedSearch}
-              onClick={() => searchWithFilterState(savedSearch.searchState)}
+              onClick={() => pushParamsToSearchUrl(savedSearch.searchState)}
               onUpdate={(update) =>
                 dispatch(updateSavedSearch({ id: savedSearch.id, ...update }))
               }

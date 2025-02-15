@@ -1,5 +1,34 @@
+@value smallAndUp from '../../styles/breakpoints.module.css';
+
+/* Using position: absolute allows .searchResults to be layered on top of
+.listingMap on mobile. We set z-index to toggle it on. We want to avoid actually
+hiding them with display: none because we want to be able to have the bounds on
+the map to be accurate when sending to the listing service. if the map is set to
+display: none, the bounds will be wrong and the listing service will return
+nothing after we click the pagination buttons. */
 .searchResults {
-  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   display: flex;
   flex-direction: column;
+  overflow-y: auto;
+  height: 100%;
+  padding: 0 1rem 0 1rem;
+  background-color: var(--background);
+}
+
+.searchResultsMobileListView {
+  composes: searchResults;
+  z-index: 1;
+}
+
+@media smallAndUp {
+  .searchResults,
+  .searchResultsMobileListView {
+    position: static;
+    z-index: auto;
+  }
 }

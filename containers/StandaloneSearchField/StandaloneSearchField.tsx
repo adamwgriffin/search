@@ -3,7 +3,7 @@
 import { useCallback, useEffect } from 'react'
 import { useAppSelector } from '../../hooks/app_hooks'
 import { selectLocationSearchField } from '../../store/filters/filtersSelectors'
-import { useSearchWithFilterState } from '../../hooks/search_with_filter_state_hook'
+import { usePushParamsToSearchUrl } from '../../hooks/push_params_to_search_url_hook'
 import SearchFieldContainer from '../SearchFieldContainer/SearchFieldContainer'
 import { standaloneSearchInitialized } from '../../store/listingSearch/listingSearchCommon'
 import { useAppDispatch } from '../../hooks/app_hooks'
@@ -12,23 +12,27 @@ import { useSearchNewLocation } from '../../hooks/search_new_location_hook'
 const StandaloneSearchField: React.FC = () => {
   const locationSearchField = useAppSelector(selectLocationSearchField)
   const searchNewLocation = useSearchNewLocation()
-  const searchWithFilterState = useSearchWithFilterState()
+  const pushParamsToSearchUrl = usePushParamsToSearchUrl()
   const dispatch = useAppDispatch()
 
-  // Reset the filters back to defaults in case a previous search on the /homes page changed them
+  // Reset the filters back to defaults in case a previous search on the search
+  // page changed them
   useEffect(() => {
     dispatch(standaloneSearchInitialized())
   }, [dispatch])
 
   const searchThenRedirect = useCallback(
     async (locationSearchField: string) => {
+      if (!locationSearchField) return
       const res = await searchNewLocation()
-      // The searchNewLocation hook would have already redirected if listingDetail was found
+      // The searchNewLocation hook would have already redirected if
+      // listingDetail was found, otherwise we need to redirect to the search
+      // page here
       if (!res.listingDetail) {
-        searchWithFilterState({ locationSearchField })
+        pushParamsToSearchUrl({ locationSearchField })
       }
     },
-    [searchNewLocation, searchWithFilterState]
+    [searchNewLocation, pushParamsToSearchUrl]
   )
 
   // For onOptionSelected, the locationSearchField doesn't get updated with in the filter state by the time we redirect

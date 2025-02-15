@@ -40,8 +40,10 @@ import {
   searchWithUpdatedFilters,
   searchCurrentLocation
 } from '../../store/listingSearch/listingSearchCommon'
+import { useGoogleMaps } from '../../providers/GoogleMapsProvider'
 
 const ListingMap: NextPage = () => {
+  const { googleLoaded } = useGoogleMaps()
   const { status } = useSession()
   const dispatch = useAppDispatch()
   const openListingDetail = useOpenListingDetail(true)
@@ -122,6 +124,8 @@ const ListingMap: NextPage = () => {
   const handleZoomOut = useCallback(() => {
     handleUserAdjustedMap({ zoom: mapState.zoom - 1 })
   }, [handleUserAdjustedMap, mapState.zoom])
+
+  if (!googleLoaded) return <div className={styles.listingMap}></div>
 
   return (
     <div className={styles.listingMap}>

@@ -30,7 +30,7 @@ const SquareFeet: NextPage<SquareFeetProps> = ({ squareFeetRange, onChange, onFo
           allowNegative={false}
           decimalScale={0}
           value={squareFeetRange.sqftMin}
-          onValueChange={(v) => onChange?.({ sqftMin: v.floatValue })}
+          onValueChange={(v) => onChange?.({ sqftMin: v.floatValue || null })}
           placeholder='Min'
           className={formStyles.input}
           id='sqft_min'
@@ -51,7 +51,7 @@ const SquareFeet: NextPage<SquareFeetProps> = ({ squareFeetRange, onChange, onFo
           allowNegative={false}
           decimalScale={0}
           value={squareFeetRange.sqftMax}
-          onValueChange={(v) => onChange?.({ sqftMax: v.floatValue })}
+          onValueChange={(v) => onChange?.({ sqftMax: v.floatValue || null })}
           placeholder='Max'
           className={formStyles.input}
           id='sqft_max'
