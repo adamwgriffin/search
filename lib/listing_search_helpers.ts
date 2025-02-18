@@ -33,7 +33,8 @@ export const daysOnMarket = (
 }
 
 /**
- * Converts a set of north/east/south/west coordinates into a rectangular polygon
+ * Converts a set of north/east/south/west coordinates into a rectangular
+ * polygon
  */
 export const boundsParamsToGeoJSONPolygon = (bounds: BoundsParams): Polygon => {
   const { bounds_north, bounds_east, bounds_south, bounds_west } = bounds
@@ -42,8 +43,9 @@ export const boundsParamsToGeoJSONPolygon = (bounds: BoundsParams): Polygon => {
 }
 
 /**
- * Remove any parts of a boundary that are outside of a set of bounds. These bounds typically represent the viewport of
- * a map. The purpose of doing this is adjust a geospatial boundary in order to avoid returning listings that are
+ * Remove any parts of a boundary that are outside of a set of bounds. These
+ * bounds typically represent the viewport of a map. The purpose of doing this
+ * is adjust a geospatial boundary in order to avoid returning listings that are
  * outside the map viewport.
  */
 export const removePartsOfBoundaryOutsideOfBounds = (
@@ -55,8 +57,9 @@ export const removePartsOfBoundaryOutsideOfBounds = (
 }
 
 /**
- * If bounds params are present, modify the boundary so that any parts that are outside of the bounds will be
- * removed. This way the search will only return results that are within both the boundary + the bounds.
+ * If bounds params are present, modify the boundary so that any parts that are
+ * outside of the bounds will be removed. This way the search will only return
+ * results that are within both the boundary + the bounds.
  */
 export const getBoundaryGeometryWithBounds = (
   boundary: IBoundary,
@@ -101,8 +104,8 @@ export const getResponseForPlaceId = async (
 ) => {
   const { place_id, address_types } = queryParams
   if (!place_id || !address_types) return
-  // If it's an address we will need to geocode so we can't just use place_id. Logic in the controller handles that for
-  // the sake of effeciency
+  // If it's an address we will need to geocode so we can't just use place_id.
+  // Logic in the controller handles that for the sake of effeciency
   if (isListingAddressType(getAddressTypesFromParams(address_types))) return
 
   const pagination = getPaginationParams(queryParams)
