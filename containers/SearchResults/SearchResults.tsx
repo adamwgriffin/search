@@ -62,11 +62,6 @@ const SearchResults: NextPage = () => {
     dispatch(setHighlightedMarker(null))
   }
 
-  const handleClearAll = () => {
-    dispatch(clearFilters())
-    dispatch(searchWithUpdatedFilters())
-  }
-
   const resultsClassName =
     mobileViewType === 'list'
       ? styles.searchResultsMobileListView
@@ -93,7 +88,7 @@ const SearchResults: NextPage = () => {
       {listings.length === 0 &&
         initialSearchComplete &&
         !listingSearchRunning && (
-          <NoResults onClearFiltersClick={handleClearAll} />
+          <NoResults />
         )}
       {listings.length > 0 && (
         <ListingResultsPagination
