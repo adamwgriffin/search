@@ -41,8 +41,16 @@ export async function GET(
     )
   }
   const pagination = getPaginationParams(searchParams)
+  const bounds = getBoundaryGeometryWithBounds(boundary, searchParams)
+  // Map viewport bounds were included but the boundary was moved outside the
+  // viewport, so there's nothing to search.
+  if (bounds === null) {
+    return NextResponse.json(
+      listingSearchBoundaryView(boundary, null, pagination)
+    )
+  }
   const results = await Listing.findWithinBounds(
-    getBoundaryGeometryWithBounds(boundary, searchParams),
+    bounds,
     searchParams,
     pagination
   )

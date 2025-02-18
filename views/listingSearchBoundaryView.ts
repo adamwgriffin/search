@@ -7,7 +7,7 @@ import listingSearchView from './listingSearchView'
 
 const listingSearchBoundaryView = (
   boundary: IBoundary,
-  results: ListingSearchAggregateResult<ListingResultWithSelectedFields>,
+  results: ListingSearchAggregateResult<ListingResultWithSelectedFields> | null,
   pagination: PaginationParams
 ): BoundarySearchResponse => {
   return {

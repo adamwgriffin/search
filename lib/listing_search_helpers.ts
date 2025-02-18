@@ -45,15 +45,17 @@ export const boundsParamsToGeoJSONPolygon = (bounds: BoundsParams): Polygon => {
 /**
  * Remove any parts of a boundary that are outside of a set of bounds. These
  * bounds typically represent the viewport of a map. The purpose of doing this
- * is adjust a geospatial boundary in order to avoid returning listings that are
- * outside the map viewport.
+ * is to adjust a geospatial boundary in order to avoid returning listings that
+ * are outside the map viewport. If intersect returns null that means the
+ * boundary is outside the viewport, which case we can return null as a signal
+ * to avoid trying to search.
  */
 export const removePartsOfBoundaryOutsideOfBounds = (
   bounds: BoundsParams,
   boundary: Polygon | MultiPolygon
 ) => {
   const boundsPolygon = boundsParamsToGeoJSONPolygon(bounds)
-  return intersect(boundsPolygon, boundary)?.geometry
+  return intersect(boundsPolygon, boundary)?.geometry || null
 }
 
 /**
@@ -64,14 +66,11 @@ export const removePartsOfBoundaryOutsideOfBounds = (
 export const getBoundaryGeometryWithBounds = (
   boundary: IBoundary,
   queryParams: BoundarySearchQueryParams
-): Polygon | MultiPolygon => {
+) => {
   const { bounds_north, bounds_east, bounds_south, bounds_west } = queryParams
   if (bounds_north && bounds_east && bounds_south && bounds_west) {
     const bounds = { bounds_north, bounds_east, bounds_south, bounds_west }
-    return (
-      removePartsOfBoundaryOutsideOfBounds(bounds, boundary.geometry) ||
-      boundary.geometry
-    )
+    return removePartsOfBoundaryOutsideOfBounds(bounds, boundary.geometry)
   } else {
     return boundary.geometry
   }
