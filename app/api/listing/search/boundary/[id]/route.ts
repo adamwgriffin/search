@@ -6,25 +6,32 @@ import Boundary from '../../../../../../models/BoundaryModel'
 import { getPaginationParams } from '../../../../../../lib'
 import { getBoundaryGeometryWithBounds } from '../../../../../../lib/listing_search_helpers'
 import listingSearchBoundaryView from '../../../../../../views/listingSearchBoundaryView'
-import { boundsSearchQuerySchema } from '../../../../../../zod_schemas/boundsSearchRequestSchema'
+import {
+  type BoundarySearchParams,
+  boundarySearchRequestSchema
+} from '../../../../../../zod_schemas/boundarySearchRequestSchema'
 
-export type BoundaryParams = {
-  params: {
-    id: string
-  }
+export type BoundaryRequstParams = {
+  params: BoundarySearchParams
 }
 
-export async function GET(request: NextRequest, { params }: BoundaryParams) {
+export async function GET(
+  request: NextRequest,
+  { params }: BoundaryRequstParams
+) {
   await mongooseConnect()
 
   const searchParamsObject = Object.fromEntries(
     request.nextUrl.searchParams.entries()
   )
-  const result = boundsSearchQuerySchema.safeParse(searchParamsObject)
+  const result = boundarySearchRequestSchema.safeParse({
+    query: searchParamsObject,
+    params
+  })
   if (!result.success) {
     return NextResponse.json(result.error, { status: 400 })
   }
-  const searchParams = result.data
+  const searchParams = result.data.query
 
   const boundary = await Boundary.findById(params.id)
   if (!boundary) {
@@ -34,8 +41,16 @@ export async function GET(request: NextRequest, { params }: BoundaryParams) {
     )
   }
   const pagination = getPaginationParams(searchParams)
+  const bounds = getBoundaryGeometryWithBounds(boundary, searchParams)
+  // Map viewport bounds were included but the boundary was moved outside the
+  // viewport, so there's nothing to search.
+  if (bounds === null) {
+    return NextResponse.json(
+      listingSearchBoundaryView(boundary, null, pagination)
+    )
+  }
   const results = await Listing.findWithinBounds(
-    getBoundaryGeometryWithBounds(boundary, searchParams),
+    bounds,
     searchParams,
     pagination
   )
