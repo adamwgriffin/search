@@ -24,13 +24,15 @@ export const boundarySearchQuerySchema = boundsParamsSchema
     }
   )
 
-export const boundarySearchRequestSchema = z.object({
-  query: boundarySearchQuerySchema,
-  params: z.object({
-    id: z.string().regex(/^[0-9a-f]{24}$/, 'ID should be a MongoDB ObjectId')
-  })
+export const boundarySearchParamsSchema = z.object({
+  id: z.string().regex(/^[0-9a-f]{24}$/, 'ID should be a MongoDB ObjectId')
 })
 
-export type BoundarySearchQueryParams = z.infer<typeof boundarySearchQuerySchema>
+export const boundarySearchRequestSchema = z.object({
+  query: boundarySearchQuerySchema,
+  params: boundarySearchParamsSchema
+})
 
-export type BoundarySearchRequest = z.infer<typeof boundarySearchRequestSchema>
+export type BoundarySearchParams = z.infer<typeof boundarySearchParamsSchema>
+
+export type BoundarySearchQueryParams = z.infer<typeof boundarySearchQuerySchema>
