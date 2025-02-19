@@ -2,16 +2,12 @@ import type {
   SortType,
   SortDirection
 } from '../../../types/listing_service_params_types'
-import type { SortFilters } from '../../../store/filters/filtersTypes'
 import { useState } from 'react'
 import MenuButton from '../../design_system/MenuButton/MenuButton'
 import CheckIcon from '../../design_system/icons/CheckIcon/CheckIcon'
 import styles from './SortMenu.module.css'
-
-export interface SortMenuProps {
-  sortBy: SortFilters
-  onChange?: (sortParams: SortFilters) => void
-}
+import { useUpdateSearchParams } from '~/hooks/useUpdateSearchParams'
+import { useSearchParams } from 'next/navigation'
 
 export interface SortTypeLabels {
   label: string
@@ -52,23 +48,31 @@ export const SortTypeLabels: SortTypeLabels[] = [
   }
 ]
 
-const getCurrentSortLabel = (sortParams: SortFilters) => {
+const getCurrentSortLabel = (
+  sortBy: string,
+  sortDirection: string
+) => {
   return SortTypeLabels.find(
-    ({ type, direction }) =>
-      type === sortParams.sortBy && direction === sortParams.sortDirection
+    ({ type, direction }) => type === sortBy && direction === sortDirection
   )?.label
 }
 
-const SortMenu: React.FC<SortMenuProps> = ({
-  sortBy = { sortBy: 'listedDate', sortDirection: 'desc' },
-  onChange
-}) => {
+const SortMenu: React.FC = () => {
   const [open, setOpen] = useState(false)
+  const searchParams = useSearchParams()
+  const updateSearchParams = useUpdateSearchParams()
+
+  const sort_by = searchParams.get('sort_by') || 'listedDate'
+  const sort_direction =
+    searchParams.get('sort_direction') || 'desc'
+  const currentSortLabel = getCurrentSortLabel(sort_by, sort_direction)
+
+
 
   return (
     <MenuButton
       open={open}
-      label={`Sort: ${getCurrentSortLabel(sortBy)}`}
+      label={`Sort: ${currentSortLabel}`}
       condensed
       alignRight
       onClick={() => setOpen(!open)}
@@ -80,12 +84,12 @@ const SortMenu: React.FC<SortMenuProps> = ({
             key={`${type}-${direction}`}
             onClick={() => {
               setOpen(false)
-              onChange?.({ sortBy: type, sortDirection: direction })
+              updateSearchParams({ sort_by: type, sort_direction: direction })
             }}
             className={styles.menuItem}
           >
             <div>
-              {sortBy.sortBy === type && sortBy.sortDirection == direction && (
+              {sort_by === type && sort_direction== direction && (
                 <CheckIcon />
               )}
             </div>

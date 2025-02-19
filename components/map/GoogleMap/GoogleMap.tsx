@@ -10,8 +10,6 @@ export type GoogleMapState = {
 
 export type GoogleMapProps = {
   options: google.maps.MapOptions
-  bounds?: google.maps.LatLngBoundsLiteral | null
-  zoom?: number
   onDragEnd?: (currentMapState: GoogleMapState) => void
   onWheel?: (currentMapState: GoogleMapState) => void
   onIdle?: (currentMapState: GoogleMapState) => void
@@ -20,8 +18,6 @@ export type GoogleMapProps = {
 
 const GoogleMap: React.FC<GoogleMapProps> = ({
   options,
-  bounds,
-  zoom = 12,
   children,
   onDragEnd,
   onWheel,
@@ -46,18 +42,6 @@ const GoogleMap: React.FC<GoogleMapProps> = ({
       googleMap.setOptions(options)
     }
   }, [googleMap, options, setGoogleMap])
-
-  useEffect(() => {
-    if (googleMap && googleMap.getZoom() !== zoom) {
-      googleMap.setZoom(zoom)
-    }
-  }, [zoom, googleMap])
-
-  useEffect(() => {
-    if (bounds && googleMap) {
-      googleMap.fitBounds(bounds)
-    }
-  }, [bounds, googleMap])
 
   const onWheelCallback = useCallback(
     () => onWheel?.(getCurrentMapState()),

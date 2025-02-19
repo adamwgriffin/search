@@ -5,19 +5,15 @@ import SearchFieldContainer from '../SearchFieldContainer/SearchFieldContainer'
 import Filters from '../Filters/Filters'
 import UserMenu from '../UserMenu/UserMenu'
 import HideSmallAndDown from '../../components/HideSmallAndDown/HideSmallAndDown'
+import SearchLocation from '~/components/form/SeachLocation'
 
 const SearchHeader: React.FC = () => {
-  const searchNewLocation = useSearchNewLocation()
-
   return (
     <header className={styles.header}>
       <HideSmallAndDown>
         <Logo />
       </HideSmallAndDown>
-      <SearchFieldContainer
-        onSearchInitiated={searchNewLocation}
-        onOptionSelected={searchNewLocation}
-      />
+      <SearchLocation />
       <div className={styles.controls}>
         <UserMenu />
       </div>

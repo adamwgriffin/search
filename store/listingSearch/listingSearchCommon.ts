@@ -4,7 +4,7 @@ import type {
   BoundarySearchResponse
 } from '../../types/listing_types'
 import { createAction } from '@reduxjs/toolkit'
-import http from '../../lib/http'
+import axiosInstance from '../../lib/http'
 import { createAppAsyncThunk } from '../../lib/store_helpers'
 import {
   selectParamsForGeocodeSearch,
@@ -20,7 +20,7 @@ export const newLocationGeocodeSearch =
   createAppAsyncThunk<ListingSearchGeocodeResponse>(
     'listingSearch/newLocationGeocodeSearch',
     async (_arg, { getState }) => {
-      const response = await http.get<ListingSearchGeocodeResponse>(
+      const response = await axiosInstance.get<ListingSearchGeocodeResponse>(
         '/api/listing/search/geocode',
         {
           params: selectParamsForGeocodeSearch(getState())
@@ -47,7 +47,7 @@ export const searchCurrentLocation =
       const url = state.listingMap.boundaryActive
         ? `/api/listing/search/boundary/${state.listingSearch.boundaryId}`
         : 'api/listing/search/bounds'
-      const response = await http.get<CurrentLocationResponse>(url, {
+      const response = await axiosInstance.get<CurrentLocationResponse>(url, {
         params: selectParamsForGeospatialSearch(state)
       })
       return response.data

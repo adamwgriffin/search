@@ -1,44 +1,22 @@
-import type { NextPage } from 'next'
-import type { GeoLayerCoordinates } from '../../../store/listingMap/listingMapTypes'
-import { useState, useEffect } from 'react'
-import { useGoogleMaps } from '../../../providers/GoogleMapsProvider'
+import { useGoogleMaps } from '~/providers/GoogleMapsProvider'
+import { useEffect } from 'react'
+import type { GeoJSONBoundary } from '~/types'
 
-export interface MapBoundaryProps {
-  coordinates: GeoLayerCoordinates
-  visible: boolean
-  options: google.maps.PolygonOptions
-}
+export type MapBoundaryProps = {
+  boundary: GeoJSONBoundary | null
+} & google.maps.Data.StyleOptions
 
-const MapBoundary: NextPage<MapBoundaryProps> = ({ coordinates=[], visible=true, options={} }) => {
-  const { googleLoaded, googleMap } = useGoogleMaps()
-  const [polygon, setPolygon] = useState<google.maps.Polygon>()
+export default function MapBoundary({ boundary, ...styleOptions }: MapBoundaryProps) {
+  const { googleMap } = useGoogleMaps()
 
   useEffect(() => {
-    if (!polygon && googleLoaded) {
-      setPolygon(new google.maps.Polygon())
+    if (!googleMap || !boundary) return
+    const feature = googleMap.data.addGeoJson(boundary)[0]
+    googleMap.data.setStyle(styleOptions)
+    return () => {
+      googleMap.data.remove(feature)
     }
-    return () => polygon?.setMap(null)
-  }, [polygon, googleLoaded])
-
-  useEffect(() => {
-    if (polygon && googleMap) {
-      polygon.setMap(googleMap)
-    }
-  }, [polygon, googleMap])
-  
-  useEffect(() => {
-    // if paths is empty then the polygon will not show on the map, so we can easily create it without showing it and
-    // adds the paths later to make it visible
-    polygon?.setPaths(coordinates)
-  }, [polygon, coordinates])
-  
-  useEffect(() => {
-    polygon?.setOptions({ ...options, visible }) 
-  }, [polygon, options, visible])
-
-
+  }, [googleMap, boundary, styleOptions])
 
   return null
 }
-
-export default MapBoundary
