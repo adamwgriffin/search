@@ -50,7 +50,7 @@ export const GoogleMapsAutocompleteOptions = {
   componentRestrictions: { country: ["us"] }
 };
 
-export const GoogleMapsPolygonOptions: google.maps.PolygonOptions = {
+export const MapBoundaryStyleOptions: google.maps.Data.StyleOptions = {
   strokeColor: "#006AFF",
   strokeOpacity: 0.5,
   strokeWeight: 3,

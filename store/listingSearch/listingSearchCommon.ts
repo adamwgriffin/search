@@ -2,33 +2,33 @@ import type {
   ListingSearchGeocodeResponse,
   ListingSearchResponse,
   BoundarySearchResponse
-} from "../../types/listing_types";
-import { createAction } from "@reduxjs/toolkit";
-import http from "../../lib/http";
-import { createAppAsyncThunk } from "../../lib/store_helpers";
+} from '../../types/listing_types'
+import { createAction } from '@reduxjs/toolkit'
+import axiosInstance from '../../lib/http'
+import { createAppAsyncThunk } from '../../lib/store_helpers'
 import {
   selectParamsForGeocodeSearch,
   selectParamsForGeospatialSearch
-} from "./listingSearchSelectors";
+} from './listingSearchSelectors'
 
-type CurrentLocationResponse = ListingSearchResponse | BoundarySearchResponse;
+type CurrentLocationResponse = ListingSearchResponse | BoundarySearchResponse
 
 /**
  * Initiates a new request to the Listing Service to geocode what is entered in the search field
  */
 export const newLocationGeocodeSearch =
   createAppAsyncThunk<ListingSearchGeocodeResponse>(
-    "listingSearch/newLocationGeocodeSearch",
+    'listingSearch/newLocationGeocodeSearch',
     async (_arg, { getState }) => {
-      const response = await http.get<ListingSearchGeocodeResponse>(
-        "/api/listing/search/geocode",
+      const response = await axiosInstance.get<ListingSearchGeocodeResponse>(
+        '/api/listing/search/geocode',
         {
           params: selectParamsForGeocodeSearch(getState())
         }
-      );
-      return response.data;
+      )
+      return response.data
     }
-  );
+  )
 
 /**
  * Executes a Listing Service request for the current location. We want to use this request when the place that was
@@ -41,29 +41,29 @@ export const newLocationGeocodeSearch =
  */
 export const searchCurrentLocation =
   createAppAsyncThunk<CurrentLocationResponse>(
-    "listingSearch/searchCurrentLocation",
+    'listingSearch/searchCurrentLocation',
     async (_arg, { getState }) => {
-      const state = getState();
+      const state = getState()
       const url = state.listingMap.boundaryActive
         ? `/api/listing/search/boundary/${state.listingSearch.boundaryId}`
-        : "api/listing/search/bounds";
-      const response = await http.get<CurrentLocationResponse>(url, {
+        : 'api/listing/search/bounds'
+      const response = await axiosInstance.get<CurrentLocationResponse>(url, {
         params: selectParamsForGeospatialSearch(state)
-      });
-      return response.data;
+      })
+      return response.data
     }
-  );
+  )
 
 /**
  * The same as searchCurrentLocation but it will trigger a reset of the page index when it's state is pending
  */
 export const searchWithUpdatedFilters = createAppAsyncThunk(
-  "listingSearch/searchWithUpdatedFilters",
+  'listingSearch/searchWithUpdatedFilters',
   async (_args, { dispatch }) => {
-    dispatch(searchCurrentLocation());
+    dispatch(searchCurrentLocation())
   }
-);
+)
 
 export const standaloneSearchInitialized = createAction(
-  "listingSearch/standaloneSearchInitialized"
-);
+  'listingSearch/standaloneSearchInitialized'
+)

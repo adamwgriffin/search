@@ -1,146 +1,138 @@
-"use client";
+'use client'
 
-import type { NextPage } from "next";
-import { useMemo, useCallback } from "react";
-import { useMedia } from "react-use";
-import { useSession } from "next-auth/react";
-import { GoogleMapsMapOptions } from "../../config/googleMapsOptions";
-import { GoogleMapsPolygonOptions } from "../../config/googleMapsOptions";
-import styles from "./ListingMap.module.css";
-import GoogleMap, {
-  GoogleMapState
-} from "../../components/map/GoogleMap/GoogleMap";
-import ListingMarker from "../../components/map/ListingMarker/ListingMarker";
-import MapBoundary from "../../components/map/MapBoundary/MapBoundary";
-import MapControl from "../../components/map/MapControl/MapControl";
-import ZoomControl from "../../components/map/ZoomControl/ZoomControl";
-import { useAppSelector, useAppDispatch } from "../../hooks/app_hooks";
-import { useOpenListingDetail } from "../../hooks/open_listing_detail_hook";
-import {
-  setBoundaryActive,
-  setMapData
-} from "../../store/listingMap/listingMapSlice";
-import { selectMapState } from "../../store/listingMap/listingMapSelectors";
-import {
-  setDoListingSearchOnMapIdle,
-  setSelectedListing
-} from "../../store/listingSearch/listingSearchSlice";
-import {
-  selectDoListingSearchOnMapIdle,
-  selectListings,
-  selectListingSearchRunning,
-  selectHighlightedMarker
-} from "../../store/listingSearch/listingSearchSelectors";
-import { resetStartIndex } from "../../store/filters/filtersSlice";
-import {
-  convertViewportToLatLngBoundsLiteral,
-  getGeoLayerBounds
-} from "../../lib/polygon";
-import {
-  searchWithUpdatedFilters,
-  searchCurrentLocation
-} from "../../store/listingSearch/listingSearchCommon";
-import { useGoogleMaps } from "../../providers/GoogleMapsProvider";
+import type { NextPage } from 'next'
+import { useSession } from 'next-auth/react'
+import { useCallback, useEffect, useRef } from 'react'
+import { useMedia } from 'react-use'
+import BoundaryControl from '~/components/map/BoundaryControl/BoundaryControl'
+import ZoomControl from '~/components/map/ZoomControl/ZoomControl'
+import { useSearchParamsState } from '~/hooks/useSearchParamsState'
+import { useSearchResultsData } from '~/hooks/useSearchResultsData'
+import { useUpdateSearchParams } from '~/hooks/useUpdateSearchParams'
+import { getAvailableBoundsFromSearchResults } from '~/lib/boundary'
+import { getNewParamsFromCurrentState } from '~/lib/listingSearchParams'
+import { setSelectedListing } from '~/store/listingSearch/listingSearchSlice'
+import GoogleMap from '../../components/map/GoogleMap/GoogleMap'
+import ListingMarker from '../../components/map/ListingMarker/ListingMarker'
+import MapBoundary from '../../components/map/MapBoundary/MapBoundary'
+import { GoogleMapsMapOptions, MapBoundaryStyleOptions } from '../../config/googleMapsOptions'
+import { useAppDispatch, useAppSelector } from '../../hooks/app_hooks'
+import { useOpenListingDetail } from '../../hooks/open_listing_detail_hook'
+import { useGoogleMaps } from '../../providers/GoogleMapsProvider'
+import { selectHighlightedMarker } from '../../store/listingSearch/listingSearchSelectors'
+import styles from './ListingMap.module.css'
 
 const ListingMap: NextPage = () => {
-  const { googleLoaded } = useGoogleMaps();
-  const { status } = useSession();
-  const dispatch = useAppDispatch();
-  const openListingDetail = useOpenListingDetail(true);
-  const isSmallAndUp = useMedia("(min-width: 576px)", false);
-  const mapState = useAppSelector(selectMapState);
-  const doListingSearchOnMapIdle = useAppSelector(
-    selectDoListingSearchOnMapIdle
-  );
-  const listings = useAppSelector(selectListings);
-  const listingSearchRunning = useAppSelector(selectListingSearchRunning);
-  const highlightedMarker = useAppSelector(selectHighlightedMarker);
+  const dispatch = useAppDispatch()
+  const updateFiltersOnMapIdle = useRef(false)
+  const { googleLoaded, googleMap } = useGoogleMaps()
+  const { status } = useSession()
+  const openListingDetail = useOpenListingDetail(true)
+  const isSmallAndUp = useMedia('(min-width: 576px)', false)
+  const highlightedMarker = useAppSelector(selectHighlightedMarker)
+  const updateSearchParams = useUpdateSearchParams()
+  const params = useSearchParamsState()
+  const results = useSearchResultsData()
 
-  // Memoizing bounds is important here because without it we can wind up in an
-  // endless loop. With each render, we pass bounds to the <GoogleMap> bounds
-  // prop, which causes <GoogleMap> to call fitBounds(bounds). Calling
-  // fitBounds() triggers an onIdle event from <GoogleMap>, which we handle by
-  // dispatching setMap. since setMap changes the listingtMap store, it may
-  // cause <ListingMap> to re-render. without useMemo the bounds can be exactly
-  // the same but will have a new reference ID, which will trigger the cycle
-  // again as if there were new bounds.
-  const bounds = useMemo(() => {
-    if (mapState.geoLayerCoordinates.length) {
-      return getGeoLayerBounds(mapState.geoLayerCoordinates);
-    }
-    if (mapState.viewportBounds) {
-      return convertViewportToLatLngBoundsLiteral(mapState.viewportBounds);
-    }
-    return null;
-  }, [mapState.geoLayerCoordinates, mapState.viewportBounds]);
+  const { isFetching } = results.queryResult
 
   const handleListingMarkerMouseEnter = useCallback(
     (listingid: string) => {
-      isSmallAndUp && dispatch(setSelectedListing(listingid));
+      isSmallAndUp && dispatch(setSelectedListing(listingid))
     },
     [dispatch, isSmallAndUp]
-  );
+  )
 
   const handleListingMarkerMouseLeave = useCallback(() => {
-    isSmallAndUp && dispatch(setSelectedListing(null));
-  }, [dispatch, isSmallAndUp]);
+    isSmallAndUp && dispatch(setSelectedListing(null))
+  }, [dispatch, isSmallAndUp])
 
   const handleListingMarkerMouseClick = useCallback(
     (listingSlug: string) => {
-      openListingDetail(`/listing/${listingSlug}`, listingSlug);
+      openListingDetail(`/listing/${listingSlug}`, listingSlug)
     },
     [openListingDetail]
-  );
+  )
 
-  const handleBoundaryControlClick = useCallback(() => {
-    dispatch(setBoundaryActive(false));
-    dispatch(searchWithUpdatedFilters());
-  }, [dispatch]);
-
-  const handleUserAdjustedMap = useCallback(
-    async (currentMapState: Partial<GoogleMapState>) => {
-      dispatch(setMapData(currentMapState));
-      dispatch(resetStartIndex());
-      dispatch(setDoListingSearchOnMapIdle(true));
-    },
-    [dispatch]
-  );
-
-  const handleIdle = useCallback(
-    (newMapState: GoogleMapState) => {
-      dispatch(setMapData(newMapState));
-      if (doListingSearchOnMapIdle) {
-        dispatch(setDoListingSearchOnMapIdle(false));
-        dispatch(searchCurrentLocation());
-      }
-    },
-    [dispatch, doListingSearchOnMapIdle]
-  );
+  const handleIdle = useCallback(() => {
+    if (!updateFiltersOnMapIdle.current) return
+    updateFiltersOnMapIdle.current = false
+    if (!googleMap) return
+    const newParams = getNewParamsFromCurrentState(
+      googleMap,
+      results.boundaryId
+    )
+    updateSearchParams(newParams)
+  }, [results.boundaryId, googleMap, updateSearchParams])
 
   const handleZoomIn = useCallback(() => {
-    handleUserAdjustedMap({ zoom: mapState.zoom + 1 });
-  }, [handleUserAdjustedMap, mapState.zoom]);
+    if (!googleMap) return
+    const newParams = getNewParamsFromCurrentState(
+      googleMap,
+      results.boundaryId
+    )
+    newParams.zoom = typeof newParams.zoom === 'number' ? newParams.zoom + 1 : 1
+    updateSearchParams(newParams)
+  }, [googleMap, results.boundaryId, updateSearchParams])
 
   const handleZoomOut = useCallback(() => {
-    handleUserAdjustedMap({ zoom: mapState.zoom - 1 });
-  }, [handleUserAdjustedMap, mapState.zoom]);
+    if (!googleMap) return
+    const newParams = getNewParamsFromCurrentState(
+      googleMap,
+      results.boundaryId
+    )
+    newParams.zoom = typeof newParams.zoom === 'number' ? newParams.zoom - 1 : 1
+    updateSearchParams(newParams)
+  }, [googleMap, results.boundaryId, updateSearchParams])
 
-  if (!googleLoaded) return <div className={styles.listingMap}></div>;
+  const handleUserAdjustedMap = useCallback(() => {
+    updateFiltersOnMapIdle.current = true
+  }, [])
+
+  // No bounds param in the url means it's a new search, so call fitBounds()
+  // to adjust the map to fit the new boundary that was returned from the
+  // search results
+  useEffect(() => {
+    if (!googleMap || params.bounds) return
+    const feature = results.geoJSONBoundary?.id
+      ? googleMap.data.getFeatureById(results.geoJSONBoundary.id)
+      : undefined
+    const bounds = getAvailableBoundsFromSearchResults(
+      feature,
+      results.viewport
+    )
+    if (bounds) {
+      googleMap.fitBounds(bounds)
+    }
+  }, [googleMap, results.geoJSONBoundary, params.bounds, results.viewport])
+
+  // Bounds param is present in the URL, which means we're searching an existing
+  // location, so use the bounds & zoom from the url to adjust the map
+  useEffect(() => {
+    if (!googleMap) return
+    if (params.bounds) {
+      const center = new google.maps.LatLngBounds(params.bounds).getCenter()
+      googleMap.setCenter(center)
+      if (params.zoom) {
+        googleMap.setZoom(params.zoom)
+      }
+    }
+  }, [googleMap, params.bounds, params.zoom])
+
+  if (!googleLoaded) return <div className={styles.listingMap}></div>
 
   return (
     <div className={styles.listingMap}>
       <GoogleMap
         options={GoogleMapsMapOptions}
-        bounds={bounds}
-        zoom={mapState.zoom}
         onIdle={handleIdle}
         onDragEnd={handleUserAdjustedMap}
         onWheel={handleUserAdjustedMap}
       >
-        {listings.map((l, i) => (
+        {results.listings.map((l, i) => (
           <ListingMarker
             key={l._id.toString()}
-            authenticaticated={status === "authenticated"}
+            authenticaticated={status === 'authenticated'}
             listing={l}
             highlighted={highlightedMarker === l._id}
             zIndex={i}
@@ -150,19 +142,16 @@ const ListingMap: NextPage = () => {
           />
         ))}
         <MapBoundary
-          coordinates={mapState.geoLayerCoordinates}
-          visible={mapState.boundaryActive}
-          options={GoogleMapsPolygonOptions}
+          boundary={results.geoJSONBoundary}
+          {...MapBoundaryStyleOptions}
         />
+        {params.showRemoveBoundaryButton && (
+          <BoundaryControl loading={isFetching} />
+        )}
+        <ZoomControl onZoomIn={handleZoomIn} onZoomOut={handleZoomOut} />
       </GoogleMap>
-      <MapControl
-        boundaryActive={mapState.boundaryActive}
-        listingSearchRunning={listingSearchRunning}
-        onBoundaryControlClick={handleBoundaryControlClick}
-      />
-      <ZoomControl onZoomIn={handleZoomIn} onZoomOut={handleZoomOut} />
     </div>
-  );
-};
+  )
+}
 
-export default ListingMap;
+export default ListingMap

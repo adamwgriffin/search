@@ -7,7 +7,7 @@ import type { DefaultAPIResponse } from "../../types";
 import { createSelector, createSlice } from "@reduxjs/toolkit";
 import omit from "lodash/omit";
 import { createAppAsyncThunk } from "../../lib/store_helpers";
-import http from "../../lib/http";
+import axiosInstance from "../../lib/http";
 
 export type SavedSearchData = Omit<
   SavedSearch,
@@ -57,7 +57,8 @@ const initialState: UserState = {
 export const getCurrentUser = createAppAsyncThunk<
   UserState["currentUser"] | null
 >("user/getCurrentUser", async () => {
-  const res = await http.get<UserState["currentUser"]>("/api/current_user");
+  const res =
+    await axiosInstance.get<UserState["currentUser"]>("/api/current_user");
   return res.data;
 });
 
@@ -74,10 +75,10 @@ export const toggleFavorite = createAppAsyncThunk<
   dispatch(setPreviousFavoriteIds(state.user.currentUser.favoriteIds));
   if (state.user.currentUser.favoriteIds.includes(listingId)) {
     dispatch(removeFromFavoriteIds(listingId));
-    return (await http.delete(`/api/favorites/${listingId}`)).data;
+    return (await axiosInstance.delete(`/api/favorites/${listingId}`)).data;
   } else {
     dispatch(addToFavoriteIds(listingId));
-    return (await http.post(`/api/favorites/${listingId}`)).data;
+    return (await axiosInstance.post(`/api/favorites/${listingId}`)).data;
   }
 });
 
@@ -91,7 +92,7 @@ export const getFavoriteListings =
           "Can't get favorites because there are no favoriteIds"
         );
       }
-      const res = await http.get<GetListingsByIdsResponse>(
+      const res = await axiosInstance.get<GetListingsByIdsResponse>(
         `/api/listings/${state.user.currentUser.favoriteIds}`
       );
       return res.data;
@@ -102,7 +103,7 @@ export const createSavedSearch = createAppAsyncThunk<
   SavedSearchData,
   CreateSavedSearchData
 >("user/createSavedSearch", async (newSavedSearchData) => {
-  const res = await http.post<SavedSearchData>(
+  const res = await axiosInstance.post<SavedSearchData>(
     "/api/saved_search",
     newSavedSearchData
   );
@@ -113,7 +114,7 @@ export const getSavedSearches = createAppAsyncThunk<
   SavedSearchData[],
   User["id"]
 >("user/getSavedSearches", async (userId) => {
-  const res = await http.get(`/api/saved_searches/${userId}`);
+  const res = await axiosInstance.get(`/api/saved_searches/${userId}`);
   return res.data;
 });
 
@@ -121,7 +122,7 @@ export const updateSavedSearch = createAppAsyncThunk<
   SavedSearchData,
   UpdateSavedSearchData
 >("user/updateSavedSearch", async (savedSearchUpdate) => {
-  const res = await http.put<SavedSearchData>(
+  const res = await axiosInstance.put<SavedSearchData>(
     `/api/saved_search/${savedSearchUpdate.id}`,
     omit(savedSearchUpdate, "id")
   );
@@ -132,7 +133,7 @@ export const deleteSavedSearch = createAppAsyncThunk<
   SavedSearchData["id"],
   SavedSearchData["id"]
 >("user/deleteSavedSearch", async (id) => {
-  await http.delete<DefaultAPIResponse>(`/api/saved_search/${id}`);
+  await axiosInstance.delete<DefaultAPIResponse>(`/api/saved_search/${id}`);
   return id;
 });
 

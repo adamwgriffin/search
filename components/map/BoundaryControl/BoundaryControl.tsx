@@ -1,17 +1,44 @@
-import type { NextPage } from "next";
-import type { MouseEventHandler } from "react";
-import styles from "./BoundaryControl.module.css";
+import { useUpdateSearchParams } from '~/hooks/useUpdateSearchParams'
+import { useGoogleMaps } from '~/providers/GoogleMapsProvider'
+import type { URLParams } from '~/types'
+import LoadingDots from '../../design_system/LoadingDots/LoadingDots'
+import styles from './BoundaryControl.module.css'
 
-export interface BoundaryControlProps {
-  onClick?: MouseEventHandler<HTMLButtonElement>;
+export type BoundaryControlProps = {
+  loading: boolean
 }
 
-const BoundaryControl: NextPage<BoundaryControlProps> = ({ onClick }) => {
-  return (
-    <button className={styles.boundaryControl} onClick={onClick}>
-      Remove Boundary
-    </button>
-  );
-};
+const BoundaryControl: React.FC<BoundaryControlProps> = ({ loading }) => {
+  const { googleMap } = useGoogleMaps()
+  const updateSearchParams = useUpdateSearchParams()
 
-export default BoundaryControl;
+  return (
+    <div className={styles.boundaryControl}>
+      {!loading && (
+        <button
+          className={styles.boundaryControlButton}
+          onClick={() => {
+            if (!googleMap) return
+            const bounds = googleMap?.getBounds()?.toUrlValue()
+            if (!bounds) throw new Error('No bounds present in map instance')
+            // Setting params to null removes them from the request and indicates
+            // to the fetchListings function that we should search by bounds
+            // instead of location
+            const updatedFilters: URLParams = {
+              bounds,
+              address: null,
+              place_id: null,
+              boundary_id: null
+            }
+            updateSearchParams(updatedFilters)
+          }}
+        >
+          Remove Boundary
+        </button>
+      )}
+      {loading && <LoadingDots size='var(--loading-dots-small)' />}
+    </div>
+  )
+}
+
+export default BoundaryControl
