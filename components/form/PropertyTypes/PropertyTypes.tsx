@@ -1,46 +1,40 @@
-import type { NextPage } from "next";
-import type {
-  PropertyType,
-  PropertyTypeConfig
-} from "../../../lib/property_types";
-import type { ChangeEvent } from "react";
-import { Fragment } from "react";
-import styles from "./PropertyTypes.module.css";
-import Fieldset from "../../design_system/Fieldset/Fieldset";
-import Legend from "../../design_system/Legend/Legend";
+import { useSearchParams } from 'next/navigation'
+import { Fragment } from 'react'
+import { useUpdateSearchParams } from '~/hooks/useUpdateSearchParams'
+import {
+  PropertyTypesData
+} from '../../../lib/property_types'
+import Fieldset from '../../design_system/Fieldset/Fieldset'
+import Legend from '../../design_system/Legend/Legend'
+import styles from './PropertyTypes.module.css'
 
-interface PropertyTypeProps {
-  propertyTypes: Readonly<PropertyTypeConfig[]>;
-  params: PropertyType[];
-  onChange: (updatedPropertyTypes: PropertyType[]) => void;
-}
+const PropertyTypes: React.FC= () => {
+  const searchParams = useSearchParams()
+  const updateSearchParams = useUpdateSearchParams()
 
-const PropertyTypes: NextPage<PropertyTypeProps> = ({
-  propertyTypes,
-  params,
-  onChange
-}) => {
-  const handleChange = (e: ChangeEvent<HTMLInputElement>, id: PropertyType) => {
-    const updatedPropertyTypes = e.target.checked
-      ? params.concat(id)
-      : params.filter((t) => t !== id);
-    onChange(updatedPropertyTypes);
-  };
+  const params = searchParams.get('property_type')?.split(',') ?? []
 
   return (
     <Fieldset>
       <Legend>Home Type</Legend>
       <div className={styles.propertyType}>
-        {propertyTypes.map(({ label, id }) => (
+        {PropertyTypesData.map(({ label, id }) => (
           <Fragment key={`property-type-${label}-${id}`}>
             <input
-              type="checkbox"
+              type='checkbox'
               id={id}
               className={styles.checkbox}
               name={id}
               value={id}
               checked={params.includes(id)}
-              onChange={(e) => handleChange(e, id)}
+              onChange={(e) => {
+                const updatedPropertyTypes = e.target.checked
+                  ? params.concat(id)
+                  : params.filter((t) => t !== id)
+                updateSearchParams({
+                  property_type: updatedPropertyTypes.join(',')
+                })
+              }}
             />
             <label htmlFor={id} className={styles.label}>
               {label}
@@ -49,7 +43,7 @@ const PropertyTypes: NextPage<PropertyTypeProps> = ({
         ))}
       </div>
     </Fieldset>
-  );
-};
+  )
+}
 
-export default PropertyTypes;
+export default PropertyTypes

@@ -13,15 +13,12 @@ import { searchWithUpdatedFilters } from '../../store/listingSearch/listingSearc
 import { setFilters, setSearchType } from '../../store/filters/filtersSlice'
 import {
   selectSearchType,
-  selectOpenHouse,
-  selectPropertyTypes,
-  selectIncludePending,
+  selectOpenHouse, selectIncludePending,
   selectSquareFeetRange,
   selectYearBuiltRange,
   selectFeatures,
   selectSoldInLast
 } from '../../store/filters/filtersSelectors'
-import { PropertyTypeIDArray, PropertyTypes } from '../../lib/property_types'
 import SearchTypeSelector from '../../components/form/SearchTypeSelector/SearchTypeSelector'
 import PriceContainer from '../PriceContainer/PriceContainer'
 import BedsAndBaths from '~/components/form/BedsAndBaths/BedsAndBaths'
@@ -39,7 +36,6 @@ const More: React.FC = () => {
   const dispatch = useAppDispatch()
   const searchType = useAppSelector(selectSearchType)
   const openHouse = useAppSelector(selectOpenHouse)
-  const selectedPropertyTypes = useAppSelector(selectPropertyTypes)
   const includePending = useAppSelector(selectIncludePending)
   const squareFeetRange = useAppSelector(selectSquareFeetRange)
   const lotSizeMin = useAppSelector(
@@ -60,13 +56,6 @@ const More: React.FC = () => {
 
   const handleSearchTypeChange = (searchType: SearchTypeOption) => {
     dispatch(setSearchType(searchType))
-    dispatch(searchWithUpdatedFilters())
-  }
-
-  const handlePropertyTypeChange = (
-    updatedPropertyTypes: PropertyTypeIDArray
-  ) => {
-    dispatch(setFilters({ propertyTypes: updatedPropertyTypes }))
     dispatch(searchWithUpdatedFilters())
   }
 
@@ -108,13 +97,7 @@ const More: React.FC = () => {
           />
         </div>
       )}
-      {searchType !== SearchTypes.Rent && (
-        <PropertyType
-          propertyTypes={PropertyTypes}
-          params={selectedPropertyTypes}
-          onChange={handlePropertyTypeChange}
-        />
-      )}
+      {searchType !== SearchTypes.Rent && <PropertyType />}
       {searchType === SearchTypes.Sold && (
         <SoldDays
           soldInLast={soldInLast}
