@@ -1,56 +1,51 @@
-"use client";
+'use client'
 
-import { useCallback } from "react";
-import { useAppDispatch, useAppSelector } from "../../../hooks/app_hooks";
+import { useCallback } from 'react'
+import { useClearSearchFilters } from '~/hooks/useClearSearchFilters'
+import ContainedButton from '../../../components/design_system/ContainedButton/ContainedButton'
+import Footer from '../../../components/design_system/Footer/Footer'
+import Modal from '../../../components/design_system/modal/Modal/Modal'
+import ModalBody from '../../../components/design_system/modal/ModalBody/ModalBody'
+import ModalHeader from '../../../components/design_system/modal/ModalHeader/ModalHeader'
+import TextButton from '../../../components/design_system/TextButton/TextButton'
+import { useAppDispatch, useAppSelector } from '../../../hooks/app_hooks'
 import {
-  selectFiltersModalOpen,
-  closeModal
-} from "../../../store/application/applicationSlice";
-import { searchWithUpdatedFilters } from "../../../store/listingSearch/listingSearchCommon";
-import { selectTotalListings } from "../../../store/listingSearch/listingSearchSelectors";
-import { clearFilters } from "../../../store/filters/filtersSlice";
-import Modal from "../../../components/design_system/modal/Modal/Modal";
-import ModalHeader from "../../../components/design_system/modal/ModalHeader/ModalHeader";
-import ModalBody from "../../../components/design_system/modal/ModalBody/ModalBody";
-import Footer from "../../../components/design_system/Footer/Footer";
-import More from "../../More/More";
-import TextButton from "../../../components/design_system/TextButton/TextButton";
-import ContainedButton from "../../../components/design_system/ContainedButton/ContainedButton";
+  closeModal,
+  selectFiltersModalOpen
+} from '../../../store/application/applicationSlice'
+import { selectTotalListings } from '../../../store/listingSearch/listingSearchSelectors'
+import More from '../../More/More'
 
 const showListingsMessage = (n: number) =>
-  `Show ${n.toLocaleString()} ${n === 1 ? "Home" : "Homes"}`;
+  `Show ${n.toLocaleString()} ${n === 1 ? 'Home' : 'Homes'}`
 
 const FiltersModal: React.FC = () => {
-  const dispatch = useAppDispatch();
-  const modalOpen = useAppSelector(selectFiltersModalOpen);
-  const totalListings = useAppSelector(selectTotalListings);
+  const dispatch = useAppDispatch()
+  const modalOpen = useAppSelector(selectFiltersModalOpen)
+  const totalListings = useAppSelector(selectTotalListings)
+  const clearSearchFilters = useClearSearchFilters()
 
-  const handleClose = useCallback(() => dispatch(closeModal()), [dispatch]);
-
-  const handleClearAll = useCallback(() => {
-    dispatch(clearFilters());
-    dispatch(searchWithUpdatedFilters());
-  }, [dispatch]);
+  const handleClose = useCallback(() => dispatch(closeModal()), [dispatch])
 
   return (
     <Modal
       isOpen={modalOpen}
-      contentLabel="Filters"
+      contentLabel='Filters'
       fullScreenOnMobile={true}
       onRequestClose={handleClose}
     >
-      <ModalHeader title={"Filters"} onClose={handleClose} />
+      <ModalHeader title={'Filters'} onClose={handleClose} />
       <ModalBody>
         <More />
       </ModalBody>
       <Footer>
-        <TextButton onClick={handleClearAll}>Clear All</TextButton>
+        <TextButton onClick={clearSearchFilters}>Clear All</TextButton>
         <ContainedButton onClick={handleClose}>
           {showListingsMessage(totalListings)}
         </ContainedButton>
       </Footer>
     </Modal>
-  );
-};
+  )
+}
 
-export default FiltersModal;
+export default FiltersModal
