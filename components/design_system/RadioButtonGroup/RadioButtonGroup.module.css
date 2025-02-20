@@ -1,5 +1,5 @@
 .radioButtonGroup {
   display: grid;
   grid-auto-flow: column;
-  justify-content: space-between;
+  gap: .5rem;
 }

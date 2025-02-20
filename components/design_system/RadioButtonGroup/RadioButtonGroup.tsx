@@ -1,38 +1,22 @@
-import type { NextPage } from "next";
-import type { CountOption } from "../../../types";
-import Fieldset from "../Fieldset/Fieldset";
-import Legend from "../Legend/Legend";
-import RadioButton from "../RadioButton/RadioButton";
-import styles from "./RadioButtonGroup.module.css";
+import Fieldset from '../Fieldset/Fieldset'
+import Legend from '../Legend/Legend'
+import styles from './RadioButtonGroup.module.css'
 
-export interface RadioButtonGroupProps {
-  name: string;
-  label: string;
-  options: CountOption[];
-  onChange?: (value: number) => void;
+export type RadioButtonGroupProps = {
+  label: string
+  children: React.ReactNode
 }
 
-const RadioButtonGroup: NextPage<RadioButtonGroupProps> = ({
-  name,
+const RadioButtonGroup: React.FC<RadioButtonGroupProps> = ({
   label,
-  options,
-  onChange
+  children
 }) => {
   return (
     <Fieldset>
       <Legend>{label}</Legend>
-      <div className={styles.radioButtonGroup}>
-        {options.map((o) => (
-          <RadioButton
-            key={`${name}-radio-${o.value}`}
-            name={name}
-            {...o}
-            onChange={() => onChange?.(o.value)}
-          />
-        ))}
-      </div>
+      <div className={styles.radioButtonGroup}>{children}</div>
     </Fieldset>
-  );
-};
+  )
+}
 
-export default RadioButtonGroup;
+export default RadioButtonGroup

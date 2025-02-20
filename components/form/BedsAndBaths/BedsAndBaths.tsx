@@ -1,41 +1,47 @@
-import type { NextPage } from "next";
-import type { BedsAndBathsFilters } from "../../../store/filters/filtersTypes";
-import { useId } from "react";
-import styles from "./BedsAndBaths.module.css";
-import RadioButtonGroup from "../../design_system/RadioButtonGroup/RadioButtonGroup";
-import {
-  DefaultBedBathCount,
-  countOptions,
-  RadioButtonGroups
-} from "./beds_and_baths_helpers";
+import { useSearchParams } from 'next/navigation'
+import { useId } from 'react'
+import RadioButton from '~/components/design_system/RadioButton/RadioButton'
+import { useUpdateSearchParams } from '~/hooks/useUpdateSearchParams'
+import RadioButtonGroup from '../../design_system/RadioButtonGroup/RadioButtonGroup'
+import styles from './BedsAndBaths.module.css'
 
-export interface BedsAndBathsProps {
-  countArr?: number[];
-  bedsAndBaths: BedsAndBathsFilters;
-  onChange?: (param: Partial<BedsAndBathsFilters>) => void;
-}
+export const BedBathValues = ['', '1', '2', '3', '4', '5']
 
-const BedsAndBaths: NextPage<BedsAndBathsProps> = ({
-  countArr = DefaultBedBathCount,
-  bedsAndBaths,
-  onChange
-}) => {
-  const id = useId();
+const BedsAndBaths: React.FC = () => {
+  // Name needs to be unique because this component is in two places & it won't
+  // work right otherwise
+  const id = useId()
+  const searchParams = useSearchParams()
+  const updateSearchParams = useUpdateSearchParams()
 
   return (
     <fieldset className={styles.bedsAndBaths}>
-      {RadioButtonGroups.map(({ param, label }) => (
-        <RadioButtonGroup
-          key={param}
-          // name needs to be unique because this component is in two places & it won't work right otherwise
-          name={`${param}_${id}`}
-          label={label}
-          options={countOptions(param, countArr, bedsAndBaths)}
-          onChange={(value) => onChange?.({ [param]: value || null })}
-        />
-      ))}
+      <RadioButtonGroup label='Beds'>
+        {BedBathValues.map((value) => (
+          <RadioButton
+            key={`${`beds_min_${id}`}-radio-${value}`}
+            name={`beds_min_${id}`}
+            label={value === '' ? 'Any' : `${value}+`}
+            value={value}
+            checked={(searchParams.get('beds_min') ?? '') === value}
+            onChange={() => updateSearchParams({ beds_min: value })}
+          />
+        ))}
+      </RadioButtonGroup>
+      <RadioButtonGroup label='Baths'>
+        {BedBathValues.map((value) => (
+          <RadioButton
+            key={`${`baths_min_${id}`}-radio-${value}`}
+            name={`baths_min_${id}`}
+            label={value === '' ? 'Any' : `${value}+`}
+            value={value}
+            checked={(searchParams.get('baths_min') ?? '') === value}
+            onChange={() => updateSearchParams({ baths_min: value })}
+          />
+        ))}
+      </RadioButtonGroup>
     </fieldset>
-  );
-};
+  )
+}
 
-export default BedsAndBaths;
+export default BedsAndBaths

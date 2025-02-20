@@ -1,26 +1,27 @@
-import type { NextPage } from "next";
-import { useId } from "react";
-import type { CountOption } from "../../../types";
-import styles from "./RadioButton.module.css";
+import { useId } from 'react'
+import styles from './RadioButton.module.css'
+import { InputHTMLAttributes } from 'react'
 
-export interface RadioButtonProps extends CountOption {
-  name: string;
-  onChange?: () => void;
+export type RadioButtonProps = Pick<
+  InputHTMLAttributes<HTMLInputElement>,
+  'name' | 'value' | 'checked' | 'onChange'
+> & {
+  label: string
 }
 
-const RadioButton: NextPage<RadioButtonProps> = ({
-  name,
+const RadioButton: React.FC<RadioButtonProps> = ({
   label,
+  name,
   value,
   checked,
   onChange
 }) => {
-  const inputId = `${name}_${value}_${useId()}`;
+  const inputId = `${name}_${value}_${useId()}`
 
   return (
     <div className={styles.radioButton}>
       <input
-        type="radio"
+        type='radio'
         name={name}
         id={inputId}
         className={styles.radioButtonInput}
@@ -32,7 +33,7 @@ const RadioButton: NextPage<RadioButtonProps> = ({
         {label}
       </label>
     </div>
-  );
-};
+  )
+}
 
-export default RadioButton;
+export default RadioButton
