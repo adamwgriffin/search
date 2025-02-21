@@ -4,11 +4,13 @@ import SearchField from './SearchField/SearchField'
 import { useSearchNewLocation } from '~/hooks/useSearchNewLocation'
 import { useQuery, keepPreviousData } from '@tanstack/react-query'
 import { getPlaceAutocompletePredictions } from '~/lib/getPlaceAutocompletePredictions'
+import { useSearchState } from '~/providers/SearchStateProvider'
 
 export default function SearchLocation() {
   const searchParams = useSearchParams()
+  const { searchState } = useSearchState()
   const searchNewLocation = useSearchNewLocation()
-  const [value, setValue] = useState(searchParams.get('address') ?? '')
+  const [value, setValue] = useState(searchState.address ?? '')
   const [searchString, setSearchString] = useState<string | null>(null)
   const { data, isError, error } = useQuery({
     queryKey: ['searchString', searchString],
