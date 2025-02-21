@@ -6,16 +6,19 @@ import { useCallback, useEffect, useRef } from 'react'
 import { useMedia } from 'react-use'
 import BoundaryControl from '~/components/map/BoundaryControl/BoundaryControl'
 import ZoomControl from '~/components/map/ZoomControl/ZoomControl'
-import { useSearchParamsState } from '~/hooks/useSearchParamsState'
+import { useMapSearchState } from '~/hooks/useMapSearchState'
 import { useSearchResultsData } from '~/hooks/useSearchResultsData'
-import { useUpdateSearchParams } from '~/hooks/useUpdateSearchParams'
 import { getAvailableBoundsFromSearchResults } from '~/lib/boundary'
-import { getNewParamsFromCurrentState } from '~/lib/listingSearchParams'
+import { getNewSearchStateFromMap } from '~/lib/listingSearchParams'
+import { useSearchParamsState } from '~/providers/SearchParamsProvider'
 import { setSelectedListing } from '~/store/listingSearch/listingSearchSlice'
 import GoogleMap from '../../components/map/GoogleMap/GoogleMap'
 import ListingMarker from '../../components/map/ListingMarker/ListingMarker'
 import MapBoundary from '../../components/map/MapBoundary/MapBoundary'
-import { GoogleMapsMapOptions, MapBoundaryStyleOptions } from '../../config/googleMapsOptions'
+import {
+  GoogleMapsMapOptions,
+  MapBoundaryStyleOptions
+} from '../../config/googleMapsOptions'
 import { useAppDispatch, useAppSelector } from '../../hooks/app_hooks'
 import { useOpenListingDetail } from '../../hooks/open_listing_detail_hook'
 import { useGoogleMaps } from '../../providers/GoogleMapsProvider'
@@ -30,8 +33,8 @@ const ListingMap: NextPage = () => {
   const openListingDetail = useOpenListingDetail(true)
   const isSmallAndUp = useMedia('(min-width: 576px)', false)
   const highlightedMarker = useAppSelector(selectHighlightedMarker)
-  const updateSearchParams = useUpdateSearchParams()
-  const params = useSearchParamsState()
+  const { updateSearchParams } = useSearchParamsState()
+  const mapSearchState = useMapSearchState()
   const results = useSearchResultsData()
 
   const { isFetching } = results.queryResult
@@ -58,29 +61,20 @@ const ListingMap: NextPage = () => {
     if (!updateFiltersOnMapIdle.current) return
     updateFiltersOnMapIdle.current = false
     if (!googleMap) return
-    const newParams = getNewParamsFromCurrentState(
-      googleMap,
-      results.boundaryId
-    )
+    const newParams = getNewSearchStateFromMap(googleMap, results.boundaryId)
     updateSearchParams(newParams)
-  }, [results.boundaryId, googleMap, updateSearchParams])
+  }, [googleMap, results.boundaryId, updateSearchParams])
 
   const handleZoomIn = useCallback(() => {
     if (!googleMap) return
-    const newParams = getNewParamsFromCurrentState(
-      googleMap,
-      results.boundaryId
-    )
+    const newParams = getNewSearchStateFromMap(googleMap, results.boundaryId)
     newParams.zoom = typeof newParams.zoom === 'number' ? newParams.zoom + 1 : 1
     updateSearchParams(newParams)
   }, [googleMap, results.boundaryId, updateSearchParams])
 
   const handleZoomOut = useCallback(() => {
     if (!googleMap) return
-    const newParams = getNewParamsFromCurrentState(
-      googleMap,
-      results.boundaryId
-    )
+    const newParams = getNewSearchStateFromMap(googleMap, results.boundaryId)
     newParams.zoom = typeof newParams.zoom === 'number' ? newParams.zoom - 1 : 1
     updateSearchParams(newParams)
   }, [googleMap, results.boundaryId, updateSearchParams])
@@ -93,7 +87,7 @@ const ListingMap: NextPage = () => {
   // to adjust the map to fit the new boundary that was returned from the
   // search results
   useEffect(() => {
-    if (!googleMap || params.bounds) return
+    if (!googleMap || mapSearchState.bounds) return
     const feature = results.geoJSONBoundary?.id
       ? googleMap.data.getFeatureById(results.geoJSONBoundary.id)
       : undefined
@@ -104,20 +98,27 @@ const ListingMap: NextPage = () => {
     if (bounds) {
       googleMap.fitBounds(bounds)
     }
-  }, [googleMap, results.geoJSONBoundary, params.bounds, results.viewport])
+  }, [
+    googleMap,
+    results.geoJSONBoundary,
+    mapSearchState.bounds,
+    results.viewport
+  ])
 
   // Bounds param is present in the URL, which means we're searching an existing
   // location, so use the bounds & zoom from the url to adjust the map
   useEffect(() => {
     if (!googleMap) return
-    if (params.bounds) {
-      const center = new google.maps.LatLngBounds(params.bounds).getCenter()
+    if (mapSearchState.bounds) {
+      const center = new google.maps.LatLngBounds(
+        mapSearchState.bounds
+      ).getCenter()
       googleMap.setCenter(center)
-      if (params.zoom) {
-        googleMap.setZoom(params.zoom)
+      if (mapSearchState.zoom) {
+        googleMap.setZoom(mapSearchState.zoom)
       }
     }
-  }, [googleMap, params.bounds, params.zoom])
+  }, [googleMap, mapSearchState.bounds, mapSearchState.zoom])
 
   if (!googleLoaded) return <div className={styles.listingMap}></div>
 
@@ -145,7 +146,7 @@ const ListingMap: NextPage = () => {
           boundary={results.geoJSONBoundary}
           {...MapBoundaryStyleOptions}
         />
-        {params.showRemoveBoundaryButton && (
+        {mapSearchState.showRemoveBoundaryButton && (
           <BoundaryControl loading={isFetching} />
         )}
         <ZoomControl onZoomIn={handleZoomIn} onZoomOut={handleZoomOut} />

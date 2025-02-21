@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useSearchParamsState } from '~/providers/SearchParamsProvider'
 import More from '../../../containers/More/More'
 import ContainedButton from '../../design_system/ContainedButton/ContainedButton'
 import Footer from '../../design_system/Footer/Footer'
@@ -6,11 +7,10 @@ import MenuContainter from '../../design_system/MenuContainter/MenuContainter'
 import TextButton from '../../design_system/TextButton/TextButton'
 import ToggleOpenButton from '../../design_system/ToggleOpenButton/ToggleOpenButton'
 import styles from './MoreMenuButton.module.css'
-import { useClearSearchFilters } from '~/hooks/useClearSearchFilters'
 
 const MoreMenuButton: React.FC = () => {
   const [open, setOpen] = useState(false)
-  const clearSearchFilters = useClearSearchFilters()
+  const { clearSearchParamsFilters } = useSearchParamsState()
 
   return (
     <MenuContainter onClickAway={() => setOpen(false)}>
@@ -32,7 +32,7 @@ const MoreMenuButton: React.FC = () => {
           <More />
         </div>
         <Footer>
-          <TextButton onClick={clearSearchFilters}>Clear all</TextButton>
+          <TextButton onClick={clearSearchParamsFilters}>Clear all</TextButton>
           <ContainedButton onClick={() => setOpen(false)}>Done</ContainedButton>
         </Footer>
       </div>

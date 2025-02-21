@@ -1,6 +1,6 @@
-import { useUpdateSearchParams } from '~/hooks/useUpdateSearchParams'
 import { useGoogleMaps } from '~/providers/GoogleMapsProvider'
-import type { URLParams } from '~/types'
+import { useSearchParamsState } from '~/providers/SearchParamsProvider'
+import type { SearchParamsUpdate } from '~/zod_schemas/searchParamsSchema'
 import LoadingDots from '../../design_system/LoadingDots/LoadingDots'
 import styles from './BoundaryControl.module.css'
 
@@ -10,7 +10,7 @@ export type BoundaryControlProps = {
 
 const BoundaryControl: React.FC<BoundaryControlProps> = ({ loading }) => {
   const { googleMap } = useGoogleMaps()
-  const updateSearchParams = useUpdateSearchParams()
+  const { updateSearchParams } = useSearchParamsState()
 
   return (
     <div className={styles.boundaryControl}>
@@ -24,10 +24,9 @@ const BoundaryControl: React.FC<BoundaryControlProps> = ({ loading }) => {
             // Setting params to null removes them from the request and indicates
             // to the fetchListings function that we should search by bounds
             // instead of location
-            const updatedFilters: URLParams = {
+            const updatedFilters: SearchParamsUpdate = {
               bounds,
               address: null,
-              place_id: null,
               boundary_id: null
             }
             updateSearchParams(updatedFilters)

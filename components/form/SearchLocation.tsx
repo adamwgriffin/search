@@ -1,16 +1,16 @@
+import { keepPreviousData, useQuery } from '@tanstack/react-query'
 import { useSearchParams } from 'next/navigation'
 import { useState } from 'react'
-import SearchField from './SearchField/SearchField'
 import { useSearchNewLocation } from '~/hooks/useSearchNewLocation'
-import { useQuery, keepPreviousData } from '@tanstack/react-query'
 import { getPlaceAutocompletePredictions } from '~/lib/getPlaceAutocompletePredictions'
-import { useSearchState } from '~/providers/SearchStateProvider'
+import SearchField from './SearchField/SearchField'
 
 export default function SearchLocation() {
   const searchParams = useSearchParams()
-  const { searchState } = useSearchState()
   const searchNewLocation = useSearchNewLocation()
-  const [value, setValue] = useState(searchState.address ?? '')
+  // Not using searchParamsState because it doesn't update in time to get the address
+  // from the url on first render
+  const [value, setValue] = useState(searchParams.get('address') ?? '')
   const [searchString, setSearchString] = useState<string | null>(null)
   const { data, isError, error } = useQuery({
     queryKey: ['searchString', searchString],

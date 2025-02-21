@@ -1,15 +1,16 @@
-import { usePathname, useRouter, useSearchParams } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import { getNewLocationQueryString } from '~/lib/listingSearchParams'
-import type { URLParams } from '~/types'
+import { useSearchParamsState } from '~/providers/SearchParamsProvider'
+import type { SearchParams } from '~/zod_schemas/searchParamsSchema'
 
 export function useSearchNewLocation() {
   const router = useRouter()
   const pathname = usePathname()
-  const searchParams = useSearchParams()
+  const { searchParamsState: searchState } = useSearchParamsState()
 
-  return function (newLocationParams: URLParams) {
+  return function (newLocationParams: SearchParams) {
     const updatedQueryString = getNewLocationQueryString(
-      Object.fromEntries(searchParams),
+      searchState,
       newLocationParams
     )
     router.push(`${pathname}?${updatedQueryString}`)

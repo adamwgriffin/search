@@ -2,6 +2,7 @@
 
 import type { NextPage } from 'next'
 import GoogleMapsProvider from '../providers/GoogleMapsProvider'
+import { SearchParamsProvider } from '~/providers/SearchParamsProvider'
 import SearchHeader from '../containers/SearchHeader/SearchHeader'
 import SearchResults from '../containers/SearchResults/SearchResults'
 import ListingMap from '../containers/ListingMap/ListingMap'
@@ -13,20 +14,22 @@ import { Suspense } from 'react'
 const SearchPage: NextPage = () => {
   return (
     <GoogleMapsProvider>
-      <ReactQueryClientProvider>
-        <div className={styles.search}>
-          <SearchHeader />
-          <div className={styles.results}>
-            <Suspense>
-              <SearchResults />
-            </Suspense>
-            <Suspense>
-              <ListingMap />
-            </Suspense>
+      <SearchParamsProvider>
+        <ReactQueryClientProvider>
+          <div className={styles.search}>
+            <SearchHeader />
+            <div className={styles.results}>
+              <Suspense>
+                <SearchResults />
+              </Suspense>
+              <Suspense>
+                <ListingMap />
+              </Suspense>
+            </div>
+            <SearchModals />
           </div>
-          <SearchModals />
-        </div>
-      </ReactQueryClientProvider>
+        </ReactQueryClientProvider>
+      </SearchParamsProvider>
     </GoogleMapsProvider>
   )
 }

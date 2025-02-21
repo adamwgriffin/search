@@ -1,13 +1,12 @@
-import type {
-  SortType,
-  SortDirection
-} from '../../../types/listing_service_params_types'
 import { useState } from 'react'
+import { useSearchParamsState } from '~/providers/SearchParamsProvider'
+import type {
+  SortDirection,
+  SortType
+} from '../../../types/listing_service_params_types'
 import MenuButton from '../../design_system/MenuButton/MenuButton'
 import CheckIcon from '../../design_system/icons/CheckIcon/CheckIcon'
 import styles from './SortMenu.module.css'
-import { useUpdateSearchParams } from '~/hooks/useUpdateSearchParams'
-import { useSearchParams } from 'next/navigation'
 
 export interface SortTypeLabels {
   label: string
@@ -48,10 +47,7 @@ export const SortTypeLabels: SortTypeLabels[] = [
   }
 ]
 
-const getCurrentSortLabel = (
-  sortBy: string,
-  sortDirection: string
-) => {
+const getCurrentSortLabel = (sortBy: string, sortDirection: string) => {
   return SortTypeLabels.find(
     ({ type, direction }) => type === sortBy && direction === sortDirection
   )?.label
@@ -59,15 +55,11 @@ const getCurrentSortLabel = (
 
 const SortMenu: React.FC = () => {
   const [open, setOpen] = useState(false)
-  const searchParams = useSearchParams()
-  const updateSearchParams = useUpdateSearchParams()
+  const { searchParamsState, updateSearchParams } = useSearchParamsState()
 
-  const sort_by = searchParams.get('sort_by') || 'listedDate'
-  const sort_direction =
-    searchParams.get('sort_direction') || 'desc'
+  const sort_by = searchParamsState.sort_by ?? 'listedDate'
+  const sort_direction = searchParamsState.sort_direction ?? 'desc'
   const currentSortLabel = getCurrentSortLabel(sort_by, sort_direction)
-
-
 
   return (
     <MenuButton
@@ -89,7 +81,7 @@ const SortMenu: React.FC = () => {
             className={styles.menuItem}
           >
             <div>
-              {sort_by === type && sort_direction== direction && (
+              {sort_by === type && sort_direction === direction && (
                 <CheckIcon />
               )}
             </div>

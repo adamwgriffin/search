@@ -1,23 +1,21 @@
-import { useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
-import { useUpdateSearchParams } from '~/hooks/useUpdateSearchParams'
+import { useSearchParamsState } from '~/providers/SearchParamsProvider'
 import type { PriceRangeFilters } from '~/store/filters/filtersTypes'
 import PriceRange from '../../components/form/PriceRange/PriceRange'
 
 const PriceContainer: React.FC = () => {
-  const searchParams = useSearchParams()
-  const updateSearchParams = useUpdateSearchParams()
+  const { searchParamsState, updateSearchParams } = useSearchParamsState()
   const [priceRange, setPriceRange] = useState<PriceRangeFilters>({
-    priceMin: Number(searchParams.get('price_min')) || null,
-    priceMax: Number(searchParams.get('price_max')) || null
+    priceMin: searchParamsState.price_min || null,
+    priceMax: searchParamsState.price_max || null
   })
 
   useEffect(() => {
     setPriceRange({
-      priceMin: Number(searchParams.get('price_min')) || null,
-      priceMax: Number(searchParams.get('price_max')) || null
+      priceMin: searchParamsState.price_min || null,
+      priceMax: searchParamsState.price_max || null
     })
-  }, [searchParams])
+  }, [searchParamsState.price_max, searchParamsState.price_min])
 
   // The onChange event keeps track of the current state of each price field, so
   // we're tracking that locally with useState, but we only want to update the
