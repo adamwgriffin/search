@@ -24,10 +24,6 @@ export type PriceProps = {
   onMenuButtonClick?: () => void
 }
 
-// Passing null to NumericFormat.value does not clear the input but "" does for
-// some reason
-const normalizePrice = (price: number | null) => (price === null ? '' : price)
-
 const Price: React.FC<PriceProps> = ({
   label,
   price,
@@ -103,7 +99,9 @@ const Price: React.FC<PriceProps> = ({
           thousandSeparator=','
           allowNegative={false}
           decimalScale={0}
-          value={normalizePrice(price)}
+          // Passing null to NumericFormat.value does not clear the input but ""
+          // does for some reason
+          value={price ?? ''}
           // For falsey values we pass null to avoid the input being set to 0
           onValueChange={({ floatValue }) => onChange?.(floatValue || null)}
           placeholder={placeholder}
