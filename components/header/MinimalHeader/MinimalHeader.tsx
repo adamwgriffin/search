@@ -1,6 +1,6 @@
-import Logo from '../Logo/Logo'
-import UserMenu from '../../../containers/UserMenu/UserMenu'
-import styles from './MinimalHeader.module.css'
+import Logo from "../Logo/Logo";
+import UserMenu from "../../../containers/UserMenu/UserMenu";
+import styles from "./MinimalHeader.module.css";
 
 const MinimalHeader: React.FC = () => {
   return (
@@ -8,7 +8,7 @@ const MinimalHeader: React.FC = () => {
       <Logo />
       <UserMenu />
     </header>
-  )
-}
+  );
+};
 
-export default MinimalHeader
+export default MinimalHeader;

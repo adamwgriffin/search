@@ -1,25 +1,25 @@
-import { NextResponse } from 'next/server'
-import { getServerSession } from 'next-auth/next'
-import authOptions from '../../../../lib/auth_options'
-import prisma from '../../../../lib/prismadb'
+import { NextResponse } from "next/server";
+import { getServerSession } from "next-auth/next";
+import authOptions from "../../../../lib/auth_options";
+import prisma from "../../../../lib/prismadb";
 
 interface FavoritesParams {
-  listingId: string
+  listingId: string;
 }
 
 export async function POST(
   _request: Request,
   { params }: { params: FavoritesParams }
 ) {
-  const session = await getServerSession(authOptions)
+  const session = await getServerSession(authOptions);
   if (!session?.user) {
-    return new NextResponse(null, { status: 401 })
+    return new NextResponse(null, { status: 401 });
   }
 
-  const { listingId } = params
+  const { listingId } = params;
 
-  if (!listingId || typeof listingId !== 'string') {
-    return NextResponse.json({ error: 'Invalid listing ID' }, { status: 400 })
+  if (!listingId || typeof listingId !== "string") {
+    return NextResponse.json({ error: "Invalid listing ID" }, { status: 400 });
   }
 
   const currentUser = await prisma.user.findUnique({
@@ -29,18 +29,18 @@ export async function POST(
     select: {
       favoriteIds: true
     }
-  })
+  });
 
   if (!currentUser) {
     return NextResponse.json(
-      { error: 'Current user not found' },
+      { error: "Current user not found" },
       { status: 404 }
-    )
+    );
   }
 
   const favoriteIds = Array.from(
     new Set([...currentUser.favoriteIds, listingId])
-  )
+  );
 
   await prisma.user.update({
     where: {
@@ -49,24 +49,24 @@ export async function POST(
     data: {
       favoriteIds
     }
-  })
+  });
 
-  return new NextResponse(null, { status: 200 })
+  return new NextResponse(null, { status: 200 });
 }
 
 export async function DELETE(
   _request: Request,
   { params }: { params: FavoritesParams }
 ) {
-  const session = await getServerSession(authOptions)
+  const session = await getServerSession(authOptions);
   if (!session?.user) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const { listingId } = params
+  const { listingId } = params;
 
-  if (!listingId || typeof listingId !== 'string') {
-    throw new Error('Invalid ID')
+  if (!listingId || typeof listingId !== "string") {
+    throw new Error("Invalid ID");
   }
 
   const currentUser = await prisma.user.findUnique({
@@ -76,18 +76,18 @@ export async function DELETE(
     select: {
       favoriteIds: true
     }
-  })
+  });
 
   if (!currentUser) {
     return NextResponse.json(
-      { error: 'Current user not found' },
+      { error: "Current user not found" },
       { status: 404 }
-    )
+    );
   }
 
   const favoriteIds = (currentUser.favoriteIds || []).filter(
     (id) => id !== listingId
-  )
+  );
 
   await prisma.user.update({
     where: {
@@ -96,7 +96,7 @@ export async function DELETE(
     data: {
       favoriteIds
     }
-  })
+  });
 
-  return new NextResponse(null, { status: 200 })
+  return new NextResponse(null, { status: 200 });
 }

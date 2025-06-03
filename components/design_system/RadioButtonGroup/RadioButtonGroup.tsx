@@ -1,15 +1,15 @@
-import type { NextPage } from 'next'
-import type { CountOption } from '../../../types'
-import Fieldset from '../Fieldset/Fieldset'
-import Legend from '../Legend/Legend'
-import RadioButton from '../RadioButton/RadioButton'
-import styles from './RadioButtonGroup.module.css'
+import type { NextPage } from "next";
+import type { CountOption } from "../../../types";
+import Fieldset from "../Fieldset/Fieldset";
+import Legend from "../Legend/Legend";
+import RadioButton from "../RadioButton/RadioButton";
+import styles from "./RadioButtonGroup.module.css";
 
 export interface RadioButtonGroupProps {
-  name: string
-  label: string
-  options: CountOption[]
-  onChange?: (value: number) => void
+  name: string;
+  label: string;
+  options: CountOption[];
+  onChange?: (value: number) => void;
 }
 
 const RadioButtonGroup: NextPage<RadioButtonGroupProps> = ({
@@ -32,7 +32,7 @@ const RadioButtonGroup: NextPage<RadioButtonGroupProps> = ({
         ))}
       </div>
     </Fieldset>
-  )
-}
+  );
+};
 
-export default RadioButtonGroup
+export default RadioButtonGroup;

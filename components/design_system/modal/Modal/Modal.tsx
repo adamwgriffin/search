@@ -1,16 +1,16 @@
-import type { NextPage } from 'next'
-import type { ReactNode } from 'react'
-import styles from './Modal.module.css'
-import ReactModal from 'react-modal'
+import type { NextPage } from "next";
+import type { ReactNode } from "react";
+import styles from "./Modal.module.css";
+import ReactModal from "react-modal";
 
 export interface ModalProps {
-  isOpen: boolean
-  contentLabel: string
-  closeTimeoutMS?: number
-  fullScreenOnMobile?: boolean
-  children: ReactNode
-  onRequestClose?: () => void
-  onAfterClose?: () => void
+  isOpen: boolean;
+  contentLabel: string;
+  closeTimeoutMS?: number;
+  fullScreenOnMobile?: boolean;
+  children: ReactNode;
+  onRequestClose?: () => void;
+  onAfterClose?: () => void;
 }
 
 const Modal: NextPage<ModalProps> = ({
@@ -24,10 +24,10 @@ const Modal: NextPage<ModalProps> = ({
 }) => {
   const modalContentClassNameBase = fullScreenOnMobile
     ? styles.modalContentFullScreenOnMobile
-    : styles.modalContent
+    : styles.modalContent;
   const modalOverlayClassNameBase = fullScreenOnMobile
     ? styles.modalOverlayFullScreenOnMobile
-    : styles.modalOverlay
+    : styles.modalOverlay;
 
   return (
     // Setting ariaHideApp=false because it tries to set aria-hidden on the
@@ -57,7 +57,7 @@ const Modal: NextPage<ModalProps> = ({
     >
       {children}
     </ReactModal>
-  )
-}
+  );
+};
 
-export default Modal
+export default Modal;

@@ -5,8 +5,9 @@ body,
 }
 
 :root {
-  --primary-font: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
-    Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
+  --primary-font:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu,
+    Cantarell, "Helvetica Neue", sans-serif;
   --background: white;
   --input-background: var(--background);
   --foreground: black;
@@ -41,7 +42,7 @@ body,
   --listing-details-name-foreground: #767676;
 }
 
-[data-theme='purple'] {
+[data-theme="purple"] {
   --primary: MediumPurple;
   --primary-dark: RebeccaPurple;
   --primary-light: #e1d8f1;
@@ -51,7 +52,7 @@ body,
   --no-user-image-icon: #d1d5db;
 }
 
-[data-theme='orange'] {
+[data-theme="orange"] {
   --primary: orange;
   --primary-dark: #db7800;
   --primary-light: #ffe1c8;
@@ -60,7 +61,7 @@ body,
   --search-button-background-hover: var(--primary-dark);
 }
 
-[data-theme='dark'] {
+[data-theme="dark"] {
   --background: #22272e;
   --input-background: #49494e;
   --foreground: #e0e0e0;

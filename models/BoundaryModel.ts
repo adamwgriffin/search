@@ -1,25 +1,25 @@
-import type { MultiPolygon } from '@turf/turf'
-import mongoose, { Model, Schema, model } from 'mongoose'
-import MultiPolygonSchema from './MultiPolygonSchema'
+import type { MultiPolygon } from "@turf/turf";
+import mongoose, { Model, Schema, model } from "mongoose";
+import MultiPolygonSchema from "./MultiPolygonSchema";
 
 export const BoundaryTypes = [
-  'neighborhood',
-  'city',
-  'zip_code',
-  'county',
-  'state',
-  'country',
-  'school_district',
-  'school'
-] as const
+  "neighborhood",
+  "city",
+  "zip_code",
+  "county",
+  "state",
+  "country",
+  "school_district",
+  "school"
+] as const;
 
-export type BoundaryType = (typeof BoundaryTypes)[number]
+export type BoundaryType = (typeof BoundaryTypes)[number];
 
 export interface IBoundary {
-  name: string
-  type: BoundaryType
-  geometry: MultiPolygon
-  placeId: string
+  name: string;
+  type: BoundaryType;
+  geometry: MultiPolygon;
+  placeId: string;
 }
 
 export interface BoundaryModel extends Model<IBoundary> {
@@ -27,7 +27,7 @@ export interface BoundaryModel extends Model<IBoundary> {
     lat: number,
     lng: number,
     boundaryType: string
-  ): Promise<IBoundary[]>
+  ): Promise<IBoundary[]>;
 }
 
 // Making placeId a required field because we don't really want to have to guess if a boundary matches a given
@@ -48,7 +48,7 @@ export const BoundarySchema: Schema<IBoundary> = new Schema({
     // NOTE: it's very important that this index gets defined here, rather than on the coordinates in the
     // MultiPolygonSchema. putting them on the coordinates breaks things so that you can never create a record
     // successfully
-    index: '2dsphere',
+    index: "2dsphere",
     required: true
   },
   placeId: {
@@ -56,7 +56,7 @@ export const BoundarySchema: Schema<IBoundary> = new Schema({
     index: true,
     required: true
   }
-})
+});
 
 BoundarySchema.statics.findBoundaries = async function (
   lat: number,
@@ -69,7 +69,7 @@ BoundarySchema.statics.findBoundaries = async function (
         geometry: {
           $geoIntersects: {
             $geometry: {
-              type: 'Point',
+              type: "Point",
               coordinates: [lng, lat]
             }
           }
@@ -79,8 +79,8 @@ BoundarySchema.statics.findBoundaries = async function (
         type: boundaryType
       }
     ]
-  })
-}
+  });
+};
 
 export default (mongoose.models.Boundary as BoundaryModel) ||
-  model<IBoundary, BoundaryModel>('Boundary', BoundarySchema)
+  model<IBoundary, BoundaryModel>("Boundary", BoundarySchema);

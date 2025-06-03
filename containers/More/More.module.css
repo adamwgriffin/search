@@ -6,8 +6,8 @@
   gap: 1rem;
 }
 
-.buyFilters> *:nth-child(1){
-  margin-bottom: .5rem;
+.buyFilters > *:nth-child(1) {
+  margin-bottom: 0.5rem;
 }
 
 @media smallAndUp {

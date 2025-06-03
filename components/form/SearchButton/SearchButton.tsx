@@ -1,9 +1,9 @@
-import type { NextPage } from 'next'
-import SearchButtonIcon from '../../design_system/icons/SearchButtonIcon/SearchButtonIcon'
-import styles from './SearchButton.module.css'
+import type { NextPage } from "next";
+import SearchButtonIcon from "../../design_system/icons/SearchButtonIcon/SearchButtonIcon";
+import styles from "./SearchButton.module.css";
 
 export interface SearchButtonProps {
-  onClick?: () => void
+  onClick?: () => void;
 }
 
 const SearchButton: NextPage<SearchButtonProps> = ({ onClick }) => {
@@ -19,7 +19,7 @@ const SearchButton: NextPage<SearchButtonProps> = ({ onClick }) => {
     >
       <SearchButtonIcon />
     </button>
-  )
-}
+  );
+};
 
-export default SearchButton
+export default SearchButton;

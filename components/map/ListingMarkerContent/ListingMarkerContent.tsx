@@ -1,23 +1,23 @@
-import type { Listing } from '../../../types/listing_types'
+import type { Listing } from "../../../types/listing_types";
 import {
   formatPriceFromListing,
   ShortCurrencyFormat,
   getBathrooms,
   formatSqft,
   cityStateZip
-} from '../../../lib/listing_helpers'
-import styles from './ListingMarkerContent.module.css'
-import Link from 'next/link'
-import ListingImageContainer from '../../listings/ListingImageContainer/ListingImageContainer'
-import ListingImageContainerElements from '../../listings/ListingImageContainerElements/ListingImageContainerElements'
-import FavoriteButton from '../../../containers/FavoriteButton/FavoriteButton'
-import ListingMainImage from '../../listings/listing_detail/ListingMainImage'
+} from "../../../lib/listing_helpers";
+import styles from "./ListingMarkerContent.module.css";
+import Link from "next/link";
+import ListingImageContainer from "../../listings/ListingImageContainer/ListingImageContainer";
+import ListingImageContainerElements from "../../listings/ListingImageContainerElements/ListingImageContainerElements";
+import FavoriteButton from "../../../containers/FavoriteButton/FavoriteButton";
+import ListingMainImage from "../../listings/listing_detail/ListingMainImage";
 
 export type ListingMarkerContentProps = {
-  listing: Listing
-  link: string
-  highlighted?: boolean
-}
+  listing: Listing;
+  link: string;
+  highlighted?: boolean;
+};
 
 const ListingMarkerContent: React.FC<ListingMarkerContentProps> = ({
   listing,
@@ -27,10 +27,10 @@ const ListingMarkerContent: React.FC<ListingMarkerContentProps> = ({
   const priceAbbreviated = formatPriceFromListing(listing, {
     numberFormatOptions: ShortCurrencyFormat,
     displayInterval: false
-  })
+  });
   const listingMarkerClassName = highlighted
     ? styles.listingMarkerHighlighted
-    : styles.listingMarker
+    : styles.listingMarker;
 
   return (
     // We're only using a link here so that we can change the color of the
@@ -55,11 +55,11 @@ const ListingMarkerContent: React.FC<ListingMarkerContentProps> = ({
               // This chooses a size from the img srcSet that most closely
               // matches the 14rem width of the popup, accounting for device
               // pixel density
-              sizes='14rem'
+              sizes="14rem"
               latitude={listing.latitude}
               longitude={listing.longitude}
               className={styles.listingMarkerImage}
-              fallbackImageUrl='/default_listing_image/default_listing_image_small.jpg'
+              fallbackImageUrl="/default_listing_image/default_listing_image_small.jpg"
             />
           </ListingImageContainer>
           <div className={styles.details}>
@@ -81,7 +81,7 @@ const ListingMarkerContent: React.FC<ListingMarkerContentProps> = ({
         </div>
       </div>
     </Link>
-  )
-}
+  );
+};
 
-export default ListingMarkerContent
+export default ListingMarkerContent;

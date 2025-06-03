@@ -12,7 +12,9 @@
   /* The allow-discrete makes it so the closing animation works correctly. See:
   https://frontendmasters.com/blog/animating-dialog/#transition-behavior-allow-discreteŒ
   */
-  transition: display 500ms allow-discrete, overlay 500ms allow-discrete;
+  transition:
+    display 500ms allow-discrete,
+    overlay 500ms allow-discrete;
   animation: close 500ms forwards;
 }
 

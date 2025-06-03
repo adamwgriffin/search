@@ -1,11 +1,11 @@
-'use client'
+"use client";
 
-import Image from 'next/image'
-import NoUserImageIcon from '../../design_system/icons/NoUserImageIcon/NoUserImageIcon'
-import styles from './Avatar.module.css'
+import Image from "next/image";
+import NoUserImageIcon from "../../design_system/icons/NoUserImageIcon/NoUserImageIcon";
+import styles from "./Avatar.module.css";
 
 interface AvatarProps {
-  src: string | null | undefined
+  src: string | null | undefined;
 }
 
 const Avatar: React.FC<AvatarProps> = ({ src }) => {
@@ -14,9 +14,9 @@ const Avatar: React.FC<AvatarProps> = ({ src }) => {
       {src ? (
         <Image
           className={styles.avatarImage}
-          height='30'
-          width='30'
-          alt='Avatar'
+          height="30"
+          width="30"
+          alt="Avatar"
           src={src}
         />
       ) : (
@@ -25,7 +25,7 @@ const Avatar: React.FC<AvatarProps> = ({ src }) => {
         </div>
       )}
     </>
-  )
-}
+  );
+};
 
-export default Avatar
+export default Avatar;

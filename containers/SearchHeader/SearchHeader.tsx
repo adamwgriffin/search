@@ -1,13 +1,13 @@
-import { useSearchNewLocation } from '../../hooks/search_new_location_hook'
-import styles from './SearchHeader.module.css'
-import Logo from '../../components/header/Logo/Logo'
-import SearchFieldContainer from '../SearchFieldContainer/SearchFieldContainer'
-import Filters from '../Filters/Filters'
-import UserMenu from '../UserMenu/UserMenu'
-import HideSmallAndDown from '../../components/HideSmallAndDown/HideSmallAndDown'
+import { useSearchNewLocation } from "../../hooks/search_new_location_hook";
+import styles from "./SearchHeader.module.css";
+import Logo from "../../components/header/Logo/Logo";
+import SearchFieldContainer from "../SearchFieldContainer/SearchFieldContainer";
+import Filters from "../Filters/Filters";
+import UserMenu from "../UserMenu/UserMenu";
+import HideSmallAndDown from "../../components/HideSmallAndDown/HideSmallAndDown";
 
 const SearchHeader: React.FC = () => {
-  const searchNewLocation = useSearchNewLocation()
+  const searchNewLocation = useSearchNewLocation();
 
   return (
     <header className={styles.header}>
@@ -25,7 +25,7 @@ const SearchHeader: React.FC = () => {
         <Filters />
       </div>
     </header>
-  )
-}
+  );
+};
 
-export default SearchHeader
+export default SearchHeader;

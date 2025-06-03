@@ -1,25 +1,25 @@
-'use client'
+"use client";
 
-import type { ListingDetail } from '../../../types/listing_types'
-import { useState, useEffect } from 'react'
-import { createPortal } from 'react-dom'
-import ListingImageContainer from '../ListingImageContainer/ListingImageContainer'
-import ListingImageContainerElements from '../ListingImageContainerElements/ListingImageContainerElements'
-import FavoriteButton from '../../../containers/FavoriteButton/FavoriteButton'
-import ListingDetailMainImage from './ListingDetailMainImage/ListingDetailMainImage'
-import SlideShow from './SlideShow/SlideShow'
+import type { ListingDetail } from "../../../types/listing_types";
+import { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
+import ListingImageContainer from "../ListingImageContainer/ListingImageContainer";
+import ListingImageContainerElements from "../ListingImageContainerElements/ListingImageContainerElements";
+import FavoriteButton from "../../../containers/FavoriteButton/FavoriteButton";
+import ListingDetailMainImage from "./ListingDetailMainImage/ListingDetailMainImage";
+import SlideShow from "./SlideShow/SlideShow";
 
 export type ListingDetailImageProps = {
-  listing: ListingDetail
-}
+  listing: ListingDetail;
+};
 
 const ListingDetailImage: React.FC<ListingDetailImageProps> = ({ listing }) => {
-  const [isMounted, setIsMounted] = useState(false)
-  const [slideShowOpen, setSlideShowOpen] = useState(false)
+  const [isMounted, setIsMounted] = useState(false);
+  const [slideShowOpen, setSlideShowOpen] = useState(false);
 
   useEffect(() => {
-    setIsMounted(true)
-  }, [])
+    setIsMounted(true);
+  }, []);
 
   return (
     <>
@@ -48,7 +48,7 @@ const ListingDetailImage: React.FC<ListingDetailImageProps> = ({ listing }) => {
           )
       }
     </>
-  )
-}
+  );
+};
 
-export default ListingDetailImage
+export default ListingDetailImage;

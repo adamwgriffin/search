@@ -1,8 +1,8 @@
-import styles from './Description.module.css'
+import styles from "./Description.module.css";
 
 export type DescriptionProps = {
-  description: string | null
-}
+  description: string | null;
+};
 
 const Description: React.FC<DescriptionProps> = ({ description }) => {
   return (
@@ -10,7 +10,7 @@ const Description: React.FC<DescriptionProps> = ({ description }) => {
       <h4>Description</h4>
       <p className={styles.description}>{description}</p>
     </div>
-  )
-}
+  );
+};
 
-export default Description
+export default Description;

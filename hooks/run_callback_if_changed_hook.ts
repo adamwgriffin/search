@@ -1,21 +1,21 @@
-import { useState } from 'react'
-import isEqual from 'lodash/isEqual'
+import { useState } from "react";
+import isEqual from "lodash/isEqual";
 
 export const useRunCallbackIfChanged = <T>(
   value: T,
   callback: () => void
 ): [() => void, () => void] => {
-  const [previous, setPrevious] = useState(value)
+  const [previous, setPrevious] = useState(value);
 
   const setPreviousFunction = () => {
-    setPrevious({ ...value })
-  }
+    setPrevious({ ...value });
+  };
 
   const executeCallbackIfChangedFunction = () => {
     if (!isEqual(previous, value)) {
-      callback()
+      callback();
     }
-  }
+  };
 
-  return [setPreviousFunction, executeCallbackIfChangedFunction]
-}
+  return [setPreviousFunction, executeCallbackIfChangedFunction];
+};

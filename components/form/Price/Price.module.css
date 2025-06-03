@@ -49,6 +49,6 @@
 }
 
 .priceListItem:hover,
-.priceListItem[aria-selected='true'] {
+.priceListItem[aria-selected="true"] {
   background: var(--primary-light);
 }

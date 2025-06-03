@@ -2,7 +2,7 @@ import type {
   GeoLayerCoordinates,
   MultiPolygon,
   ViewportLatLngBounds
-} from '../store/listingMap/listingMapTypes'
+} from "../store/listingMap/listingMapTypes";
 
 /*
 we need to transform the geojson we get from the service into a shape that works for the Polygon class we need to use
@@ -42,20 +42,20 @@ export const convertGeojsonCoordinatesToPolygonPaths = (
 ): GeoLayerCoordinates => {
   return geoJsonCoordinates.map((arr) => {
     return arr[0].map((arr) => {
-      return { lat: arr[1], lng: arr[0] }
-    })
-  })
-}
+      return { lat: arr[1], lng: arr[0] };
+    });
+  });
+};
 
 // most examples use polygon.getPaths() to extend the bounds, but that data is the same as the geojson coordinates we
 // used to create the polygon paths, so we might as well just use that data since we already have it
 export const getGeoLayerBounds = (geoLayerCoordinates: GeoLayerCoordinates) => {
-  const bounds = new google.maps.LatLngBounds()
+  const bounds = new google.maps.LatLngBounds();
   geoLayerCoordinates.forEach((latLngArr) =>
     latLngArr.forEach((latLng) => bounds.extend(latLng))
-  )
-  return bounds.toJSON()
-}
+  );
+  return bounds.toJSON();
+};
 
 export const convertViewportToLatLngBoundsLiteral = (
   viewport: ViewportLatLngBounds
@@ -63,6 +63,6 @@ export const convertViewportToLatLngBoundsLiteral = (
   const bounds = new google.maps.LatLngBounds(
     viewport.southwest,
     viewport.northeast
-  )
-  return bounds.toJSON()
-}
+  );
+  return bounds.toJSON();
+};

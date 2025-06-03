@@ -1,71 +1,71 @@
-import type { NextPage } from 'next'
-import type { SortFilters } from '../../store/filters/filtersTypes'
-import styles from './SearchResults.module.css'
-import ListingResultsHeader from '../../components/listings/ListingResultsHeader/ListingResultsHeader'
-import ListingResultsPagination from '../../components/listings/ListingResultsPagination/ListingResultsPagination'
-import { useAppSelector, useAppDispatch } from '../../hooks/app_hooks'
-import { useOpenListingDetail } from '../../hooks/open_listing_detail_hook'
-import { setHighlightedMarker } from '../../store/listingSearch/listingSearchSlice'
+import type { NextPage } from "next";
+import type { SortFilters } from "../../store/filters/filtersTypes";
+import styles from "./SearchResults.module.css";
+import ListingResultsHeader from "../../components/listings/ListingResultsHeader/ListingResultsHeader";
+import ListingResultsPagination from "../../components/listings/ListingResultsPagination/ListingResultsPagination";
+import { useAppSelector, useAppDispatch } from "../../hooks/app_hooks";
+import { useOpenListingDetail } from "../../hooks/open_listing_detail_hook";
+import { setHighlightedMarker } from "../../store/listingSearch/listingSearchSlice";
 import {
   searchCurrentLocation,
   searchWithUpdatedFilters
-} from '../../store/listingSearch/listingSearchCommon'
+} from "../../store/listingSearch/listingSearchCommon";
 import {
   selectListings,
   selectPagination,
   selectInitialSearchComplete,
   selectListingSearchRunning
-} from '../../store/listingSearch/listingSearchSelectors'
-import { setFilters, clearFilters } from '../../store/filters/filtersSlice'
+} from "../../store/listingSearch/listingSearchSelectors";
+import { setFilters, clearFilters } from "../../store/filters/filtersSlice";
 import {
   selectSortBy,
   selectSearchType
-} from '../../store/filters/filtersSelectors'
-import ListingCards from '../../components/listings/ListingCards/ListingCards'
-import NoResults from '../../components/listings/NoResults/NoResults'
-import { useEffect, useRef } from 'react'
-import { selectMobileViewType } from '../../store/application/applicationSlice'
+} from "../../store/filters/filtersSelectors";
+import ListingCards from "../../components/listings/ListingCards/ListingCards";
+import NoResults from "../../components/listings/NoResults/NoResults";
+import { useEffect, useRef } from "react";
+import { selectMobileViewType } from "../../store/application/applicationSlice";
 
 const SearchResults: NextPage = () => {
-  const dispatch = useAppDispatch()
-  const sortBy = useAppSelector(selectSortBy)
-  const searchType = useAppSelector(selectSearchType)
-  const listings = useAppSelector(selectListings)
-  const pagination = useAppSelector(selectPagination)
-  const initialSearchComplete = useAppSelector(selectInitialSearchComplete)
-  const listingSearchRunning = useAppSelector(selectListingSearchRunning)
-  const openListingDetail = useOpenListingDetail(false)
-  const searchResultsRef = useRef<HTMLDivElement>(null)
-  const mobileViewType = useAppSelector(selectMobileViewType)
+  const dispatch = useAppDispatch();
+  const sortBy = useAppSelector(selectSortBy);
+  const searchType = useAppSelector(selectSearchType);
+  const listings = useAppSelector(selectListings);
+  const pagination = useAppSelector(selectPagination);
+  const initialSearchComplete = useAppSelector(selectInitialSearchComplete);
+  const listingSearchRunning = useAppSelector(selectListingSearchRunning);
+  const openListingDetail = useOpenListingDetail(false);
+  const searchResultsRef = useRef<HTMLDivElement>(null);
+  const mobileViewType = useAppSelector(selectMobileViewType);
 
   useEffect(() => {
     if (listingSearchRunning && searchResultsRef?.current?.scrollTop) {
-      searchResultsRef.current.scrollTop = 0
+      searchResultsRef.current.scrollTop = 0;
     }
-  }, [listingSearchRunning])
+  }, [listingSearchRunning]);
 
   const handleSortMenuChange = (sortParams: SortFilters) => {
-    dispatch(setFilters(sortParams))
-    dispatch(searchWithUpdatedFilters())
-  }
+    dispatch(setFilters(sortParams));
+    dispatch(searchWithUpdatedFilters());
+  };
 
   const handlePaginationButtonClick = (pageIndex: number) => {
-    dispatch(setFilters({ pageIndex }))
-    dispatch(searchCurrentLocation())
-  }
+    dispatch(setFilters({ pageIndex }));
+    dispatch(searchCurrentLocation());
+  };
 
   const handleListingCardMouseEnter = (listingId: string) => {
-    dispatch(setHighlightedMarker(listingId))
-  }
+    dispatch(setHighlightedMarker(listingId));
+  };
 
   const handleListingCardMouseLeave = () => {
-    dispatch(setHighlightedMarker(null))
-  }
+    dispatch(setHighlightedMarker(null));
+  };
 
   const resultsClassName =
-    mobileViewType === 'list'
+    mobileViewType === "list"
       ? styles.searchResultsMobileListView
-      : styles.searchResults
+      : styles.searchResults;
 
   return (
     <div ref={searchResultsRef} className={resultsClassName}>
@@ -87,9 +87,7 @@ const SearchResults: NextPage = () => {
       )}
       {listings.length === 0 &&
         initialSearchComplete &&
-        !listingSearchRunning && (
-          <NoResults />
-        )}
+        !listingSearchRunning && <NoResults />}
       {listings.length > 0 && (
         <ListingResultsPagination
           {...pagination}
@@ -97,7 +95,7 @@ const SearchResults: NextPage = () => {
         />
       )}
     </div>
-  )
-}
+  );
+};
 
-export default SearchResults
+export default SearchResults;

@@ -4,8 +4,8 @@
   color: var(--color-primary);
   cursor: pointer;
   height: 2.5rem;
-  padding: 0 .8rem;
-  border-radius: .375rem;
+  padding: 0 0.8rem;
+  border-radius: 0.375rem;
   text-decoration: underline;
   font-size: inherit;
   font-family: inherit;

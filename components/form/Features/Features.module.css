@@ -1,9 +1,9 @@
 .featureList {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  grid-gap: .5rem;
+  grid-gap: 0.5rem;
   list-style: none;
-  margin: .2rem 0;
+  margin: 0.2rem 0;
   padding: 0;
 }
 

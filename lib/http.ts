@@ -1,5 +1,5 @@
-import axios from 'axios'
+import axios from "axios";
 
-const http = axios.create()
+const http = axios.create();
 
-export default http
+export default http;

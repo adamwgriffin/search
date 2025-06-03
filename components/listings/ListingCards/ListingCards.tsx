@@ -1,15 +1,15 @@
-import type { Listing } from '../../../types/listing_types'
-import ListingCard from '../ListingCard/ListingCard'
-import ListingCardLoader from '../ListingCardLoader/ListingCardLoader'
-import styles from './ListingCards.module.css'
+import type { Listing } from "../../../types/listing_types";
+import ListingCard from "../ListingCard/ListingCard";
+import ListingCardLoader from "../ListingCardLoader/ListingCardLoader";
+import styles from "./ListingCards.module.css";
 
 export type ListingCardProps = {
-  listings: Listing[]
-  listingSearchRunning: boolean
-  onListingCardClick: (url: string, listingId: string) => void
-  onListingCardMouseEnter?: (listingId: string) => void
-  onListingCardMouseLeave?: (listingId: string) => void
-}
+  listings: Listing[];
+  listingSearchRunning: boolean;
+  onListingCardClick: (url: string, listingId: string) => void;
+  onListingCardMouseEnter?: (listingId: string) => void;
+  onListingCardMouseLeave?: (listingId: string) => void;
+};
 
 const ListingCards: React.FC<ListingCardProps> = ({
   listings,
@@ -22,12 +22,12 @@ const ListingCards: React.FC<ListingCardProps> = ({
     return (
       <ul className={styles.listingCards}>
         {[...Array(6)].map((_, i) => (
-        <li key={i}>
-          <ListingCardLoader />
-        </li>
-      ))}
+          <li key={i}>
+            <ListingCardLoader />
+          </li>
+        ))}
       </ul>
-    )
+    );
   }
 
   return (
@@ -46,7 +46,7 @@ const ListingCards: React.FC<ListingCardProps> = ({
         </li>
       ))}
     </ul>
-  )
-}
+  );
+};
 
-export default ListingCards
+export default ListingCards;

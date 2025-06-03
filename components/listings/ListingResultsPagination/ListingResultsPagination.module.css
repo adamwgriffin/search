@@ -5,13 +5,13 @@
 .paginationButtons {
   display: flex;
   justify-content: center;
-  column-gap: .2rem;
+  column-gap: 0.2rem;
 }
 
 .morePages {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(10%, 1fr));
-  gap: .5rem;
+  gap: 0.5rem;
   min-width: 9rem;
   max-width: 20rem;
   max-height: 25rem;
@@ -28,6 +28,6 @@
 
 .resultTotals {
   text-align: center;
-  margin-top: .5rem;
+  margin-top: 0.5rem;
   font-size: 0.875rem;
 }

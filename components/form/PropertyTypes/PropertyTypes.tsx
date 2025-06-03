@@ -1,18 +1,18 @@
-import type { NextPage } from 'next'
+import type { NextPage } from "next";
 import type {
   PropertyType,
   PropertyTypeConfig
-} from '../../../lib/property_types'
-import type { ChangeEvent } from 'react'
-import { Fragment } from 'react'
-import styles from './PropertyTypes.module.css'
-import Fieldset from '../../design_system/Fieldset/Fieldset'
-import Legend from '../../design_system/Legend/Legend'
+} from "../../../lib/property_types";
+import type { ChangeEvent } from "react";
+import { Fragment } from "react";
+import styles from "./PropertyTypes.module.css";
+import Fieldset from "../../design_system/Fieldset/Fieldset";
+import Legend from "../../design_system/Legend/Legend";
 
 interface PropertyTypeProps {
-  propertyTypes: Readonly<PropertyTypeConfig[]>
-  params: PropertyType[]
-  onChange: (updatedPropertyTypes: PropertyType[]) => void
+  propertyTypes: Readonly<PropertyTypeConfig[]>;
+  params: PropertyType[];
+  onChange: (updatedPropertyTypes: PropertyType[]) => void;
 }
 
 const PropertyTypes: NextPage<PropertyTypeProps> = ({
@@ -20,15 +20,12 @@ const PropertyTypes: NextPage<PropertyTypeProps> = ({
   params,
   onChange
 }) => {
-  const handleChange = (
-    e: ChangeEvent<HTMLInputElement>,
-    id: PropertyType
-  ) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement>, id: PropertyType) => {
     const updatedPropertyTypes = e.target.checked
       ? params.concat(id)
-      : params.filter((t) => t !== id)
-    onChange(updatedPropertyTypes)
-  }
+      : params.filter((t) => t !== id);
+    onChange(updatedPropertyTypes);
+  };
 
   return (
     <Fieldset>
@@ -37,7 +34,7 @@ const PropertyTypes: NextPage<PropertyTypeProps> = ({
         {propertyTypes.map(({ label, id }) => (
           <Fragment key={`property-type-${label}-${id}`}>
             <input
-              type='checkbox'
+              type="checkbox"
               id={id}
               className={styles.checkbox}
               name={id}
@@ -52,7 +49,7 @@ const PropertyTypes: NextPage<PropertyTypeProps> = ({
         ))}
       </div>
     </Fieldset>
-  )
-}
+  );
+};
 
-export default PropertyTypes
+export default PropertyTypes;

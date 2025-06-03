@@ -1,21 +1,21 @@
-import type { ListingDetail } from '../../../../types/listing_types'
+import type { ListingDetail } from "../../../../types/listing_types";
 import {
   formatPriceFromListing,
   formatSoldDate
-} from '../../../../lib/listing_helpers'
-import ListingStatusIndicator from '../../ListingStatusIndicator/ListingStatusIndicator'
-import ListingDetailImage from '../ListingDetailImage'
-import ListingDetailAddress from '../ListingDetailAddress/ListingDetailAddress'
-import ListingDetailBedsBathsSQFT from '../ListingDetailBedsBathsSQFT/ListingDetailBedsBathsSQFT'
-import Description from '../Description/Description'
-import HomeHighlights from '../Highlights/HomeHighlights'
-import PropertyDetails from '../PropertyDetails/PropertyDetails'
-import OpenHouseList from '../OpenHouseList/OpenHouseList'
-import styles from './ListingDetail.module.css'
+} from "../../../../lib/listing_helpers";
+import ListingStatusIndicator from "../../ListingStatusIndicator/ListingStatusIndicator";
+import ListingDetailImage from "../ListingDetailImage";
+import ListingDetailAddress from "../ListingDetailAddress/ListingDetailAddress";
+import ListingDetailBedsBathsSQFT from "../ListingDetailBedsBathsSQFT/ListingDetailBedsBathsSQFT";
+import Description from "../Description/Description";
+import HomeHighlights from "../Highlights/HomeHighlights";
+import PropertyDetails from "../PropertyDetails/PropertyDetails";
+import OpenHouseList from "../OpenHouseList/OpenHouseList";
+import styles from "./ListingDetail.module.css";
 
 export type ListingDetailProps = {
-  listing: ListingDetail
-}
+  listing: ListingDetail;
+};
 
 const ListingDetail: React.FC<ListingDetailProps> = ({ listing }) => {
   return (
@@ -40,7 +40,7 @@ const ListingDetail: React.FC<ListingDetailProps> = ({ listing }) => {
         <PropertyDetails propertyDetails={listing.propertyDetails} />
       )}
     </div>
-  )
-}
+  );
+};
 
-export default ListingDetail
+export default ListingDetail;

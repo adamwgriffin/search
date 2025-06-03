@@ -9,7 +9,7 @@
   display: grid;
   grid-template-columns: 1.5rem auto;
   cursor: pointer;
-  padding: .5rem;
+  padding: 0.5rem;
 }
 
 .menuItem:first-child {

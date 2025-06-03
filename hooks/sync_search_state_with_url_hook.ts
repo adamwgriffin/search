@@ -1,29 +1,29 @@
-import type { FiltersState } from '../store/filters/filtersTypes'
-import { useState, useCallback, useEffect } from 'react'
-import { useEvent } from 'react-use'
-import isEqual from 'lodash/isEqual'
-import { useAppSelector, useAppDispatch } from './app_hooks'
-import { usePushParamsToSearchUrl } from './push_params_to_search_url_hook'
-import { useSearchNewLocation } from './search_new_location_hook'
-import { listingSearchURLParamsToSearchState } from '../lib/url'
-import { initialState, setFilters } from '../store/filters/filtersSlice'
+import type { FiltersState } from "../store/filters/filtersTypes";
+import { useState, useCallback, useEffect } from "react";
+import { useEvent } from "react-use";
+import isEqual from "lodash/isEqual";
+import { useAppSelector, useAppDispatch } from "./app_hooks";
+import { usePushParamsToSearchUrl } from "./push_params_to_search_url_hook";
+import { useSearchNewLocation } from "./search_new_location_hook";
+import { listingSearchURLParamsToSearchState } from "../lib/url";
+import { initialState, setFilters } from "../store/filters/filtersSlice";
 import {
   selectInitialSearchComplete,
   selectListingSearchRunning
-} from '../store/listingSearch/listingSearchSelectors'
-import { selectSearchState } from '../store/filters/filtersSelectors'
-import { searchCurrentLocation } from '../store/listingSearch/listingSearchCommon'
-import { setDoListingSearchOnMapIdle } from '../store/listingSearch/listingSearchSlice'
+} from "../store/listingSearch/listingSearchSelectors";
+import { selectSearchState } from "../store/filters/filtersSelectors";
+import { searchCurrentLocation } from "../store/listingSearch/listingSearchCommon";
+import { setDoListingSearchOnMapIdle } from "../store/listingSearch/listingSearchSlice";
 
 export const useSyncSearchStateWithUrl = () => {
-  const dispatch = useAppDispatch()
-  const listingSearchRunning = useAppSelector(selectListingSearchRunning)
-  const initialSearchComplete = useAppSelector(selectInitialSearchComplete)
-  const pushParamsToSearchUrl = usePushParamsToSearchUrl()
-  const searchNewLocation = useSearchNewLocation()
-  const searchState = useAppSelector(selectSearchState)
+  const dispatch = useAppDispatch();
+  const listingSearchRunning = useAppSelector(selectListingSearchRunning);
+  const initialSearchComplete = useAppSelector(selectInitialSearchComplete);
+  const pushParamsToSearchUrl = usePushParamsToSearchUrl();
+  const searchNewLocation = useSearchNewLocation();
+  const searchState = useAppSelector(selectSearchState);
   const [previousSearchState, setPreviousSearchState] =
-    useState<Partial<FiltersState>>()
+    useState<Partial<FiltersState>>();
 
   // Get the browser url query string, convert it to a state object, use it to
   // set the state, then run a new search based on that state.
@@ -40,44 +40,44 @@ export const useSyncSearchStateWithUrl = () => {
         ...listingSearchURLParamsToSearchState(
           new URLSearchParams(window.location.search)
         )
-      }
-      dispatch(setFilters(newSearchState))
-      return newSearchState
-    }, [dispatch])
+      };
+      dispatch(setFilters(newSearchState));
+      return newSearchState;
+    }, [dispatch]);
 
   // This useEffect is the entrypoint for getting params from the url and
   // running the first search after the page loads
   useEffect(() => {
-    const searchState = getSearchParamsAndSetSearchState()
+    const searchState = getSearchParamsAndSetSearchState();
     if (searchState.locationSearchField) {
-      searchNewLocation()
+      searchNewLocation();
     } else {
-      dispatch(setDoListingSearchOnMapIdle(true))
+      dispatch(setDoListingSearchOnMapIdle(true));
     }
-  }, [dispatch, getSearchParamsAndSetSearchState, searchNewLocation])
+  }, [dispatch, getSearchParamsAndSetSearchState, searchNewLocation]);
 
   // If the user clicks the back or forward button in the browser, we want to
   // get the url that was loaded from the previous/next part of the browser
   // history, and then run a new search to match the url params. The "popstate"
   // event is triggered whenever the history is changed by the user in this way.
   const onPopState = useCallback(() => {
-    const newSearchState = getSearchParamsAndSetSearchState()
+    const newSearchState = getSearchParamsAndSetSearchState();
     if (
       newSearchState.locationSearchField ===
       previousSearchState?.locationSearchField
     ) {
-      dispatch(searchCurrentLocation())
+      dispatch(searchCurrentLocation());
     } else {
-      searchNewLocation()
+      searchNewLocation();
     }
   }, [
     dispatch,
     getSearchParamsAndSetSearchState,
     previousSearchState?.locationSearchField,
     searchNewLocation
-  ])
+  ]);
 
-  useEvent('popstate', onPopState)
+  useEvent("popstate", onPopState);
 
   // Each time the user triggers a new search, we want to update the url, so
   // that if the user were to go directly to this new url in the future, it
@@ -95,10 +95,10 @@ export const useSyncSearchStateWithUrl = () => {
       initialSearchComplete &&
       // Avoid updating unless the searchState changed, otherwise clicking the
       // back button will not change the url
-      !isEqual(searchState, previousSearchState)
+      !isEqual(searchState, previousSearchState);
     if (shouldUpdateURL) {
-      pushParamsToSearchUrl(searchState)
-      setPreviousSearchState(searchState)
+      pushParamsToSearchUrl(searchState);
+      setPreviousSearchState(searchState);
     }
   }, [
     listingSearchRunning,
@@ -106,5 +106,5 @@ export const useSyncSearchStateWithUrl = () => {
     searchState,
     previousSearchState,
     pushParamsToSearchUrl
-  ])
-}
+  ]);
+};

@@ -1,12 +1,12 @@
-import type { ListingDetail } from '../../../../types/listing_types'
-import { getPropertyTypeLabel } from '../../../../lib/property_types'
-import { formatSqft, formatLotSize } from '../../../../lib/listing_helpers'
-import { Locale } from '../../../../config'
-import styles from './HomeHighlights.module.css'
+import type { ListingDetail } from "../../../../types/listing_types";
+import { getPropertyTypeLabel } from "../../../../lib/property_types";
+import { formatSqft, formatLotSize } from "../../../../lib/listing_helpers";
+import { Locale } from "../../../../config";
+import styles from "./HomeHighlights.module.css";
 
 export type HomeHighlightsProps = {
-  listing: ListingDetail
-}
+  listing: ListingDetail;
+};
 
 const HomeHighlights: React.FC<HomeHighlightsProps> = ({ listing }) => {
   return (
@@ -22,7 +22,7 @@ const HomeHighlights: React.FC<HomeHighlightsProps> = ({ listing }) => {
             <div className={styles.detailsName}>Time on Site</div>
             <div>
               {`${listing.daysOnMarket.toLocaleString(Locale)} ${
-                listing.daysOnMarket > 1 ? 'days' : 'day'
+                listing.daysOnMarket > 1 ? "days" : "day"
               }`}
             </div>
           </li>
@@ -43,7 +43,7 @@ const HomeHighlights: React.FC<HomeHighlightsProps> = ({ listing }) => {
         </li>
       </ul>
     </div>
-  )
-}
+  );
+};
 
-export default HomeHighlights
+export default HomeHighlights;

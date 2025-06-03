@@ -1,25 +1,25 @@
-'use client'
+"use client";
 
-import type { PhotoGalleryImage } from '../../../../types/listing_types'
-import { useState, useCallback, useLayoutEffect } from 'react'
-import { useEvent } from 'react-use'
-import { buildSrcSet } from '../../../../lib/listing_image_helpers'
-import { sliceWrap } from '../../../../lib'
-import styles from './SlideShow.module.css'
+import type { PhotoGalleryImage } from "../../../../types/listing_types";
+import { useState, useCallback, useLayoutEffect } from "react";
+import { useEvent } from "react-use";
+import { buildSrcSet } from "../../../../lib/listing_image_helpers";
+import { sliceWrap } from "../../../../lib";
+import styles from "./SlideShow.module.css";
 
 export type SlideShowProps = {
-  images: PhotoGalleryImage[]
-  open: boolean
-  onClose?: () => void
-}
+  images: PhotoGalleryImage[];
+  open: boolean;
+  onClose?: () => void;
+};
 
 /** Number of extra images to load both before and after the current image */
-const ExtraImagesToLoad = 1
+const ExtraImagesToLoad = 1;
 /** Total number of images that will be loaded at once */
-const TotalImagesToLoad = ExtraImagesToLoad * 2 + 1
+const TotalImagesToLoad = ExtraImagesToLoad * 2 + 1;
 
 const SlideShow: React.FC<SlideShowProps> = ({ images, open, onClose }) => {
-  const [currentIndex, setCurrentIndex] = useState(0)
+  const [currentIndex, setCurrentIndex] = useState(0);
 
   /**
    * Return a slice of the gallery so that we have extra images pre-loaded
@@ -30,49 +30,49 @@ const SlideShow: React.FC<SlideShowProps> = ({ images, open, onClose }) => {
    */
   const gallerySlice = useCallback(() => {
     if (images.length <= TotalImagesToLoad) {
-      return images
+      return images;
     }
     return sliceWrap(
       images,
       currentIndex - ExtraImagesToLoad,
       currentIndex + (ExtraImagesToLoad + 1)
-    )
-  }, [currentIndex, images])
+    );
+  }, [currentIndex, images]);
 
   const cycleForward = useCallback(() => {
-    setCurrentIndex((currentIndex + 1) % images.length)
-  }, [currentIndex, images.length])
+    setCurrentIndex((currentIndex + 1) % images.length);
+  }, [currentIndex, images.length]);
 
   const cycleBackward = useCallback(() => {
-    setCurrentIndex((currentIndex - 1 + images.length) % images.length)
-  }, [currentIndex, images.length])
+    setCurrentIndex((currentIndex - 1 + images.length) % images.length);
+  }, [currentIndex, images.length]);
 
   const closeSlideShow = useCallback(() => {
-    setCurrentIndex(0)
-    onClose?.()
-  }, [onClose])
+    setCurrentIndex(0);
+    onClose?.();
+  }, [onClose]);
 
   // With useLayoutEffect we can avoid any potential flicker associated with
   // manually maniplulating the DOM like this because it happens before the
   // browser repaints the screen
   useLayoutEffect(() => {
-    document.body.style.overflow = open ? 'hidden' : ''
-  }, [open])
+    document.body.style.overflow = open ? "hidden" : "";
+  }, [open]);
 
-  useEvent('keydown', (event) => {
-    if (!open) return
+  useEvent("keydown", (event) => {
+    if (!open) return;
     switch (event.key) {
-      case 'ArrowLeft':
-        cycleBackward()
-        break
-      case 'ArrowRight':
-        cycleForward()
-        break
-      case 'Escape':
-        closeSlideShow()
-        break
+      case "ArrowLeft":
+        cycleBackward();
+        break;
+      case "ArrowRight":
+        cycleForward();
+        break;
+      case "Escape":
+        closeSlideShow();
+        break;
     }
-  })
+  });
 
   return (
     <dialog open={open} className={styles.slideShow}>
@@ -104,8 +104,8 @@ const SlideShow: React.FC<SlideShowProps> = ({ images, open, onClose }) => {
             <img
               srcSet={buildSrcSet(image.url)}
               src={`${process.env.NEXT_PUBLIC_IMAGE_URL}${image.url}`}
-              fetchPriority={open ? 'auto' : 'low'}
-              decoding={open ? 'auto' : 'async'}
+              fetchPriority={open ? "auto" : "low"}
+              decoding={open ? "auto" : "async"}
               alt={`Listing gallery photo ${currentIndex + 1}`}
               className={styles.image}
             />
@@ -120,7 +120,7 @@ const SlideShow: React.FC<SlideShowProps> = ({ images, open, onClose }) => {
         </div>
       </div>
     </dialog>
-  )
-}
+  );
+};
 
-export default SlideShow
+export default SlideShow;

@@ -1,90 +1,91 @@
-import type { AppState } from '..'
-import type { PayloadAction } from '@reduxjs/toolkit'
-import { createSlice } from '@reduxjs/toolkit'
+import type { AppState } from "..";
+import type { PayloadAction } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 
-export type MobileViewType = 'list' | 'map'
+export type MobileViewType = "list" | "map";
 
 export type ModalType =
-  | 'filters'
-  | 'saveSearch'
-  | 'listingDetail'
-  | 'loginOrRegister'
+  | "filters"
+  | "saveSearch"
+  | "listingDetail"
+  | "loginOrRegister";
 
 export type ListingDetailModalProps = {
-  listingSlug: string
-}
+  listingSlug: string;
+};
 
-export type ModalPropsTypes = ListingDetailModalProps | null
+export type ModalPropsTypes = ListingDetailModalProps | null;
 
 export type ApplicationState = {
-  mobileViewType: MobileViewType
-  modalType: ModalType | null
-  modalProps: ModalPropsTypes
-  modalOpen: boolean
-}
+  mobileViewType: MobileViewType;
+  modalType: ModalType | null;
+  modalProps: ModalPropsTypes;
+  modalOpen: boolean;
+};
 
 export type OpenModalPayload = {
-  modalType: ModalType
-  modalProps?: ModalPropsTypes
-}
+  modalType: ModalType;
+  modalProps?: ModalPropsTypes;
+};
 
 const initialState: ApplicationState = {
-  mobileViewType: 'list',
+  mobileViewType: "list",
   modalType: null,
   modalProps: null,
   modalOpen: false
-}
+};
 
 export const applicationSlice = createSlice({
-  name: 'application',
+  name: "application",
 
   initialState,
 
   reducers: {
     toggleMobileViewType(state, action: PayloadAction<MobileViewType>) {
-      state.mobileViewType = action.payload
+      state.mobileViewType = action.payload;
     },
 
     openModal(state, action: PayloadAction<OpenModalPayload>) {
-      state.modalType = action.payload.modalType
+      state.modalType = action.payload.modalType;
       state.modalProps = action.payload.modalProps
         ? action.payload.modalProps
-        : null
-      state.modalOpen = true
+        : null;
+      state.modalOpen = true;
     },
 
     closeModal(state) {
-      state.modalOpen = false
+      state.modalOpen = false;
     },
 
     resetModal(state) {
-      state.modalType = initialState.modalType
-      state.modalProps = initialState.modalProps
+      state.modalType = initialState.modalType;
+      state.modalProps = initialState.modalProps;
     }
   }
-})
+});
 
 export const { toggleMobileViewType, openModal, closeModal, resetModal } =
-  applicationSlice.actions
+  applicationSlice.actions;
 
 const modalTypeOpen = (state: AppState, modalType: ModalType) =>
-  state.application.modalType === modalType && state.application.modalOpen
+  state.application.modalType === modalType && state.application.modalOpen;
 
-export const selectMobileViewType = (state: AppState) => state.application.mobileViewType
+export const selectMobileViewType = (state: AppState) =>
+  state.application.mobileViewType;
 
 export const selectListingModalSlug = (state: AppState) =>
-  state.application.modalProps?.listingSlug
+  state.application.modalProps?.listingSlug;
 
 export const selectFiltersModalOpen = (state: AppState) =>
-  modalTypeOpen(state, 'filters')
+  modalTypeOpen(state, "filters");
 
 export const selectSaveSearchModalOpen = (state: AppState) =>
-  modalTypeOpen(state, 'saveSearch')
+  modalTypeOpen(state, "saveSearch");
 
 export const selectListingDetailModalOpen = (state: AppState) =>
-  modalTypeOpen(state, 'listingDetail')
+  modalTypeOpen(state, "listingDetail");
 
 export const selectLoginOrRegisterModalOpen = (state: AppState) =>
-  modalTypeOpen(state, 'loginOrRegister')
+  modalTypeOpen(state, "loginOrRegister");
 
-export default applicationSlice.reducer
+export default applicationSlice.reducer;

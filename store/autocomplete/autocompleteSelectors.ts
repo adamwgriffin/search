@@ -1,8 +1,7 @@
-import type { AppState } from '..'
+import type { AppState } from "..";
 
 export const selectAutcompletePlacePredictions = (state: AppState) =>
-  state.autocomplete.autcompletePlacePredictions
+  state.autocomplete.autcompletePlacePredictions;
 
 export const selectSelectedAutcompletePlacePrediction = (state: AppState) =>
-  state.autocomplete.selectedAutcompletePlacePrediction
-
+  state.autocomplete.selectedAutcompletePlacePrediction;

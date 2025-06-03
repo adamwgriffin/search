@@ -1,42 +1,44 @@
-import { type ImgHTMLAttributes, useState } from 'react'
+import { type ImgHTMLAttributes, useState } from "react";
 import {
   buildSrcSet,
   streetViewImageUrl
-} from '../../../../lib/listing_image_helpers'
-import styles from './ListingDetailMainImage.module.css'
-import { GoogleStreetViewMaxImageSize } from '../../../../config/googleMapsOptions'
+} from "../../../../lib/listing_image_helpers";
+import styles from "./ListingDetailMainImage.module.css";
+import { GoogleStreetViewMaxImageSize } from "../../../../config/googleMapsOptions";
 
 export type ListingDetailMainImageProps = {
-  imageUrl: string | undefined
-  streetViewLat: number
-  streetViewLng: number
-  alt?: string
-  onClick?: () => void
-}
+  imageUrl: string | undefined;
+  streetViewLat: number;
+  streetViewLng: number;
+  alt?: string;
+  onClick?: () => void;
+};
 
-const DesktopImageRatio = 16 / 9
-const MobileImageRatio = 1 / 1
+const DesktopImageRatio = 16 / 9;
+const MobileImageRatio = 1 / 1;
 const ImageLoadErrorFallbackUrl =
-  '/default_listing_image/default_listing_image_full.jpg'
-const MobileMediaQuery = '(max-width: 576px)'
+  "/default_listing_image/default_listing_image_full.jpg";
+const MobileMediaQuery = "(max-width: 576px)";
 const commonImgAttrs: ImgHTMLAttributes<HTMLImageElement> = {
-  fetchPriority: 'high',
+  fetchPriority: "high",
   className: styles.listingDetailMainImage
-}
+};
 
 const ListingDetailMainImage: React.FC<ListingDetailMainImageProps> = ({
   imageUrl,
   streetViewLat,
   streetViewLng,
-  alt = 'Listing photo',
+  alt = "Listing photo",
   onClick
 }) => {
-  const [imageLoadError, setImageLoadError] = useState(false)
+  const [imageLoadError, setImageLoadError] = useState(false);
 
-  const handleImageLoadError = () => setImageLoadError(true)
+  const handleImageLoadError = () => setImageLoadError(true);
 
   if (imageLoadError) {
-    return <img src={ImageLoadErrorFallbackUrl} alt={alt} {...commonImgAttrs} />
+    return (
+      <img src={ImageLoadErrorFallbackUrl} alt={alt} {...commonImgAttrs} />
+    );
   }
 
   if (imageUrl) {
@@ -48,13 +50,13 @@ const ListingDetailMainImage: React.FC<ListingDetailMainImageProps> = ({
         />
         <img
           srcSet={buildSrcSet(imageUrl, DesktopImageRatio)}
-          sizes='800px'
+          sizes="800px"
           src={imageUrl}
           onClick={onClick}
           onKeyDown={(e) => {
-            if (e.key === 'Enter') {
-              e.preventDefault()
-              onClick?.()
+            if (e.key === "Enter") {
+              e.preventDefault();
+              onClick?.();
             }
           }}
           // If there is no image for the location the street view service will
@@ -62,12 +64,12 @@ const ListingDetailMainImage: React.FC<ListingDetailMainImageProps> = ({
           onError={handleImageLoadError}
           alt={alt}
           tabIndex={0}
-          role='button'
-          aria-haspopup='dialog'
+          role="button"
+          aria-haspopup="dialog"
           {...commonImgAttrs}
         />
       </picture>
-    )
+    );
   }
 
   return (
@@ -88,7 +90,7 @@ const ListingDetailMainImage: React.FC<ListingDetailMainImageProps> = ({
         {...commonImgAttrs}
       />
     </picture>
-  )
-}
+  );
+};
 
-export default ListingDetailMainImage
+export default ListingDetailMainImage;

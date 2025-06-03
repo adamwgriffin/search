@@ -1,15 +1,20 @@
-import type { NextPage } from 'next'
-import type { ReactNode } from 'react'
-import styles from './PaginationButton.module.css'
+import type { NextPage } from "next";
+import type { ReactNode } from "react";
+import styles from "./PaginationButton.module.css";
 
 export interface PaginationButtonProps {
-  title: string
-  disabled?: boolean
-  children?: ReactNode
-  onClick?: () => void
+  title: string;
+  disabled?: boolean;
+  children?: ReactNode;
+  onClick?: () => void;
 }
 
-const PaginationButton: NextPage<PaginationButtonProps> = ({ title, disabled = false, children, onClick }) => {
+const PaginationButton: NextPage<PaginationButtonProps> = ({
+  title,
+  disabled = false,
+  children,
+  onClick
+}) => {
   return (
     <button
       className={styles.paginationButton}
@@ -20,7 +25,7 @@ const PaginationButton: NextPage<PaginationButtonProps> = ({ title, disabled = f
     >
       {children}
     </button>
-  )
-}
+  );
+};
 
-export default PaginationButton
+export default PaginationButton;

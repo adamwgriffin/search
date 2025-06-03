@@ -1,9 +1,9 @@
-import { Suspense } from 'react'
-import LoginOrRegisterForm from '../../components/form/LoginOrRegisterForm/LoginOrRegisterForm'
-import styles from './login.module.css'
+import { Suspense } from "react";
+import LoginOrRegisterForm from "../../components/form/LoginOrRegisterForm/LoginOrRegisterForm";
+import styles from "./login.module.css";
 
 function LoginOrRegisterFormFallback() {
-  return <></>
+  return <></>;
 }
 
 const Login: React.FC = () => {
@@ -20,7 +20,7 @@ const Login: React.FC = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Login
+export default Login;

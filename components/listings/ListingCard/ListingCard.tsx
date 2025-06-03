@@ -1,22 +1,22 @@
-import type { NextPage } from 'next'
-import type { MouseEvent } from 'react'
-import type { Listing } from '../../../types/listing_types'
-import Link from 'next/link'
-import styles from './ListingCard.module.css'
+import type { NextPage } from "next";
+import type { MouseEvent } from "react";
+import type { Listing } from "../../../types/listing_types";
+import Link from "next/link";
+import styles from "./ListingCard.module.css";
 import {
   formatPriceFromListing,
   getBathrooms,
   formatSqft,
   cityStateZip
-} from '../../../lib/listing_helpers'
-import ListingCardImage from '../ListingCardImage/ListingCardImage'
+} from "../../../lib/listing_helpers";
+import ListingCardImage from "../ListingCardImage/ListingCardImage";
 
 export interface ListingCardProps {
-  listing: Listing
-  url: string
-  onClick?: () => void
-  onMouseEnter?: () => void
-  onMouseLeave?: () => void
+  listing: Listing;
+  url: string;
+  onClick?: () => void;
+  onMouseEnter?: () => void;
+  onMouseLeave?: () => void;
 }
 
 const ListingCard: NextPage<ListingCardProps> = ({
@@ -27,9 +27,9 @@ const ListingCard: NextPage<ListingCardProps> = ({
   onMouseLeave
 }) => {
   const handleClick = (event: MouseEvent<HTMLAnchorElement>) => {
-    event.preventDefault()
-    onClick?.()
-  }
+    event.preventDefault();
+    onClick?.();
+  };
 
   return (
     <Link
@@ -55,7 +55,7 @@ const ListingCard: NextPage<ListingCardProps> = ({
         </div>
       </div>
     </Link>
-  )
-}
+  );
+};
 
-export default ListingCard
+export default ListingCard;

@@ -3,7 +3,7 @@
   justify-content: center;
   align-items: center;
   cursor: pointer;
-  padding: .0625rem;
+  padding: 0.0625rem;
   border: none;
   transition: 0.2s;
   background: none;
@@ -16,11 +16,11 @@
 #favoriteStroke,
 #favoriteFilled {
   stroke: white;
-  fill: rgba(0, 0, 0, 0.5);  
+  fill: rgba(0, 0, 0, 0.5);
 }
 
 #favoriteStroke {
-	animation: 300ms addFavorite forwards;
+  animation: 300ms addFavorite forwards;
 }
 
 #favoriteFilled {
@@ -29,31 +29,31 @@
 
 @keyframes addFavorite {
   0% {
-		transform: scale(1);
-	}
-	20% {
-		transform: scale(0.9);
-	}
-	40% {
-		transform: scale(1.1);
-	}
-	100% {
-		transform: scale(1);
-		fill: var(--secondary);
-	}
+    transform: scale(1);
+  }
+  20% {
+    transform: scale(0.9);
+  }
+  40% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+    fill: var(--secondary);
+  }
 }
 
 @keyframes removeFavorite {
   0% {
-		transform: scale(1);
-	}
+    transform: scale(1);
+  }
   20% {
-		transform: scale(0.9);
-	}
-	40% {
-		transform: scale(1.1);
-	}
-	100% {
-		transform: scale(1);
-	}
+    transform: scale(0.9);
+  }
+  40% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
 }

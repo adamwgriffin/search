@@ -5,29 +5,31 @@ import {
   type FocusEvent,
   type ChangeEvent,
   type KeyboardEvent
-} from 'react'
-import { useClickAway } from 'react-use'
-import SearchButton from '../SearchButton/SearchButton'
-import LocationPinFilledIcon from '../../design_system/icons/LocationPinFilledIcon/LocationPinFilledIcon'
-import PlacePredictionText from '../PlacePredictionText/PlacePredictionText'
-import styles from './SearchField.module.css'
+} from "react";
+import { useClickAway } from "react-use";
+import SearchButton from "../SearchButton/SearchButton";
+import LocationPinFilledIcon from "../../design_system/icons/LocationPinFilledIcon/LocationPinFilledIcon";
+import PlacePredictionText from "../PlacePredictionText/PlacePredictionText";
+import styles from "./SearchField.module.css";
 
 export type SearchFieldProps = {
-  options: Array<google.maps.places.AutocompletePrediction>
-  value?: string
-  placeholder?: string
-  onInput?: (details: string) => void
-  onClearPlaceAutocompletePredictions?: () => void
-  onSearchInitiated?: () => void
-  onOptionSelected?: (option: google.maps.places.AutocompletePrediction) => void
-  onGetPlaceAutocompletePredictions?: (val: string) => void
-}
+  options: Array<google.maps.places.AutocompletePrediction>;
+  value?: string;
+  placeholder?: string;
+  onInput?: (details: string) => void;
+  onClearPlaceAutocompletePredictions?: () => void;
+  onSearchInitiated?: () => void;
+  onOptionSelected?: (
+    option: google.maps.places.AutocompletePrediction
+  ) => void;
+  onGetPlaceAutocompletePredictions?: (val: string) => void;
+};
 
-const UnselectedIndex = -1
+const UnselectedIndex = -1;
 
 const SearchField: React.FC<SearchFieldProps> = ({
   value,
-  placeholder = 'Address, Neighborhood or Zip',
+  placeholder = "Address, Neighborhood or Zip",
   options,
   onInput,
   onClearPlaceAutocompletePredictions,
@@ -35,46 +37,46 @@ const SearchField: React.FC<SearchFieldProps> = ({
   onOptionSelected,
   onGetPlaceAutocompletePredictions
 }) => {
-  const id = useId()
-  const ref = useRef(null)
-  const [open, setOpen] = useState(false)
+  const id = useId();
+  const ref = useRef(null);
+  const [open, setOpen] = useState(false);
   const [selectedListItemIndex, setSelectedListItemIndex] =
-    useState(UnselectedIndex)
-  const [lastInputValue, setLastInputValue] = useState<string | undefined>()
+    useState(UnselectedIndex);
+  const [lastInputValue, setLastInputValue] = useState<string | undefined>();
 
   const aListItemIsCurrentlySelected = () =>
     selectedListItemIndex > UnselectedIndex &&
-    selectedListItemIndex < options.length
+    selectedListItemIndex < options.length;
 
   const openDropdown = () => {
     if (!open) {
-      setOpen(true)
-      setLastInputValue(value)
+      setOpen(true);
+      setLastInputValue(value);
     }
-  }
+  };
 
   const closeDropdown = () => {
     if (open) {
-      setOpen(false)
-      setSelectedListItemIndex(UnselectedIndex)
+      setOpen(false);
+      setSelectedListItemIndex(UnselectedIndex);
     }
-  }
+  };
 
   const setInputToNewListItemSelection = (newSelectedListItemIndex: number) => {
-    onInput?.(options[newSelectedListItemIndex].description)
-  }
+    onInput?.(options[newSelectedListItemIndex].description);
+  };
 
   const setInputBackToLastValue = () => {
-    onInput?.(lastInputValue || '')
-  }
+    onInput?.(lastInputValue || "");
+  };
 
   const setInputAccordingToListItemSelection = (
     newSelectedListItemIndex: number
   ) => {
     newSelectedListItemIndex === UnselectedIndex
       ? setInputBackToLastValue()
-      : setInputToNewListItemSelection(newSelectedListItemIndex)
-  }
+      : setInputToNewListItemSelection(newSelectedListItemIndex);
+  };
 
   // When the arrow keys go up or down the selection cycles through each menu
   // item in the options array. When the user reaches the beginning or end of
@@ -89,126 +91,126 @@ const SearchField: React.FC<SearchFieldProps> = ({
   // `setInputAccordingToListItemSelection()` runs before the component is
   // re-rendered, so it still has the old value of `selectedListItemIndex`
   const moveSelectionUp = () => {
-    openDropdown()
-    if (options.length === 0) return
+    openDropdown();
+    if (options.length === 0) return;
     const newSelectedListItemIndex =
       selectedListItemIndex !== UnselectedIndex
         ? selectedListItemIndex - 1
-        : options.length - 1
-    setSelectedListItemIndex(newSelectedListItemIndex)
-    setInputAccordingToListItemSelection(newSelectedListItemIndex)
-  }
+        : options.length - 1;
+    setSelectedListItemIndex(newSelectedListItemIndex);
+    setInputAccordingToListItemSelection(newSelectedListItemIndex);
+  };
 
   const moveSelectionDown = () => {
-    openDropdown()
-    if (options.length === 0) return
+    openDropdown();
+    if (options.length === 0) return;
     const newSelectedListItemIndex =
       selectedListItemIndex + 1 < options.length
         ? selectedListItemIndex + 1
-        : UnselectedIndex
-    setSelectedListItemIndex(newSelectedListItemIndex)
-    setInputAccordingToListItemSelection(newSelectedListItemIndex)
-  }
+        : UnselectedIndex;
+    setSelectedListItemIndex(newSelectedListItemIndex);
+    setInputAccordingToListItemSelection(newSelectedListItemIndex);
+  };
 
   const initiateSearch = () => {
-    onClearPlaceAutocompletePredictions?.()
-    onSearchInitiated?.()
-    closeDropdown()
-  }
+    onClearPlaceAutocompletePredictions?.();
+    onSearchInitiated?.();
+    closeDropdown();
+  };
 
   const handleFocus = (e: FocusEvent<HTMLInputElement>) => {
-    e.target.select()
-    openDropdown()
-  }
+    e.target.select();
+    openDropdown();
+  };
 
   const handleEscape = () => {
-    closeDropdown()
-    setInputBackToLastValue()
-  }
+    closeDropdown();
+    setInputBackToLastValue();
+  };
 
   const handleListItemClick = (
     option: google.maps.places.AutocompletePrediction
   ) => {
-    onOptionSelected?.(option)
-    onClearPlaceAutocompletePredictions?.()
-    closeDropdown()
-  }
+    onOptionSelected?.(option);
+    onClearPlaceAutocompletePredictions?.();
+    closeDropdown();
+  };
 
   const handleEnter = () => {
     if (aListItemIsCurrentlySelected()) {
-      onOptionSelected?.(options[selectedListItemIndex])
-      onClearPlaceAutocompletePredictions?.()
-      closeDropdown()
+      onOptionSelected?.(options[selectedListItemIndex]);
+      onClearPlaceAutocompletePredictions?.();
+      closeDropdown();
     } else {
-      initiateSearch()
+      initiateSearch();
     }
-  }
+  };
 
   const handleKeyUp = (e: KeyboardEvent<HTMLInputElement>) => {
-    e.stopPropagation()
+    e.stopPropagation();
     switch (e.key) {
-      case 'Enter':
-        handleEnter()
-        break
-      case 'Escape':
-        handleEscape()
-        break
+      case "Enter":
+        handleEnter();
+        break;
+      case "Escape":
+        handleEscape();
+        break;
     }
-  }
+  };
 
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
-    e.stopPropagation()
+    e.stopPropagation();
     switch (e.key) {
-      case 'Tab':
-        closeDropdown()
-        break
-      case 'ArrowUp':
-        moveSelectionUp()
-        break
-      case 'ArrowDown':
-        moveSelectionDown()
-        break
+      case "Tab":
+        closeDropdown();
+        break;
+      case "ArrowUp":
+        moveSelectionUp();
+        break;
+      case "ArrowDown":
+        moveSelectionDown();
+        break;
     }
-  }
+  };
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    openDropdown()
-    const val = e.target.value
-    onInput?.(val)
+    openDropdown();
+    const val = e.target.value;
+    onInput?.(val);
     val
       ? onGetPlaceAutocompletePredictions?.(val)
-      : onClearPlaceAutocompletePredictions?.()
-    setLastInputValue(val)
-  }
+      : onClearPlaceAutocompletePredictions?.();
+    setLastInputValue(val);
+  };
 
   const listItemId = (index: number) =>
-    `search-listbox-${id}-list-item-${index}`
+    `search-listbox-${id}-list-item-${index}`;
 
   const ariaActivedescendant = () => {
     return aListItemIsCurrentlySelected()
       ? listItemId(selectedListItemIndex)
-      : ''
-  }
+      : "";
+  };
 
-  useClickAway(ref, closeDropdown)
+  useClickAway(ref, closeDropdown);
 
-  const listboxId = `search-listbox-${id}`
+  const listboxId = `search-listbox-${id}`;
 
   return (
     <div className={styles.comboboxWrapper} ref={ref}>
       <div className={styles.searchFieldElements}>
         <input
-          id='locationSearchField'
-          name='locationSearchField'
+          id="locationSearchField"
+          name="locationSearchField"
           className={styles.locationSearchField}
-          role='combobox'
+          role="combobox"
           aria-controls={listboxId}
           aria-expanded={open}
-          aria-label='Location Search'
-          aria-autocomplete='list'
+          aria-label="Location Search"
+          aria-autocomplete="list"
           aria-activedescendant={ariaActivedescendant()}
-          type='text'
-          autoComplete='off'
+          type="text"
+          autoComplete="off"
           placeholder={placeholder}
           value={value}
           onChange={handleChange}
@@ -221,14 +223,14 @@ const SearchField: React.FC<SearchFieldProps> = ({
       </div>
       <ul
         id={listboxId}
-        role='listbox'
+        role="listbox"
         tabIndex={-1}
         className={open ? styles.listboxOpen : styles.listboxClosed}
       >
         {options.map((option, index) => (
           <li
             id={listItemId(index)}
-            role='option'
+            role="option"
             key={option.place_id}
             className={
               selectedListItemIndex === index
@@ -244,7 +246,7 @@ const SearchField: React.FC<SearchFieldProps> = ({
         ))}
       </ul>
     </div>
-  )
-}
+  );
+};
 
-export default SearchField
+export default SearchField;

@@ -1,7 +1,7 @@
-import type { NextPage } from 'next'
-import styles from './HomePageHeader.module.css'
-import Logo from '../Logo/Logo'
-import UserMenu from '../../../containers/UserMenu/UserMenu'
+import type { NextPage } from "next";
+import styles from "./HomePageHeader.module.css";
+import Logo from "../Logo/Logo";
+import UserMenu from "../../../containers/UserMenu/UserMenu";
 
 const HomePageHeader: NextPage = () => {
   return (
@@ -9,7 +9,7 @@ const HomePageHeader: NextPage = () => {
       <Logo />
       <UserMenu />
     </header>
-  )
-}
+  );
+};
 
-export default HomePageHeader
+export default HomePageHeader;

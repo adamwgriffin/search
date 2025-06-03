@@ -1,15 +1,15 @@
-import type { SavedSearchData } from '../../store/user/userSlice'
-import { MdDelete } from 'react-icons/md'
-import { getSearchDescription } from '../../lib/saved_search_helpers'
-import formStyles from '../../styles/forms.module.css'
-import styles from './SavedSearchCard.module.css'
+import type { SavedSearchData } from "../../store/user/userSlice";
+import { MdDelete } from "react-icons/md";
+import { getSearchDescription } from "../../lib/saved_search_helpers";
+import formStyles from "../../styles/forms.module.css";
+import styles from "./SavedSearchCard.module.css";
 
 export type SavedSearchCard = {
-  savedSearch: SavedSearchData
-  onClick?: () => void
-  onUpdate?: (savedSearchUpdate: Partial<SavedSearchData>) => void
-  onDelete?: () => void
-}
+  savedSearch: SavedSearchData;
+  onClick?: () => void;
+  onUpdate?: (savedSearchUpdate: Partial<SavedSearchData>) => void;
+  onDelete?: () => void;
+};
 
 const SavedSearchCard: React.FC<SavedSearchCard> = ({
   savedSearch,
@@ -17,7 +17,7 @@ const SavedSearchCard: React.FC<SavedSearchCard> = ({
   onUpdate,
   onDelete
 }) => {
-  const messageCadenceId = `messageCadence_${savedSearch.id}`
+  const messageCadenceId = `messageCadence_${savedSearch.id}`;
 
   return (
     <div className={styles.savedSearch} onClick={onClick}>
@@ -45,16 +45,16 @@ const SavedSearchCard: React.FC<SavedSearchCard> = ({
         <button
           className={styles.deleteButton}
           onClick={(e) => {
-            e.stopPropagation()
-            onDelete?.()
+            e.stopPropagation();
+            onDelete?.();
           }}
-          title='Delete Saved Search'
+          title="Delete Saved Search"
         >
           <MdDelete className={styles.deleteButtonIcon} />
         </button>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default SavedSearchCard
+export default SavedSearchCard;

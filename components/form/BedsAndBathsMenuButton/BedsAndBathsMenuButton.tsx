@@ -1,16 +1,15 @@
-import { type ReactNode, useState } from 'react'
-import css from 'styled-jsx/css'
-import MenuButton from '../../design_system/MenuButton/MenuButton'
-import BedsAndBathsContainer from '../../../containers/BedsAndBathsContainer/BedsAndBathsContainer'
+import { type ReactNode, useState } from "react";
+import css from "styled-jsx/css";
+import MenuButton from "../../design_system/MenuButton/MenuButton";
+import BedsAndBathsContainer from "../../../containers/BedsAndBathsContainer/BedsAndBathsContainer";
 
-
-const BedsAndBathsMenuButton: React.FC= () => {
-  const [open, setOpen] = useState(false)
+const BedsAndBathsMenuButton: React.FC = () => {
+  const [open, setOpen] = useState(false);
 
   return (
     <>
       <MenuButton
-        label='Beds & Baths'
+        label="Beds & Baths"
         open={open}
         className={className}
         onClick={() => setOpen(!open)}
@@ -20,8 +19,8 @@ const BedsAndBathsMenuButton: React.FC= () => {
       </MenuButton>
       {styles}
     </>
-  )
-}
+  );
+};
 
 const { className, styles } = css.resolve`
   .menu {
@@ -42,6 +41,6 @@ const { className, styles } = css.resolve`
       right: 0;
     }
   }
-`
+`;
 
-export default BedsAndBathsMenuButton
+export default BedsAndBathsMenuButton;

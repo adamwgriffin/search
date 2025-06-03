@@ -1,7 +1,7 @@
 .savedSearchCards {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(17.5rem, 1fr));
-  gap: .8rem;
+  gap: 0.8rem;
   list-style: none;
   margin: 0;
   padding: 0;

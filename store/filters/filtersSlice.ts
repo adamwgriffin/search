@@ -1,17 +1,17 @@
-import { type PayloadAction, createSlice } from '@reduxjs/toolkit'
+import { type PayloadAction, createSlice } from "@reduxjs/toolkit";
 import {
   searchWithUpdatedFilters,
   newLocationGeocodeSearch,
   standaloneSearchInitialized
-} from '../listingSearch/listingSearchCommon'
-import { autocompletePredictionSelected } from '../autocomplete/autocompleteSlice'
-import { FiltersState, SearchTypeOption } from './filtersTypes'
-import { DefaultSoldInLast } from '../../config'
-import { SearchTypes } from '../../lib/filter'
+} from "../listingSearch/listingSearchCommon";
+import { autocompletePredictionSelected } from "../autocomplete/autocompleteSlice";
+import { FiltersState, SearchTypeOption } from "./filtersTypes";
+import { DefaultSoldInLast } from "../../config";
+import { SearchTypes } from "../../lib/filter";
 
 export const initialState: FiltersState = {
   searchType: SearchTypes.Buy,
-  locationSearchField: '',
+  locationSearchField: "",
   propertyTypes: [],
   includePending: false,
   openHouse: false,
@@ -23,8 +23,8 @@ export const initialState: FiltersState = {
   bathsMin: 0,
   sqftMin: null,
   sqftMax: null,
-  sortBy: 'listedDate',
-  sortDirection: 'desc',
+  sortBy: "listedDate",
+  sortDirection: "desc",
   lotSizeMin: null,
   yearBuiltMin: null,
   yearBuiltMax: null,
@@ -37,10 +37,10 @@ export const initialState: FiltersState = {
   pool: false,
   airConditioning: false,
   soldInLast: null
-}
+};
 
 export const filtersSlice = createSlice({
-  name: 'filters',
+  name: "filters",
 
   initialState,
 
@@ -48,53 +48,53 @@ export const filtersSlice = createSlice({
     setFilters: (state, action: PayloadAction<Partial<FiltersState>>) => {
       // TODO: Why are we replacing the entire state?
       // we have to return the object in order to replace the entire state
-      return { ...state, ...action.payload }
+      return { ...state, ...action.payload };
     },
 
     setSearchType: (state, action: PayloadAction<SearchTypeOption>) => {
-      state.searchType = action.payload
+      state.searchType = action.payload;
       switch (action.payload) {
         case SearchTypes.Sold:
-          state.openHouse = false
-          state.soldInLast = DefaultSoldInLast
-          break
+          state.openHouse = false;
+          state.soldInLast = DefaultSoldInLast;
+          break;
         case SearchTypes.Rent:
-          state.openHouse = false
-          state.soldInLast = null
-          break
+          state.openHouse = false;
+          state.soldInLast = null;
+          break;
         case SearchTypes.Buy:
-          state.soldInLast = null
-          break
+          state.soldInLast = null;
+          break;
       }
     },
 
     resetStartIndex: (state) => {
-      state.pageIndex = initialState.pageIndex
+      state.pageIndex = initialState.pageIndex;
     },
 
     clearFilters: ({ locationSearchField }) => {
-      return { ...initialState, locationSearchField }
+      return { ...initialState, locationSearchField };
     }
   },
 
   extraReducers: (builder) => {
-    builder.addCase(standaloneSearchInitialized, () => initialState)
+    builder.addCase(standaloneSearchInitialized, () => initialState);
 
     builder.addCase(autocompletePredictionSelected, (state, action) => {
-      state.locationSearchField = action.payload.description
-    })
+      state.locationSearchField = action.payload.description;
+    });
 
     builder.addCase(newLocationGeocodeSearch.pending, (state) => {
-      state.pageIndex = initialState.pageIndex
-    })
+      state.pageIndex = initialState.pageIndex;
+    });
 
     builder.addCase(searchWithUpdatedFilters.pending, (state) => {
-      state.pageIndex = initialState.pageIndex
-    })
+      state.pageIndex = initialState.pageIndex;
+    });
   }
-})
+});
 
 export const { setFilters, setSearchType, resetStartIndex, clearFilters } =
-  filtersSlice.actions
+  filtersSlice.actions;
 
-export default filtersSlice.reducer
+export default filtersSlice.reducer;
