@@ -1,13 +1,13 @@
-import type { NextPage } from 'next'
-import type { SearchTypeOption } from '../../../store/filters/filtersTypes'
-import { SearchTypeLabels, SearchTypes } from '../../../lib/filter'
-import { Fragment } from 'react'
-import styles from './SearchTypeSelector.module.css'
-import Fieldset from '../../design_system/Fieldset/Fieldset'
+import type { NextPage } from "next";
+import type { SearchTypeOption } from "../../../store/filters/filtersTypes";
+import { SearchTypeLabels, SearchTypes } from "../../../lib/filter";
+import { Fragment } from "react";
+import styles from "./SearchTypeSelector.module.css";
+import Fieldset from "../../design_system/Fieldset/Fieldset";
 
 export interface SearchTypeProps {
-  searchType: SearchTypeOption
-  onChange?: (searchType: SearchTypeOption) => void
+  searchType: SearchTypeOption;
+  onChange?: (searchType: SearchTypeOption) => void;
 }
 
 const SearchTypeSelector: NextPage<SearchTypeProps> = ({
@@ -22,7 +22,7 @@ const SearchTypeSelector: NextPage<SearchTypeProps> = ({
           return (
             <Fragment key={`search-type-${value}`}>
               <input
-                type='radio'
+                type="radio"
                 name={`search-type-${value}`}
                 id={`search-type-${value}`}
                 className={styles.radio}
@@ -34,11 +34,11 @@ const SearchTypeSelector: NextPage<SearchTypeProps> = ({
                 {SearchTypeLabels[value]}
               </label>
             </Fragment>
-          )
+          );
         })}
       </div>
     </Fieldset>
-  )
-}
+  );
+};
 
-export default SearchTypeSelector
+export default SearchTypeSelector;

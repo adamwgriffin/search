@@ -1,10 +1,10 @@
-'use client'
+"use client";
 
-import { Toaster } from 'react-hot-toast'
+import { Toaster } from "react-hot-toast";
 
 type ToastProviderProps = {
-  children: React.ReactNode
-}
+  children: React.ReactNode;
+};
 
 export default function ToastProvider({ children }: ToastProviderProps) {
   return (
@@ -12,5 +12,5 @@ export default function ToastProvider({ children }: ToastProviderProps) {
       {children}
       <Toaster />
     </>
-  )
+  );
 }

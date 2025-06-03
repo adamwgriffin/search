@@ -4,7 +4,7 @@
 }
 
 .details {
-  padding: .5rem 0;
+  padding: 0.5rem 0;
 }
 
 .price {
@@ -14,10 +14,10 @@
 
 .bedBathSqft {
   display: flex;
-  column-gap: .4rem;
+  column-gap: 0.4rem;
 }
 
 .price,
 .bedBathSqft {
-  margin-bottom: .5rem;
+  margin-bottom: 0.5rem;
 }

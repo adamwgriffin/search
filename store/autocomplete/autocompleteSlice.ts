@@ -1,49 +1,49 @@
-import type { AppState } from '..'
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { createAppAsyncThunk } from '../../lib/store_helpers'
-import { GoogleMapsAutocompleteOptions } from '../../config/googleMapsOptions'
-import { standaloneSearchInitialized } from '../listingSearch/listingSearchCommon'
+import type { AppState } from "..";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createAppAsyncThunk } from "../../lib/store_helpers";
+import { GoogleMapsAutocompleteOptions } from "../../config/googleMapsOptions";
+import { standaloneSearchInitialized } from "../listingSearch/listingSearchCommon";
 
 export interface AutocompleteState {
-  autcompletePlacePredictions: google.maps.places.AutocompletePrediction[]
-  selectedAutcompletePlacePrediction: google.maps.places.AutocompletePrediction | null
+  autcompletePlacePredictions: google.maps.places.AutocompletePrediction[];
+  selectedAutcompletePlacePrediction: google.maps.places.AutocompletePrediction | null;
 }
 
-let autocompleteService: google.maps.places.AutocompleteService
+let autocompleteService: google.maps.places.AutocompleteService;
 
 const initialState: AutocompleteState = {
   autcompletePlacePredictions: [],
   selectedAutcompletePlacePrediction: null
-}
+};
 
 export const getPlaceAutocompletePredictions = createAppAsyncThunk<
   google.maps.places.AutocompletePrediction[],
   string
->('places/getPlaceAutocompletePredictions', async (searchString: string) => {
-  autocompleteService ||= new google.maps.places.AutocompleteService()
+>("places/getPlaceAutocompletePredictions", async (searchString: string) => {
+  autocompleteService ||= new google.maps.places.AutocompleteService();
   const res = await autocompleteService.getPlacePredictions({
     input: searchString,
     ...GoogleMapsAutocompleteOptions
-  })
-  return res.predictions
-})
+  });
+  return res.predictions;
+});
 
 export const autocompleteSlice = createSlice({
-  name: 'autocomplete',
+  name: "autocomplete",
 
   initialState,
 
   reducers: {
     resetAutcompletePlacePredictions: (state) => {
       state.autcompletePlacePredictions =
-        initialState.autcompletePlacePredictions
+        initialState.autcompletePlacePredictions;
     },
 
     autocompletePredictionSelected: (
       state,
       action: PayloadAction<google.maps.places.AutocompletePrediction>
     ) => {
-      state.selectedAutcompletePlacePrediction = action.payload
+      state.selectedAutcompletePlacePrediction = action.payload;
     }
   },
 
@@ -51,17 +51,17 @@ export const autocompleteSlice = createSlice({
     builder.addCase(
       getPlaceAutocompletePredictions.fulfilled,
       (state, action) => {
-        state.autcompletePlacePredictions = action.payload
+        state.autcompletePlacePredictions = action.payload;
       }
-    )
+    );
 
-    builder.addCase(standaloneSearchInitialized, () => initialState)
+    builder.addCase(standaloneSearchInitialized, () => initialState);
   }
-})
+});
 
 export const {
   resetAutcompletePlacePredictions,
   autocompletePredictionSelected
-} = autocompleteSlice.actions
+} = autocompleteSlice.actions;
 
-export default autocompleteSlice.reducer
+export default autocompleteSlice.reducer;

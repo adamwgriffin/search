@@ -9,9 +9,9 @@
   align-items: center;
   width: 170px;
   height: 2.5rem;
-  box-shadow: rgba(0, 0, 0, 0.3) 0rem .0625rem .25rem -0.0625rem;
-  border-radius: .375rem;
-  padding: .8rem;
+  box-shadow: rgba(0, 0, 0, 0.3) 0rem 0.0625rem 0.25rem -0.0625rem;
+  border-radius: 0.375rem;
+  padding: 0.8rem;
   cursor: pointer;
 }
 

@@ -1,39 +1,39 @@
-'use client'
+"use client";
 
-import { useCallback, useEffect } from 'react'
-import { useAppSelector } from '../../hooks/app_hooks'
-import { selectLocationSearchField } from '../../store/filters/filtersSelectors'
-import { usePushParamsToSearchUrl } from '../../hooks/push_params_to_search_url_hook'
-import SearchFieldContainer from '../SearchFieldContainer/SearchFieldContainer'
-import { standaloneSearchInitialized } from '../../store/listingSearch/listingSearchCommon'
-import { useAppDispatch } from '../../hooks/app_hooks'
-import { useSearchNewLocation } from '../../hooks/search_new_location_hook'
+import { useCallback, useEffect } from "react";
+import { useAppSelector } from "../../hooks/app_hooks";
+import { selectLocationSearchField } from "../../store/filters/filtersSelectors";
+import { usePushParamsToSearchUrl } from "../../hooks/push_params_to_search_url_hook";
+import SearchFieldContainer from "../SearchFieldContainer/SearchFieldContainer";
+import { standaloneSearchInitialized } from "../../store/listingSearch/listingSearchCommon";
+import { useAppDispatch } from "../../hooks/app_hooks";
+import { useSearchNewLocation } from "../../hooks/search_new_location_hook";
 
 const StandaloneSearchField: React.FC = () => {
-  const locationSearchField = useAppSelector(selectLocationSearchField)
-  const searchNewLocation = useSearchNewLocation()
-  const pushParamsToSearchUrl = usePushParamsToSearchUrl()
-  const dispatch = useAppDispatch()
+  const locationSearchField = useAppSelector(selectLocationSearchField);
+  const searchNewLocation = useSearchNewLocation();
+  const pushParamsToSearchUrl = usePushParamsToSearchUrl();
+  const dispatch = useAppDispatch();
 
   // Reset the filters back to defaults in case a previous search on the search
   // page changed them
   useEffect(() => {
-    dispatch(standaloneSearchInitialized())
-  }, [dispatch])
+    dispatch(standaloneSearchInitialized());
+  }, [dispatch]);
 
   const searchThenRedirect = useCallback(
     async (locationSearchField: string) => {
-      if (!locationSearchField) return
-      const res = await searchNewLocation()
+      if (!locationSearchField) return;
+      const res = await searchNewLocation();
       // The searchNewLocation hook would have already redirected if
       // listingDetail was found, otherwise we need to redirect to the search
       // page here
       if (!res.listingDetail) {
-        pushParamsToSearchUrl({ locationSearchField })
+        pushParamsToSearchUrl({ locationSearchField });
       }
     },
     [searchNewLocation, pushParamsToSearchUrl]
-  )
+  );
 
   // For onOptionSelected, the locationSearchField doesn't get updated with in the filter state by the time we redirect
   // to the search page, so we only get the partial text that was typed in the field, instead of the entire text that
@@ -45,7 +45,7 @@ const StandaloneSearchField: React.FC = () => {
         searchThenRedirect(autocompletePrediction.description)
       }
     />
-  )
-}
+  );
+};
 
-export default StandaloneSearchField
+export default StandaloneSearchField;

@@ -1,10 +1,10 @@
-import type { PropertDetailsSection } from '../../../../types/listing_types'
-import { Fragment } from 'react'
-import styles from './PropertyDetails.module.css'
+import type { PropertDetailsSection } from "../../../../types/listing_types";
+import { Fragment } from "react";
+import styles from "./PropertyDetails.module.css";
 
 export type PropertyDetailsProps = {
-  propertyDetails: PropertDetailsSection[]
-}
+  propertyDetails: PropertDetailsSection[];
+};
 
 const PropertyDetails: React.FC<PropertyDetailsProps> = ({
   propertyDetails
@@ -19,7 +19,7 @@ const PropertyDetails: React.FC<PropertyDetailsProps> = ({
             {details.map(({ _id, name, details }) => (
               <li key={_id}>
                 <div className={styles.detailsName}>
-                  {name}: {details.join(', ')}
+                  {name}: {details.join(", ")}
                 </div>
               </li>
             ))}
@@ -27,7 +27,7 @@ const PropertyDetails: React.FC<PropertyDetailsProps> = ({
         </Fragment>
       ))}
     </>
-  )
-}
+  );
+};
 
-export default PropertyDetails
+export default PropertyDetails;

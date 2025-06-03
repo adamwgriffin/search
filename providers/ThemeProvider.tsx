@@ -1,5 +1,5 @@
-'use client'
+"use client";
 
-import { ThemeProvider } from 'next-themes'
+import { ThemeProvider } from "next-themes";
 
-export default ThemeProvider
+export default ThemeProvider;

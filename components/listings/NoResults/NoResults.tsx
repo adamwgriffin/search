@@ -1,4 +1,4 @@
-import styles from './NoResults.module.css'
+import styles from "./NoResults.module.css";
 
 const NoResults: React.FC = () => {
   return (
@@ -9,7 +9,7 @@ const NoResults: React.FC = () => {
         filters or adjusting the map and see if that helps.
       </p>
     </div>
-  )
-}
+  );
+};
 
-export default NoResults
+export default NoResults;

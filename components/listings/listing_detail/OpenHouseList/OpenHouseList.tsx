@@ -1,13 +1,13 @@
-import type { OpenHouse } from '../../../../types/listing_types'
-import type { NextPage } from 'next'
+import type { OpenHouse } from "../../../../types/listing_types";
+import type { NextPage } from "next";
 import {
   formatOpenHouseDate,
   formatOpenHouseTime
-} from '../../../../lib/listing_helpers'
-import styles from './OpenHouseList.module.css'
+} from "../../../../lib/listing_helpers";
+import styles from "./OpenHouseList.module.css";
 
 export interface OpenHouseListProps {
-  openHouses: OpenHouse[]
+  openHouses: OpenHouse[];
 }
 
 const OpenHouseList: NextPage<OpenHouseListProps> = ({ openHouses }) => {
@@ -25,7 +25,7 @@ const OpenHouseList: NextPage<OpenHouseListProps> = ({ openHouses }) => {
         ))}
       </ul>
     </div>
-  )
-}
+  );
+};
 
-export default OpenHouseList
+export default OpenHouseList;

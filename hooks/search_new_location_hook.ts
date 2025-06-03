@@ -1,38 +1,38 @@
-import type { ListingSearchGeocodeResponse } from '../types/listing_types'
-import { useCallback } from 'react'
-import { useRouter } from 'next/navigation'
-import { unwrapResult } from '@reduxjs/toolkit'
-import isEqual from 'lodash/isEqual'
-import { useAppSelector, useAppDispatch } from './app_hooks'
+import type { ListingSearchGeocodeResponse } from "../types/listing_types";
+import { useCallback } from "react";
+import { useRouter } from "next/navigation";
+import { unwrapResult } from "@reduxjs/toolkit";
+import isEqual from "lodash/isEqual";
+import { useAppSelector, useAppDispatch } from "./app_hooks";
 import {
   newLocationGeocodeSearch,
   searchCurrentLocation
-} from '../store/listingSearch/listingSearchCommon'
+} from "../store/listingSearch/listingSearchCommon";
 import {
   boundaryFoundForNewLocationSearch,
   noBoundaryFoundForNewLocationSearch
-} from '../store/listingSearch/listingSearchSlice'
-import { listingFoundForAddressSearch } from '../store/listingSearch/listingSearchSlice'
-import { selectViewportBounds } from '../store/listingMap/listingMapSelectors'
+} from "../store/listingSearch/listingSearchSlice";
+import { listingFoundForAddressSearch } from "../store/listingSearch/listingSearchSlice";
+import { selectViewportBounds } from "../store/listingMap/listingMapSelectors";
 
 /**
  * Makes a new request to the Listing Service to geocode what is entered in the search field then dispatches the
  * appropriate action based on the data returned from the service.
  */
 export const useSearchNewLocation = () => {
-  const dispatch = useAppDispatch()
-  const router = useRouter()
-  const currentViewportBounds = useAppSelector(selectViewportBounds)
+  const dispatch = useAppDispatch();
+  const router = useRouter();
+  const currentViewportBounds = useAppSelector(selectViewportBounds);
 
   // It's very important to put this function inside of useCallback. Without it, we can get into infinite loops with
   // several of the useEffect hooks that have it in their dependency array.
   return useCallback(async (): Promise<ListingSearchGeocodeResponse> => {
-    const res = unwrapResult(await dispatch(newLocationGeocodeSearch()))
+    const res = unwrapResult(await dispatch(newLocationGeocodeSearch()));
 
     // We found a boundary for the location. This is the normal response we would expect.
     if (res.boundary) {
-      dispatch(boundaryFoundForNewLocationSearch(res))
-      return res
+      dispatch(boundaryFoundForNewLocationSearch(res));
+      return res;
     }
 
     // There was no boundary found. Look at the response to determine what to do next
@@ -40,9 +40,9 @@ export const useSearchNewLocation = () => {
     // If listingDetail is present, we can assume that what was searched for was an address, and that the service found
     // a listing for that address
     if (res.listingDetail) {
-      await dispatch(listingFoundForAddressSearch())
-      router.push(`/listing/${res.listingDetail.slug}`)
-      return res
+      await dispatch(listingFoundForAddressSearch());
+      router.push(`/listing/${res.listingDetail.slug}`);
+      return res;
     }
 
     // No boundary and no listing means either A) it was an address search and no listing was available for that
@@ -53,14 +53,14 @@ export const useSearchNewLocation = () => {
     // it's "idle" event, which is what's normally used to trigger the searchCurrentLocation after the map has been
     // adjusted.
     if (!res.viewport) {
-      throw new Error('Invalid response.')
+      throw new Error("Invalid response.");
     }
     if (isEqual(currentViewportBounds, res.viewport)) {
-      dispatch(searchCurrentLocation())
+      dispatch(searchCurrentLocation());
     } else {
-      dispatch(noBoundaryFoundForNewLocationSearch(res))
+      dispatch(noBoundaryFoundForNewLocationSearch(res));
     }
 
-    return res
-  }, [currentViewportBounds, dispatch, router])
-}
+    return res;
+  }, [currentViewportBounds, dispatch, router]);
+};

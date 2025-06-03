@@ -16,7 +16,7 @@
   margin: 0;
 }
 
-.radioButtonInput[type='radio']:checked + label {
+.radioButtonInput[type="radio"]:checked + label {
   background: var(--primary-light);
   color: var(--primary-dark);
   border-color: var(--primary);

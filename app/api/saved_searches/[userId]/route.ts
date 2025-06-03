@@ -1,8 +1,8 @@
-import { NextResponse } from 'next/server'
-import prisma from '../../../../lib/prismadb'
+import { NextResponse } from "next/server";
+import prisma from "../../../../lib/prismadb";
 
 export interface SavedSearchesParams {
-  userId: string
+  userId: string;
 }
 
 export async function GET(
@@ -13,6 +13,6 @@ export async function GET(
     where: {
       userId: params.userId
     }
-  })
-  return NextResponse.json(savedSearch)
+  });
+  return NextResponse.json(savedSearch);
 }

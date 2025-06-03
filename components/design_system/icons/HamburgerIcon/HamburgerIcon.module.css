@@ -12,7 +12,9 @@
 
 .line {
   fill: none;
-  transition: stroke-dasharray 400ms, stroke-dashoffset 400ms;
+  transition:
+    stroke-dasharray 400ms,
+    stroke-dashoffset 400ms;
   stroke: var(--foreground);
   stroke-width: 5.5;
   stroke-linecap: round;
@@ -38,7 +40,9 @@
   composes: line;
   stroke-dasharray: 40 85;
   transform-origin: 50%;
-  transition: transform 400ms, stroke-dashoffset 400ms;
+  transition:
+    transform 400ms,
+    stroke-dashoffset 400ms;
 }
 
 .hamburgerIconActive .top {

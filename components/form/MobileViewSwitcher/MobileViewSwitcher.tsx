@@ -1,26 +1,26 @@
 import {
   selectMobileViewType,
   toggleMobileViewType
-} from '../../../store/application/applicationSlice'
-import { useAppDispatch, useAppSelector } from '../../../hooks/app_hooks'
-import ListIcon from '../../design_system/icons/ListIcon/ListIcon'
-import MapIcon from '../../design_system/icons/MapIcon/MapIcon'
-import styles from './MobileViewSwitcher.module.css'
+} from "../../../store/application/applicationSlice";
+import { useAppDispatch, useAppSelector } from "../../../hooks/app_hooks";
+import ListIcon from "../../design_system/icons/ListIcon/ListIcon";
+import MapIcon from "../../design_system/icons/MapIcon/MapIcon";
+import styles from "./MobileViewSwitcher.module.css";
 
 const ViewSwitcher: React.FC = () => {
-  const dispatch = useAppDispatch()
-  const mobileViewType = useAppSelector(selectMobileViewType)
+  const dispatch = useAppDispatch();
+  const mobileViewType = useAppSelector(selectMobileViewType);
 
   return (
     <button
       className={styles.viewSwitcher}
       onClick={() => {
         dispatch(
-          toggleMobileViewType(mobileViewType === 'list' ? 'map' : 'list')
-        )
+          toggleMobileViewType(mobileViewType === "list" ? "map" : "list")
+        );
       }}
     >
-      {mobileViewType === 'list' ? (
+      {mobileViewType === "list" ? (
         <>
           <MapIcon /> Map
         </>
@@ -30,7 +30,7 @@ const ViewSwitcher: React.FC = () => {
         </>
       )}
     </button>
-  )
-}
+  );
+};
 
-export default ViewSwitcher
+export default ViewSwitcher;

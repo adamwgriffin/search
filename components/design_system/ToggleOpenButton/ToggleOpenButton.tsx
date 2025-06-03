@@ -1,14 +1,14 @@
-import MenuOpenIcon from '../icons/MenuOpenIcon/MenuOpenIcon'
-import OutlinedButton from '../OutlinedButton/OutlinedButton'
-import styles from './ToggleOpenButton.module.css'
+import MenuOpenIcon from "../icons/MenuOpenIcon/MenuOpenIcon";
+import OutlinedButton from "../OutlinedButton/OutlinedButton";
+import styles from "./ToggleOpenButton.module.css";
 
 export type ToggleOpenButtonProps =
   React.ButtonHTMLAttributes<HTMLButtonElement> & {
-    open: boolean
-    label: string
-    highlighted?: boolean
-    condensed?: boolean
-  }
+    open: boolean;
+    label: string;
+    highlighted?: boolean;
+    condensed?: boolean;
+  };
 
 const ToggleOpenButton: React.FC<ToggleOpenButtonProps> = ({
   open = false,
@@ -26,7 +26,7 @@ const ToggleOpenButton: React.FC<ToggleOpenButtonProps> = ({
       <span className={styles.label}>{label}</span>
       <MenuOpenIcon open={open} />
     </OutlinedButton>
-  )
-}
+  );
+};
 
-export default ToggleOpenButton
+export default ToggleOpenButton;

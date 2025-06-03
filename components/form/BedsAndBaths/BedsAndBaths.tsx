@@ -1,18 +1,18 @@
-import type { NextPage } from 'next'
-import type { BedsAndBathsFilters } from '../../../store/filters/filtersTypes'
-import { useId } from 'react'
-import styles from './BedsAndBaths.module.css'
-import RadioButtonGroup from '../../design_system/RadioButtonGroup/RadioButtonGroup'
+import type { NextPage } from "next";
+import type { BedsAndBathsFilters } from "../../../store/filters/filtersTypes";
+import { useId } from "react";
+import styles from "./BedsAndBaths.module.css";
+import RadioButtonGroup from "../../design_system/RadioButtonGroup/RadioButtonGroup";
 import {
   DefaultBedBathCount,
   countOptions,
   RadioButtonGroups
-} from './beds_and_baths_helpers'
+} from "./beds_and_baths_helpers";
 
 export interface BedsAndBathsProps {
-  countArr?: number[]
-  bedsAndBaths: BedsAndBathsFilters
-  onChange?: (param: Partial<BedsAndBathsFilters>) => void
+  countArr?: number[];
+  bedsAndBaths: BedsAndBathsFilters;
+  onChange?: (param: Partial<BedsAndBathsFilters>) => void;
 }
 
 const BedsAndBaths: NextPage<BedsAndBathsProps> = ({
@@ -20,7 +20,7 @@ const BedsAndBaths: NextPage<BedsAndBathsProps> = ({
   bedsAndBaths,
   onChange
 }) => {
-  const id = useId()
+  const id = useId();
 
   return (
     <fieldset className={styles.bedsAndBaths}>
@@ -35,7 +35,7 @@ const BedsAndBaths: NextPage<BedsAndBathsProps> = ({
         />
       ))}
     </fieldset>
-  )
-}
+  );
+};
 
-export default BedsAndBaths
+export default BedsAndBaths;

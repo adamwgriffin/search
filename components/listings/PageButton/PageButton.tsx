@@ -1,13 +1,17 @@
-import type { NextPage } from 'next'
-import styles from './PageButton.module.css'
+import type { NextPage } from "next";
+import styles from "./PageButton.module.css";
 
 export interface PageButtonProps {
-  pageNumber: number
-  disabled?: boolean
-  onClick?: () => void
+  pageNumber: number;
+  disabled?: boolean;
+  onClick?: () => void;
 }
 
-const PageButton: NextPage<PageButtonProps> = ({ pageNumber, disabled=false, onClick }) => {
+const PageButton: NextPage<PageButtonProps> = ({
+  pageNumber,
+  disabled = false,
+  onClick
+}) => {
   return (
     <button
       className={styles.pageButton}
@@ -18,7 +22,7 @@ const PageButton: NextPage<PageButtonProps> = ({ pageNumber, disabled=false, onC
     >
       {pageNumber}
     </button>
-  )
-}
+  );
+};
 
-export default PageButton
+export default PageButton;

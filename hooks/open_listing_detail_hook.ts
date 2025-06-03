@@ -1,23 +1,23 @@
-import { useMedia } from 'react-use'
-import { useAppDispatch } from './app_hooks'
-import { openModal } from '../store/application/applicationSlice'
-import { addUrlToBrowserHistory } from '../lib/url'
+import { useMedia } from "react-use";
+import { useAppDispatch } from "./app_hooks";
+import { openModal } from "../store/application/applicationSlice";
+import { addUrlToBrowserHistory } from "../lib/url";
 
 export const useOpenListingDetail = (addUrlOnModalOpen = true) => {
-  const dispatch = useAppDispatch()
-  const isSmallAndUp = useMedia('(min-width: 576px)', false)
+  const dispatch = useAppDispatch();
+  const isSmallAndUp = useMedia("(min-width: 576px)", false);
 
   return (url: string, listingSlug: string) => {
     if (isSmallAndUp) {
-      window.open(url, '_blank')
+      window.open(url, "_blank");
     } else {
       dispatch(
         openModal({
-          modalType: 'listingDetail',
+          modalType: "listingDetail",
           modalProps: { listingSlug }
         })
-      )
-      if (addUrlOnModalOpen) addUrlToBrowserHistory(url)
+      );
+      if (addUrlOnModalOpen) addUrlToBrowserHistory(url);
     }
-  }
-}
+  };
+};

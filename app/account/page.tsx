@@ -1,6 +1,6 @@
-import MinimalHeader from '../../components/header/MinimalHeader/MinimalHeader'
-import AccountBody from '../../components/AccountBody/AccountBody'
-import MyAccount from '../../containers/MyAccount/MyAccount'
+import MinimalHeader from "../../components/header/MinimalHeader/MinimalHeader";
+import AccountBody from "../../components/AccountBody/AccountBody";
+import MyAccount from "../../containers/MyAccount/MyAccount";
 
 export default function Account() {
   return (
@@ -11,5 +11,5 @@ export default function Account() {
         <MyAccount />
       </AccountBody>
     </>
-  )
+  );
 }

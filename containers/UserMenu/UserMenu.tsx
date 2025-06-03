@@ -1,47 +1,47 @@
-'use client'
+"use client";
 
-import type { NextPage } from 'next'
-import Link from 'next/link'
-import { usePathname } from 'next/navigation'
-import { signOut } from 'next-auth/react'
-import { useToggle } from 'react-use'
-import { useCallback } from 'react'
-import { useSession } from 'next-auth/react'
-import toast from 'react-hot-toast'
-import { useAppDispatch } from '../../hooks/app_hooks'
-import { openModal } from '../../store/application/applicationSlice'
-import { resetCurrentUser } from '../../store/user/userSlice'
-import { AuthPaths } from '../../middleware'
-import styles from './UserMenu.module.css'
-import MenuContainter from '../../components/design_system/MenuContainter/MenuContainter'
-import MenuDropdown from '../../components/design_system/MenuDropdown/MenuDropdown'
-import HamburgerIcon from '../../components/design_system/icons/HamburgerIcon/HamburgerIcon'
-import ThemeSwitcher from '../../components/header/ThemeSwitcher/ThemeSwitcher'
-import Avatar from '../../components/header/Avatar/Avatar'
+import type { NextPage } from "next";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { signOut } from "next-auth/react";
+import { useToggle } from "react-use";
+import { useCallback } from "react";
+import { useSession } from "next-auth/react";
+import toast from "react-hot-toast";
+import { useAppDispatch } from "../../hooks/app_hooks";
+import { openModal } from "../../store/application/applicationSlice";
+import { resetCurrentUser } from "../../store/user/userSlice";
+import { AuthPaths } from "../../middleware";
+import styles from "./UserMenu.module.css";
+import MenuContainter from "../../components/design_system/MenuContainter/MenuContainter";
+import MenuDropdown from "../../components/design_system/MenuDropdown/MenuDropdown";
+import HamburgerIcon from "../../components/design_system/icons/HamburgerIcon/HamburgerIcon";
+import ThemeSwitcher from "../../components/header/ThemeSwitcher/ThemeSwitcher";
+import Avatar from "../../components/header/Avatar/Avatar";
 
 export const pathRequiresAuth = (pathname: string | null) =>
-  AuthPaths.some((pattern) => pattern.test(String(pathname)))
+  AuthPaths.some((pattern) => pattern.test(String(pathname)));
 
 const UserMenu: NextPage = () => {
-  const dispatch = useAppDispatch()
-  const { data: session } = useSession()
-  const pathname = usePathname()
-  const [open, toggleMenu] = useToggle(false)
+  const dispatch = useAppDispatch();
+  const { data: session } = useSession();
+  const pathname = usePathname();
+  const [open, toggleMenu] = useToggle(false);
 
   const handleLogout = useCallback(async () => {
-    toggleMenu(false)
+    toggleMenu(false);
     const signOutOptions = pathRequiresAuth(pathname)
-      ? { callbackUrl: '/', redirect: true }
-      : { redirect: false }
-    await signOut(signOutOptions)
-    dispatch(resetCurrentUser())
-    toast("You're logged out")
-  }, [dispatch, pathname, toggleMenu])
+      ? { callbackUrl: "/", redirect: true }
+      : { redirect: false };
+    await signOut(signOutOptions);
+    dispatch(resetCurrentUser());
+    toast("You're logged out");
+  }, [dispatch, pathname, toggleMenu]);
 
   const handleLogin = useCallback(() => {
-    toggleMenu(false)
-    dispatch(openModal({ modalType: 'loginOrRegister' }))
-  }, [dispatch, toggleMenu])
+    toggleMenu(false);
+    dispatch(openModal({ modalType: "loginOrRegister" }));
+  }, [dispatch, toggleMenu]);
 
   return (
     <MenuContainter onClickAway={() => toggleMenu(false)}>
@@ -57,17 +57,17 @@ const UserMenu: NextPage = () => {
             </header>
             <ul className={styles.menuListWithSeparator}>
               <li className={styles.menuItem}>
-                <Link href='/account' className={styles.link}>
+                <Link href="/account" className={styles.link}>
                   My Account
                 </Link>
               </li>
               <li className={styles.menuItem}>
-                <Link href='/account/favorites' className={styles.link}>
+                <Link href="/account/favorites" className={styles.link}>
                   Saved Homes
                 </Link>
               </li>
               <li className={styles.menuItem}>
-                <Link href='/account/saved_searches' className={styles.link}>
+                <Link href="/account/saved_searches" className={styles.link}>
                   Saved Searches
                 </Link>
               </li>
@@ -97,7 +97,7 @@ const UserMenu: NextPage = () => {
         )}
       </MenuDropdown>
     </MenuContainter>
-  )
-}
+  );
+};
 
-export default UserMenu
+export default UserMenu;

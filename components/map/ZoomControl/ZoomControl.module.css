@@ -15,9 +15,9 @@
     justify-content: center;
     background-color: var(--map-control);
     border-radius: 0.25rem;
-    box-shadow: rgba(0, 0, 0, 0.3) 0rem .0625rem .25rem -0.0625rem;
+    box-shadow: rgba(0, 0, 0, 0.3) 0rem 0.0625rem 0.25rem -0.0625rem;
   }
-  
+
   .zoomButton {
     width: 2.5rem;
     height: 2.5rem;
@@ -30,17 +30,17 @@
     align-items: center;
     justify-content: center;
   }
-  
+
   .zoomButton:hover {
     background: var(--primary-light);
   }
-  
+
   .zoomIn {
     composes: zoomButton;
     border-top-left-radius: 0.25rem;
     border-top-right-radius: 0.25rem;
   }
-  
+
   .zoomOut {
     composes: zoomButton;
     border-bottom-left-radius: 0.25rem;

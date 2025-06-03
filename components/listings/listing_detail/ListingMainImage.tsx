@@ -1,32 +1,32 @@
-import { useCallback, useState } from 'react'
+import { useCallback, useState } from "react";
 import {
   buildSrcSet,
   streetViewImageUrl
-} from '../../../lib/listing_image_helpers'
+} from "../../../lib/listing_image_helpers";
 
 export type ListingMainImageProps = {
-  imageUrl: string | undefined
-  latitude: number
-  longitude: number
-  imageHeightRatio: number
-  fallbackImageUrl?: string
-} & React.ImgHTMLAttributes<HTMLImageElement>
+  imageUrl: string | undefined;
+  latitude: number;
+  longitude: number;
+  imageHeightRatio: number;
+  fallbackImageUrl?: string;
+} & React.ImgHTMLAttributes<HTMLImageElement>;
 
 const ListingMainImage: React.FC<ListingMainImageProps> = ({
   imageUrl,
   latitude,
   longitude,
   imageHeightRatio,
-  fallbackImageUrl = '/default_listing_image/default_listing_image_1200x1200.jpg',
-  alt = 'Listing photo',
+  fallbackImageUrl = "/default_listing_image/default_listing_image_1200x1200.jpg",
+  alt = "Listing photo",
   ...props
 }) => {
-  const [imageLoadError, setImageLoadError] = useState(false)
+  const [imageLoadError, setImageLoadError] = useState(false);
 
-  const handleImageLoadError = useCallback(() => setImageLoadError(true), [])
+  const handleImageLoadError = useCallback(() => setImageLoadError(true), []);
 
   if (imageLoadError) {
-    return <img src={fallbackImageUrl} alt={alt} {...props} />
+    return <img src={fallbackImageUrl} alt={alt} {...props} />;
   }
 
   if (imageUrl) {
@@ -38,7 +38,7 @@ const ListingMainImage: React.FC<ListingMainImageProps> = ({
         onError={handleImageLoadError}
         {...props}
       />
-    )
+    );
   }
 
   return (
@@ -48,7 +48,7 @@ const ListingMainImage: React.FC<ListingMainImageProps> = ({
       onError={handleImageLoadError}
       {...props}
     />
-  )
-}
+  );
+};
 
-export default ListingMainImage
+export default ListingMainImage;

@@ -1,6 +1,6 @@
-import MinimalHeader from '../../../components/header/MinimalHeader/MinimalHeader'
-import AccountBody from '../../../components/AccountBody/AccountBody'
-import SavedSearchList from '../../../containers/SavedSearchList/SavedSearchList'
+import MinimalHeader from "../../../components/header/MinimalHeader/MinimalHeader";
+import AccountBody from "../../../components/AccountBody/AccountBody";
+import SavedSearchList from "../../../containers/SavedSearchList/SavedSearchList";
 
 export default function Favorites() {
   return (
@@ -11,5 +11,5 @@ export default function Favorites() {
         <SavedSearchList />
       </AccountBody>
     </>
-  )
+  );
 }

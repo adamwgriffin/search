@@ -1,6 +1,6 @@
-import { z } from 'zod'
-import { listingFilterParamsSchema } from './listingSearchParamsSchema'
-import { DefaultMaxDistance } from '../config'
+import { z } from "zod";
+import { listingFilterParamsSchema } from "./listingSearchParamsSchema";
+import { DefaultMaxDistance } from "../config";
 
 export const radiusSearchQuerySchema = z
   .object({
@@ -9,12 +9,12 @@ export const radiusSearchQuerySchema = z
     max_distance: z.coerce.number().optional().default(DefaultMaxDistance)
   })
   .merge(listingFilterParamsSchema.partial())
-  .strict()
+  .strict();
 
 export const radiusSearchRequestSchema = z.object({
   query: radiusSearchQuerySchema
-})
+});
 
-export type RadiusSearchQueryParams = z.infer<typeof radiusSearchQuerySchema>
+export type RadiusSearchQueryParams = z.infer<typeof radiusSearchQuerySchema>;
 
-export type RadiusSearchRequest = z.infer<typeof radiusSearchRequestSchema>
+export type RadiusSearchRequest = z.infer<typeof radiusSearchRequestSchema>;

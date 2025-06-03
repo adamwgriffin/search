@@ -1,7 +1,7 @@
 .themeSwitcher {
   display: flex;
   align-items: center;
-  column-gap: .25rem;
+  column-gap: 0.25rem;
 }
 
 .label {

@@ -1,6 +1,5 @@
 @value smallAndUp from '../../../../styles/breakpoints.module.css';
 
-
 .heading {
   margin-top: 0;
 }

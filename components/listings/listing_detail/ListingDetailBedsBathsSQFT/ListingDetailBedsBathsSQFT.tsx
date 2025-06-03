@@ -1,9 +1,9 @@
-import type { ListingDetail } from '../../../../types/listing_types'
-import { getBathrooms, formatSqft } from '../../../../lib/listing_helpers'
-import styles from './ListingDetailBedsBathsSQFT.module.css'
+import type { ListingDetail } from "../../../../types/listing_types";
+import { getBathrooms, formatSqft } from "../../../../lib/listing_helpers";
+import styles from "./ListingDetailBedsBathsSQFT.module.css";
 
 export interface ListingDetailBedsBathsSQFTProps {
-  listing: ListingDetail
+  listing: ListingDetail;
 }
 
 const ListingDetailBedsBathsSQFT: React.FC<ListingDetailBedsBathsSQFTProps> = ({
@@ -15,7 +15,7 @@ const ListingDetailBedsBathsSQFT: React.FC<ListingDetailBedsBathsSQFTProps> = ({
       <div>{getBathrooms(listing)} Bath</div>
       <div>{formatSqft(listing)} sqft</div>
     </div>
-  )
-}
+  );
+};
 
-export default ListingDetailBedsBathsSQFT
+export default ListingDetailBedsBathsSQFT;

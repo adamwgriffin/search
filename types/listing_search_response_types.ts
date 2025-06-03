@@ -1,64 +1,64 @@
-import type { Types } from 'mongoose'
-import type { IListing } from '../models/ListingModel'
-import type { IBoundary } from '../models/BoundaryModel'
+import type { Types } from "mongoose";
+import type { IListing } from "../models/ListingModel";
+import type { IBoundary } from "../models/BoundaryModel";
 import {
   ListingResultProjectionFields,
   ListingDetailResultProjectionFields
-} from '../config'
-import { LatLngBounds } from '@googlemaps/google-maps-services-js'
+} from "../config";
+import { LatLngBounds } from "@googlemaps/google-maps-services-js";
 
 export type AdditionalListingResultFields = {
-  _id: Types.ObjectId
-  latitude: number
-  longitude: number
-}
+  _id: Types.ObjectId;
+  latitude: number;
+  longitude: number;
+};
 
 export type ListingResultWithSelectedFields = Pick<
   IListing,
-  Exclude<keyof typeof ListingResultProjectionFields, 'latitude' | 'longitude'>
+  Exclude<keyof typeof ListingResultProjectionFields, "latitude" | "longitude">
 > &
-  AdditionalListingResultFields
+  AdditionalListingResultFields;
 
 export type ListingRadiusResultWithSelectedFields =
-  ListingResultWithSelectedFields & { distance: number }
+  ListingResultWithSelectedFields & { distance: number };
 
 export type ListingDetailResultWithSelectedFields = Pick<
   IListing,
   Exclude<
     keyof typeof ListingDetailResultProjectionFields,
-    'latitude' | 'longitude'
+    "latitude" | "longitude"
   >
 > &
-  AdditionalListingResultFields
+  AdditionalListingResultFields;
 
 export type PaginationResponse = {
-  page: number
-  pageSize: number
-  numberReturned: number
-  numberAvailable: number
-  numberOfPages: number
-}
+  page: number;
+  pageSize: number;
+  numberReturned: number;
+  numberAvailable: number;
+  numberOfPages: number;
+};
 
 export type ListingSearchResponse<T = ListingResultWithSelectedFields> = {
-  listings: T[]
-  pagination: PaginationResponse
-}
+  listings: T[];
+  pagination: PaginationResponse;
+};
 
 export type BoundarySearchResponse = ListingSearchResponse & {
-  boundary: IBoundary
-}
+  boundary: IBoundary;
+};
 
 export type GeocodeBoundarySearchResponse = Partial<ListingSearchResponse> & {
-  boundary?: IBoundary
-  viewport?: LatLngBounds
-  listingDetail?: ListingDetailResultWithSelectedFields
-}
+  boundary?: IBoundary;
+  viewport?: LatLngBounds;
+  listingDetail?: ListingDetailResultWithSelectedFields;
+};
 
 export type ServiceError = {
-  message: string
-  field?: string
-}
+  message: string;
+  field?: string;
+};
 
 export type ErrorResponse = {
-  errors: ServiceError[]
-}
+  errors: ServiceError[];
+};

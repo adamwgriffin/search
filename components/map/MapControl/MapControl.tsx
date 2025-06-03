@@ -1,12 +1,12 @@
-import type { NextPage } from 'next'
-import styles from './MapControl.module.css'
-import BoundaryControl from '../BoundaryControl/BoundaryControl'
-import LoadingDots from '../../design_system/LoadingDots/LoadingDots'
+import type { NextPage } from "next";
+import styles from "./MapControl.module.css";
+import BoundaryControl from "../BoundaryControl/BoundaryControl";
+import LoadingDots from "../../design_system/LoadingDots/LoadingDots";
 
 export interface MapControlProps {
-  boundaryActive: boolean
-  listingSearchRunning: boolean
-  onBoundaryControlClick: () => void
+  boundaryActive: boolean;
+  listingSearchRunning: boolean;
+  onBoundaryControlClick: () => void;
 }
 
 const MapControl: NextPage<MapControlProps> = ({
@@ -20,12 +20,14 @@ const MapControl: NextPage<MapControlProps> = ({
         {!listingSearchRunning && boundaryActive && (
           <BoundaryControl onClick={onBoundaryControlClick} />
         )}
-        {listingSearchRunning && <LoadingDots size='var(--loading-dots-small)' />}
+        {listingSearchRunning && (
+          <LoadingDots size="var(--loading-dots-small)" />
+        )}
       </div>
-    )
+    );
   } else {
-    return null
+    return null;
   }
-}
+};
 
-export default MapControl
+export default MapControl;

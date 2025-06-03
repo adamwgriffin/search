@@ -1,14 +1,14 @@
-import { useState } from 'react'
-import MenuButton from '../../design_system/MenuButton/MenuButton'
-import PriceContainer from '../../../containers/PriceContainer/PriceContainer'
-import styles from './PriceMenuButton.module.css'
+import { useState } from "react";
+import MenuButton from "../../design_system/MenuButton/MenuButton";
+import PriceContainer from "../../../containers/PriceContainer/PriceContainer";
+import styles from "./PriceMenuButton.module.css";
 
 const PriceMenuButton: React.FC = () => {
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState(false);
 
   return (
     <MenuButton
-      label='Price'
+      label="Price"
       open={open}
       className={styles.menu}
       onClick={() => setOpen(!open)}
@@ -16,7 +16,7 @@ const PriceMenuButton: React.FC = () => {
     >
       <PriceContainer />
     </MenuButton>
-  )
-}
+  );
+};
 
-export default PriceMenuButton
+export default PriceMenuButton;

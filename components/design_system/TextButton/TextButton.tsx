@@ -1,4 +1,4 @@
-import styles from './TextButton.module.css'
+import styles from "./TextButton.module.css";
 
 const TextButton: React.FC<React.ButtonHTMLAttributes<HTMLButtonElement>> = ({
   children,
@@ -8,7 +8,7 @@ const TextButton: React.FC<React.ButtonHTMLAttributes<HTMLButtonElement>> = ({
     <button className={styles.textButton} {...props}>
       {children}
     </button>
-  )
-}
+  );
+};
 
-export default TextButton
+export default TextButton;

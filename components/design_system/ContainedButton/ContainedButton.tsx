@@ -1,10 +1,10 @@
-import styles from './ContainedButton.module.css'
+import styles from "./ContainedButton.module.css";
 
 export type ContainedButtonProps =
   React.ButtonHTMLAttributes<HTMLButtonElement> & {
-    textColor?: string
-    backgroundColor?: string
-  }
+    textColor?: string;
+    backgroundColor?: string;
+  };
 
 const ContainedButton: React.FC<ContainedButtonProps> = ({
   children,
@@ -20,7 +20,7 @@ const ContainedButton: React.FC<ContainedButtonProps> = ({
     >
       {children}
     </button>
-  )
-}
+  );
+};
 
-export default ContainedButton
+export default ContainedButton;
