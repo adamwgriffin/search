@@ -3,13 +3,12 @@ import styles from './MenuOpenIcon.module.css'
 
 export interface MenuOpenIconProps {
   open: boolean
-} 
+}
 
 const MenuOpenIcon: NextPage<MenuOpenIconProps> = ({ open }) => {
   return (
     <svg
-      role='button'
-      aria-pressed={open}
+      aria-hidden='true'
       className={open ? styles.open : styles.closed}
       xmlns='http://www.w3.org/2000/svg'
       width='12'

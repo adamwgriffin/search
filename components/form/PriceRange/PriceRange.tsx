@@ -22,6 +22,9 @@ export const prices = [
   13_000_000, 14_000_000, 15_000_000, 16_000_000, 17_000_000, 18_000_000
 ]
 
+export const minLabel = 'Min Price'
+export const maxLabel = 'Max Price'
+
 const PriceRange: React.FC<PriceRangeProps> = ({
   priceRange,
   onFocus,
@@ -75,7 +78,7 @@ const PriceRange: React.FC<PriceRangeProps> = ({
       <legend className={styles.legend}>Price Range</legend>
 
       <Price
-        label='Min Price'
+        label={minLabel}
         placeholder='Min'
         price={priceRange.priceMin}
         options={minOptions()}
@@ -106,7 +109,7 @@ const PriceRange: React.FC<PriceRangeProps> = ({
       <InputRangeSeparator />
 
       <Price
-        label='Max Price'
+        label={maxLabel}
         placeholder='Max'
         price={priceRange.priceMax}
         options={maxOptions()}

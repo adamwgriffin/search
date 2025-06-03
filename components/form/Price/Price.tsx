@@ -6,7 +6,6 @@ import MenuContainter from '../../design_system/MenuContainter/MenuContainter'
 import MenuDropdown from '../../design_system/MenuDropdown/MenuDropdown'
 import MenuOpenIcon from '../../design_system/icons/MenuOpenIcon/MenuOpenIcon'
 import styles from './Price.module.css'
-import formStyles from '../../../styles/forms.module.css'
 
 export type PriceProps = {
   label: string
@@ -23,10 +22,6 @@ export type PriceProps = {
   onMenuItemSelected?: (price: number) => void
   onMenuButtonClick?: () => void
 }
-
-// Passing null to NumericFormat.value does not clear the input but "" does for
-// some reason
-const normalizePrice = (price: number | null) => (price === null ? '' : price)
 
 const Price: React.FC<PriceProps> = ({
   label,
@@ -93,17 +88,16 @@ const Price: React.FC<PriceProps> = ({
   const priceMenuId = `priceMenu__${uniqueID}`
 
   return (
-    <MenuContainter onClickAway={onClickAway}>
-      <label htmlFor={priceId} className={formStyles.accessibleLabel}>
-        {label}
-      </label>
+    <MenuContainter onClickAway={onClickAway} role='group' aria-label={label}>
       <div className={styles.priceField}>
         <NumericFormat
           prefix={'$'}
           thousandSeparator=','
           allowNegative={false}
           decimalScale={0}
-          value={normalizePrice(price)}
+          // Passing null to NumericFormat.value does not clear the input but ""
+          // does for some reason
+          value={price ?? ''}
           // For falsey values we pass null to avoid the input being set to 0
           onValueChange={({ floatValue }) => onChange?.(floatValue || null)}
           placeholder={placeholder}
@@ -122,6 +116,8 @@ const Price: React.FC<PriceProps> = ({
         />
         <div
           role='button'
+          aria-controls={priceMenuId}
+          aria-label='Toggle price menu'
           className={styles.menuButton}
           onClick={onMenuButtonClick}
         >
