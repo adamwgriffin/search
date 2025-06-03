@@ -48,6 +48,7 @@
     "@faker-js/faker": "^8.0.0",
     "@testing-library/jest-dom": "^6.1.6",
     "@testing-library/react": "^14.1.2",
+    "@testing-library/user-event": "^14.6.1",
     "@types/google.maps": "^3.54.10",
     "@types/jest": "^29.5.12",
     "@types/lodash": "^4.14.202",
