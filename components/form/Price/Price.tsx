@@ -6,7 +6,6 @@ import MenuContainter from '../../design_system/MenuContainter/MenuContainter'
 import MenuDropdown from '../../design_system/MenuDropdown/MenuDropdown'
 import MenuOpenIcon from '../../design_system/icons/MenuOpenIcon/MenuOpenIcon'
 import styles from './Price.module.css'
-import formStyles from '../../../styles/forms.module.css'
 
 export type PriceProps = {
   label: string
@@ -89,10 +88,7 @@ const Price: React.FC<PriceProps> = ({
   const priceMenuId = `priceMenu__${uniqueID}`
 
   return (
-    <MenuContainter onClickAway={onClickAway}>
-      <label htmlFor={priceId} className={formStyles.accessibleLabel}>
-        {label}
-      </label>
+    <MenuContainter onClickAway={onClickAway} role='group' aria-label={label}>
       <div className={styles.priceField}>
         <NumericFormat
           prefix={'$'}
@@ -120,6 +116,8 @@ const Price: React.FC<PriceProps> = ({
         />
         <div
           role='button'
+          aria-controls={priceMenuId}
+          aria-label='Toggle price menu'
           className={styles.menuButton}
           onClick={onMenuButtonClick}
         >
