@@ -11,13 +11,3 @@
   font-size: 1.2rem;
   font-weight: 500;
 }
-
-.bedBathSqft {
-  display: flex;
-  column-gap: 0.4rem;
-}
-
-.price,
-.bedBathSqft {
-  margin-bottom: 0.5rem;
-}

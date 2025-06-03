@@ -1,25 +1,23 @@
-import type { NextPage } from "next";
-import type { MouseEvent } from "react";
-import type { Listing } from "../../../types/listing_types";
 import Link from "next/link";
-import styles from "./ListingCard.module.css";
+import type { MouseEvent } from "react";
 import {
-  formatPriceFromListing,
-  getBathrooms,
-  formatSqft,
-  cityStateZip
+  cityStateZip,
+  formatPriceFromListing
 } from "../../../lib/listing_helpers";
+import type { Listing } from "../../../types/listing_types";
 import ListingCardImage from "../ListingCardImage/ListingCardImage";
+import ListingInfo from "../ListingInfo/ListingInfo";
+import styles from "./ListingCard.module.css";
 
-export interface ListingCardProps {
+export type ListingCardProps = {
   listing: Listing;
   url: string;
   onClick?: () => void;
   onMouseEnter?: () => void;
   onMouseLeave?: () => void;
-}
+};
 
-const ListingCard: NextPage<ListingCardProps> = ({
+const ListingCard: React.FC<ListingCardProps> = ({
   listing,
   url,
   onClick,
@@ -44,11 +42,7 @@ const ListingCard: NextPage<ListingCardProps> = ({
         <div className={styles.price}>
           {formatPriceFromListing(listing, { displayInterval: true })}
         </div>
-        <div className={styles.bedBathSqft}>
-          <div>{listing.beds}bd</div>
-          <div>{getBathrooms(listing)}ba</div>
-          <div>{formatSqft(listing)} sqft</div>
-        </div>
+        <ListingInfo listing={listing} />
         <div>
           <div>{listing.address.line1}</div>
           <div>{cityStateZip(listing.address)}</div>

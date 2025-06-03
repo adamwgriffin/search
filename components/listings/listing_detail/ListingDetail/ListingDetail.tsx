@@ -1,16 +1,16 @@
-import type { ListingDetail } from "../../../../types/listing_types";
 import {
   formatPriceFromListing,
   formatSoldDate
 } from "../../../../lib/listing_helpers";
+import type { ListingDetail } from "../../../../types/listing_types";
+import ListingInfo from "../../ListingInfo/ListingInfo";
 import ListingStatusIndicator from "../../ListingStatusIndicator/ListingStatusIndicator";
-import ListingDetailImage from "../ListingDetailImage";
-import ListingDetailAddress from "../ListingDetailAddress/ListingDetailAddress";
-import ListingDetailBedsBathsSQFT from "../ListingDetailBedsBathsSQFT/ListingDetailBedsBathsSQFT";
 import Description from "../Description/Description";
 import HomeHighlights from "../Highlights/HomeHighlights";
-import PropertyDetails from "../PropertyDetails/PropertyDetails";
+import ListingDetailAddress from "../ListingDetailAddress/ListingDetailAddress";
+import ListingDetailImage from "../ListingDetailImage";
 import OpenHouseList from "../OpenHouseList/OpenHouseList";
+import PropertyDetails from "../PropertyDetails/PropertyDetails";
 import styles from "./ListingDetail.module.css";
 
 export type ListingDetailProps = {
@@ -30,7 +30,7 @@ const ListingDetail: React.FC<ListingDetailProps> = ({ listing }) => {
       </div>
       <div className={styles.neighborhood}>{listing.neighborhood}</div>
       <ListingDetailAddress address={listing.address} />
-      <ListingDetailBedsBathsSQFT listing={listing} />
+      <ListingInfo listing={listing} bedsLabel=" Bed" bathsLabel=" Bath" />
       <Description description={listing.description} />
       {listing.openHouses.length ? (
         <OpenHouseList openHouses={listing.openHouses} />

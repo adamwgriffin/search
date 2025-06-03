@@ -106,7 +106,7 @@ export const formatLotSize = (sqft: number) => {
       acres.toLocaleString(Locale, {
         minimumFractionDigits: 2,
         maximumFractionDigits: 2
-      }) + " acres"
+      }) + ` ${acres >= 2 ? 'acres' : 'acre'}`
     );
   }
   return sqft.toLocaleString(Locale) + " sqft";

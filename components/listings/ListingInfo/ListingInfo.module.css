@@ -1,0 +1,4 @@
+.listingCardInfo {
+  display: flex;
+  column-gap: 0.4rem;
+}
