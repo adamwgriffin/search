@@ -51,8 +51,8 @@ export const GoogleMapsAutocompleteOptions = {
 };
 
 export const GoogleMapsPolygonOptions: google.maps.PolygonOptions = {
-  strokeColor: "darkgray",
-  strokeOpacity: 1,
-  strokeWeight: 2,
+  strokeColor: "#006AFF",
+  strokeOpacity: 0.5,
+  strokeWeight: 3,
   fillOpacity: 0
 };
