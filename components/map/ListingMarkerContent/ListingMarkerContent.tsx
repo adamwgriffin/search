@@ -12,6 +12,8 @@ import ListingImageContainer from "../../listings/ListingImageContainer/ListingI
 import ListingImageContainerElements from "../../listings/ListingImageContainerElements/ListingImageContainerElements";
 import FavoriteButton from "../../../containers/FavoriteButton/FavoriteButton";
 import ListingMainImage from "../../listings/listing_detail/ListingMainImage";
+import ListingBadges from '../../listings/ListingBadges/ListingBadges';
+import ListingInfo from '../../listings/ListingInfo/ListingInfo';
 
 export type ListingMarkerContentProps = {
   listing: Listing;
@@ -47,6 +49,7 @@ const ListingMarkerContent: React.FC<ListingMarkerContentProps> = ({
         <div className={styles.popup}>
           <ListingImageContainer>
             <ListingImageContainerElements>
+              <ListingBadges listing={listing} />
               <FavoriteButton listingId={listing._id} />
             </ListingImageContainerElements>
             <ListingMainImage
@@ -66,11 +69,7 @@ const ListingMarkerContent: React.FC<ListingMarkerContentProps> = ({
             <div className={styles.price}>
               {formatPriceFromListing(listing)}
             </div>
-            <div className={styles.bedBathSqft}>
-              <div>{listing.beds}bd</div>
-              <div>{getBathrooms(listing)}ba</div>
-              <div>{formatSqft(listing)} sqft</div>
-            </div>
+            <ListingInfo listing={listing} />
             <div className={styles.address}>
               <div className={styles.addressLine1}>{listing.address.line1}</div>
               <div className={styles.addressLine2}>
