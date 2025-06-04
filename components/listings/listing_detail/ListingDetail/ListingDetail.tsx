@@ -4,7 +4,6 @@ import {
 } from "../../../../lib/listing_helpers";
 import type { ListingDetail } from "../../../../types/listing_types";
 import ListingInfo from "../../ListingInfo/ListingInfo";
-import ListingStatusIndicator from "../../ListingStatusIndicator/ListingStatusIndicator";
 import Description from "../Description/Description";
 import HomeHighlights from "../Highlights/HomeHighlights";
 import ListingDetailAddress from "../ListingDetailAddress/ListingDetailAddress";
@@ -20,11 +19,12 @@ export type ListingDetailProps = {
 const ListingDetail: React.FC<ListingDetailProps> = ({ listing }) => {
   return (
     <div className={styles.listingDetail}>
-      <div className={styles.status}>
-        <ListingStatusIndicator status={listing.status} />
-        {listing.soldDate && formatSoldDate(listing.soldDate)}
-      </div>
       <ListingDetailImage listing={listing} />
+      {listing.soldDate && (
+        <div className={styles.soldStatus}>
+          Sold on {formatSoldDate(listing.soldDate)}
+        </div>
+      )}
       <div className={styles.price}>
         {formatPriceFromListing(listing, { displayInterval: true })}
       </div>

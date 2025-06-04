@@ -1,5 +1,11 @@
 .listingImageContainerElements {
   position: absolute;
+  left: 0;
   right: 0;
   margin: 0.5rem;
+}
+
+.elements {
+  display: flex;
+  justify-content: space-between;
 }

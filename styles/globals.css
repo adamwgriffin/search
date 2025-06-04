@@ -33,6 +33,7 @@ body,
   --no-user-image-icon: #6b7280;
   --loading-dots-small: 0.625rem;
   --active-listing: green;
+  --pending-listing: orange;
   --sold-listing: red;
   --show-more-background-image: linear-gradient(
     to bottom,

@@ -1,18 +1,23 @@
 .status {
   display: inline-block;
-  border-radius: 6px;
-  padding: 0.3rem 0.4rem;
-  border: 1px solid var(--outline);
+  font-size: 0.8rem;
+  border-radius: 1.25rem;
+  padding: 0.2rem 0.4rem;
+  background-color: #5a5a5a;
+  color: white;
 }
 
 .statusActive {
   composes: status;
-  border: 1px solid var(--active-listing);
-  color: var(--active-listing);
+  background-color: var(--active-listing);
+}
+
+.statusPending {
+  composes: status;
+  background-color: var(--pending-listing);
 }
 
 .statusSold {
   composes: status;
-  border: 1px solid var(--sold-listing);
-  color: var(--sold-listing);
+  background-color: var(--sold-listing);
 }
