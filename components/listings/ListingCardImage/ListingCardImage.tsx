@@ -1,8 +1,9 @@
+import FavoriteButton from "../../../containers/FavoriteButton/FavoriteButton";
 import type { Listing } from "../../../types/listing_types";
+import ListingMainImage from "../listing_detail/ListingMainImage";
+import ListingBadges from '../ListingBadges/ListingBadges';
 import ListingImageContainer from "../ListingImageContainer/ListingImageContainer";
 import ListingImageContainerElements from "../ListingImageContainerElements/ListingImageContainerElements";
-import FavoriteButton from "../../../containers/FavoriteButton/FavoriteButton";
-import ListingMainImage from "../listing_detail/ListingMainImage";
 import styles from "./ListingCardImage.module.css";
 
 export type ListingCardImageProps = {
@@ -13,6 +14,7 @@ const ListingCardImage: React.FC<ListingCardImageProps> = ({ listing }) => {
   return (
     <ListingImageContainer>
       <ListingImageContainerElements>
+        <ListingBadges listing={listing} />
         <FavoriteButton listingId={listing._id} />
       </ListingImageContainerElements>
       <ListingMainImage

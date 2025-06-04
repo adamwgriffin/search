@@ -1,5 +1,6 @@
 // used for mongodb's $project section to select the fields we want to return in the response
 export const ListingResultProjectionFields = {
+  propertyType: 1,
   status: 1,
   listPrice: 1,
   soldPrice: 1,
@@ -7,6 +8,7 @@ export const ListingResultProjectionFields = {
   beds: 1,
   baths: 1,
   sqft: 1,
+  lotSize: 1,
   neighborhood: 1,
   description: 1,
   address: 1,
@@ -28,11 +30,9 @@ export const ListingRadiusResultProjectionFields = {
 
 export const ListingDetailResultProjectionFields = {
   ...ListingResultProjectionFields,
-  propertyType: 1,
   yearBuilt: 1,
   soldDate: 1,
-  propertyDetails: 1,
-  lotSize: 1
+  propertyDetails: 1
 };
 
 export const DefaultMaxDistance = 1609.34; // 1 mile in meters

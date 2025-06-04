@@ -60,6 +60,7 @@ export interface Listing {
   beds: number;
   baths: number;
   sqft: number | null;
+  lotSize: number;
   neighborhood: string;
   description: string | null;
   address: ListingAddress;
@@ -70,15 +71,14 @@ export interface Listing {
   photoGallery?: PhotoGalleryImage[];
   openHouses: OpenHouse[];
   placeId?: string;
+  propertyType: PropertyType;
 }
 
 export interface ListingDetail extends Listing {
-  propertyType: PropertyType;
   yearBuilt: number;
   soldDate?: string;
   daysOnMarket: number;
   propertyDetails?: PropertDetailsSection[];
-  lotSize: number;
 }
 
 export interface BoundaryRecord {

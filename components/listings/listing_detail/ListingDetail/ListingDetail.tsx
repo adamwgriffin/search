@@ -1,16 +1,15 @@
-import type { ListingDetail } from "../../../../types/listing_types";
 import {
   formatPriceFromListing,
   formatSoldDate
 } from "../../../../lib/listing_helpers";
-import ListingStatusIndicator from "../../ListingStatusIndicator/ListingStatusIndicator";
-import ListingDetailImage from "../ListingDetailImage";
-import ListingDetailAddress from "../ListingDetailAddress/ListingDetailAddress";
-import ListingDetailBedsBathsSQFT from "../ListingDetailBedsBathsSQFT/ListingDetailBedsBathsSQFT";
+import type { ListingDetail } from "../../../../types/listing_types";
+import ListingInfo from "../../ListingInfo/ListingInfo";
 import Description from "../Description/Description";
 import HomeHighlights from "../Highlights/HomeHighlights";
-import PropertyDetails from "../PropertyDetails/PropertyDetails";
+import ListingDetailAddress from "../ListingDetailAddress/ListingDetailAddress";
+import ListingDetailImage from "../ListingDetailImage";
 import OpenHouseList from "../OpenHouseList/OpenHouseList";
+import PropertyDetails from "../PropertyDetails/PropertyDetails";
 import styles from "./ListingDetail.module.css";
 
 export type ListingDetailProps = {
@@ -20,17 +19,18 @@ export type ListingDetailProps = {
 const ListingDetail: React.FC<ListingDetailProps> = ({ listing }) => {
   return (
     <div className={styles.listingDetail}>
-      <div className={styles.status}>
-        <ListingStatusIndicator status={listing.status} />
-        {listing.soldDate && formatSoldDate(listing.soldDate)}
-      </div>
       <ListingDetailImage listing={listing} />
+      {listing.soldDate && (
+        <div className={styles.soldStatus}>
+          Sold on {formatSoldDate(listing.soldDate)}
+        </div>
+      )}
       <div className={styles.price}>
         {formatPriceFromListing(listing, { displayInterval: true })}
       </div>
       <div className={styles.neighborhood}>{listing.neighborhood}</div>
       <ListingDetailAddress address={listing.address} />
-      <ListingDetailBedsBathsSQFT listing={listing} />
+      <ListingInfo listing={listing} bedsLabel=" Bed" bathsLabel=" Bath" />
       <Description description={listing.description} />
       {listing.openHouses.length ? (
         <OpenHouseList openHouses={listing.openHouses} />
