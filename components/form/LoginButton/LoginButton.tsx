@@ -17,7 +17,7 @@ const LoginButton: React.FC<LoginButtonProps> = ({
     <ContainedButton
       onClick={onClick}
       textColor="var(--foreground)"
-      backgroundColor="white"
+      backgroundColor="var(--background-secondary)"
     >
       <div className={styles.content}>
         <Icon size={24} /> {label}
