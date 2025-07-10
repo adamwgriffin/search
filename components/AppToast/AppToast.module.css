@@ -1,0 +1,6 @@
+/* The reason for the double classname is that you have to override the
+specificity of the default class. */
+.toaster.toaster {
+  color: var(--foreground);
+  background-color: var(--background-secondary);
+}
