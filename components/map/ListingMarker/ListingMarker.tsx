@@ -1,6 +1,5 @@
 "use client";
 
-import type { NextPage } from "next";
 import type { Listing } from "../../../types/listing_types";
 import { useEffect, useState, useCallback, memo } from "react";
 import { createPortal } from "react-dom";
@@ -9,7 +8,7 @@ import ListingMarkerContent from "../ListingMarkerContent/ListingMarkerContent";
 import { listingLocationToLatLngLiteral } from "../../../lib/listing_helpers";
 import { objectsValuesEqual } from "../../../lib";
 
-export interface ListingMarkerProps {
+export type ListingMarkerProps = {
   listing: Listing;
   highlighted?: boolean;
   zIndex: number;
@@ -17,9 +16,9 @@ export interface ListingMarkerProps {
   onMouseEnter?: (listingid: string) => void;
   onMouseLeave?: () => void;
   onClick?: (listingSlug: string) => void;
-}
+};
 
-const ListingMarker: NextPage<ListingMarkerProps> = ({
+const ListingMarker: React.FC<ListingMarkerProps> = ({
   listing,
   highlighted,
   zIndex,
@@ -50,8 +49,9 @@ const ListingMarker: NextPage<ListingMarkerProps> = ({
       marker: google.maps.marker.AdvancedMarkerElement
     ): { handleMouseEnter: () => void; handleMouseLeave: () => void } => {
       marker.addListener("click", () => onClick?.(listing.slug));
-      // there are currently only a few events that AdvancedMarkerElement supports, so we have to attach events to the
-      // element itself for others to work. Note: marker.element is not the the markerContainer we created
+      // there are currently only a few events that AdvancedMarkerElement
+      // supports, so we have to attach events to the element itself for others
+      // to work. Note: marker.element is not the the markerContainer we created
       const markerElement = marker.element;
       markerElement.style.zIndex = highlighted ? "10000" : zIndex.toString();
       const handleMouseEnter = () => {
@@ -76,8 +76,8 @@ const ListingMarker: NextPage<ListingMarkerProps> = ({
     const { handleMouseEnter, handleMouseLeave } =
       addEventListenersToMarker(marker);
     setMarkerContainer(markerContainer);
-    // Clean up by removing event listeners, removing the marker from the map and removing the div element we created
-    // from the DOM. Not sure if all of this is strictly necessary. We're doing it for now, just in case.
+    // Clean up by removing event listeners, removing the marker from the map
+    // and removing the div element we created from the DOM.
     return () => {
       marker.element.removeEventListener("mouseenter", handleMouseEnter);
       marker.element.removeEventListener("mouseleave", handleMouseLeave);
@@ -108,13 +108,15 @@ const propsAreEqual = (
     "listing.latitude",
     "listing.longitude",
     "highlighted",
-    // we need to re-render every time the authentication status changes, otherwise the favorite button will not
-    // re-render and get the new value from useSession. it depends on the session state in order to know whether to open
-    // the login modal if the user isn't logged in
+    // we need to re-render every time the authentication status changes,
+    // otherwise the favorite button will not re-render and get the new value
+    // from useSession. it depends on the session state in order to know whether
+    // to open the login modal if the user isn't logged in
     "authenticaticated"
   ]);
 };
 
-// use the memo() HOC to avoid re-rendering markers on the map so it's more effecient and doesn't cause every marker
-// to flicker each time the map is dragged
+// use the memo() HOC to avoid re-rendering markers on the map so it's more
+// effecient and doesn't cause every marker to flicker each time the map is
+// dragged
 export default memo(ListingMarker, propsAreEqual);
