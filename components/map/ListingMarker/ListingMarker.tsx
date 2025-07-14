@@ -48,7 +48,7 @@ const ListingMarker: React.FC<ListingMarkerProps> = ({
     (
       marker: google.maps.marker.AdvancedMarkerElement
     ): { handleMouseEnter: () => void; handleMouseLeave: () => void } => {
-      marker.addListener("click", () => onClick?.(listing.slug));
+      marker.addListener("gmp-click", () => onClick?.(listing.slug));
       // there are currently only a few events that AdvancedMarkerElement
       // supports, so we have to attach events to the element itself for others
       // to work. Note: marker.element is not the the markerContainer we created
