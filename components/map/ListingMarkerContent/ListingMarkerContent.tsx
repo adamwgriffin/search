@@ -1,19 +1,17 @@
-import type { Listing } from "../../../types/listing_types";
-import {
-  formatPriceFromListing,
-  ShortCurrencyFormat,
-  getBathrooms,
-  formatSqft,
-  cityStateZip
-} from "../../../lib/listing_helpers";
-import styles from "./ListingMarkerContent.module.css";
 import Link from "next/link";
+import FavoriteButton from "../../../containers/FavoriteButton/FavoriteButton";
+import {
+  cityStateZip,
+  formatPriceFromListing,
+  ShortCurrencyFormat
+} from "../../../lib/listing_helpers";
+import type { Listing } from "../../../types/listing_types";
+import ListingMainImage from "../../listings/listing_detail/ListingMainImage";
+import ListingBadges from "../../listings/ListingBadges/ListingBadges";
 import ListingImageContainer from "../../listings/ListingImageContainer/ListingImageContainer";
 import ListingImageContainerElements from "../../listings/ListingImageContainerElements/ListingImageContainerElements";
-import FavoriteButton from "../../../containers/FavoriteButton/FavoriteButton";
-import ListingMainImage from "../../listings/listing_detail/ListingMainImage";
-import ListingBadges from '../../listings/ListingBadges/ListingBadges';
-import ListingInfo from '../../listings/ListingInfo/ListingInfo';
+import ListingInfo from "../../listings/ListingInfo/ListingInfo";
+import styles from "./ListingMarkerContent.module.css";
 
 export type ListingMarkerContentProps = {
   listing: Listing;
