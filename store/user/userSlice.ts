@@ -239,11 +239,6 @@ export const {
 
 export const selectCurrentUser = (state: AppState) => state.user.currentUser;
 
-export const selectFavoriteIds = createSelector(
-  [selectCurrentUser],
-  (currentUser) => currentUser?.favoriteIds || []
-);
-
 export const selectFavoriteListings = (state: AppState) =>
   state.user.favoriteListings;
 
