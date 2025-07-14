@@ -1,6 +1,6 @@
 import HeartIcon from "../../components/design_system/icons/HeartIcon/HeartIcon";
 import { useAppDispatch } from "../../hooks/app_hooks";
-import { useGetCurrentUserIfAuthenticated } from "../../hooks/get_current_user_if_authenticated_hook";
+import { useGetCurrentUser } from "../../hooks/get_current_user_hook";
 import { openModal } from "../../store/application/applicationSlice";
 import { toggleFavorite } from "../../store/user/userSlice";
 import styles from "./FavoriteButton.module.css";
@@ -11,7 +11,7 @@ export type FavoriteButtonProps = {
 
 const FavoriteButton: React.FC<FavoriteButtonProps> = ({ listingId }) => {
   const dispatch = useAppDispatch();
-  const currentUser = useGetCurrentUserIfAuthenticated();
+  const currentUser = useGetCurrentUser();
   const favoriteIds = currentUser?.favoriteIds || [];
 
   const toggleFavoriteOrOpenModal = () => {
