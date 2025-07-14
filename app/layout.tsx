@@ -8,7 +8,7 @@ import ToastProvider from "../providers/ToastProvider";
 
 export const metadata: Metadata = {
   title: "Awsom",
-  description: "Search the mose awsom listings in Seattle!"
+  description: "Search the most awesome listings in Seattle!"
 };
 
 export default function RootLayout({
