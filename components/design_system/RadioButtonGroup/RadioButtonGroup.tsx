@@ -1,11 +1,11 @@
-import Fieldset from '../Fieldset/Fieldset'
-import Legend from '../Legend/Legend'
-import styles from './RadioButtonGroup.module.css'
+import Fieldset from "../Fieldset/Fieldset";
+import Legend from "../Legend/Legend";
+import styles from "./RadioButtonGroup.module.css";
 
 export type RadioButtonGroupProps = {
-  label: string
-  children: React.ReactNode
-}
+  label: string;
+  children: React.ReactNode;
+};
 
 const RadioButtonGroup: React.FC<RadioButtonGroupProps> = ({
   label,
@@ -16,7 +16,7 @@ const RadioButtonGroup: React.FC<RadioButtonGroupProps> = ({
       <Legend>{label}</Legend>
       <div className={styles.radioButtonGroup}>{children}</div>
     </Fieldset>
-  )
-}
+  );
+};
 
-export default RadioButtonGroup
+export default RadioButtonGroup;

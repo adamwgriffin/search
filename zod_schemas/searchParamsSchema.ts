@@ -1,19 +1,19 @@
-import { z } from 'zod'
+import { z } from "zod";
 import {
   sortDirectionSchema,
   sortTypeSchema
-} from './listingSearchParamsSchema'
-import { booleanEnum } from '.'
+} from "./listingSearchParamsSchema";
+import { booleanEnum } from ".";
 
 export const searchParamsSchema = z
   .object({
-    search_type: z.enum(['buy', 'rent', 'sold']),
+    search_type: z.enum(["buy", "rent", "sold"]),
     address: z.string(),
     bounds: z.string(),
     boundary_id: z.string(),
     zoom: z.coerce.number(),
     property_type: z.string(),
-    include_pending: booleanEnum.default('false'),
+    include_pending: booleanEnum.default("false"),
     open_houses: booleanEnum,
     page_index: z.coerce.number(),
     price_min: z.coerce.number(),
@@ -37,11 +37,11 @@ export const searchParamsSchema = z
     air_conditioning: booleanEnum,
     sold_in_last: z.coerce.number()
   })
-  .partial()
+  .partial();
 
-export type SearchParams = z.infer<typeof searchParamsSchema>
+export type SearchParams = z.infer<typeof searchParamsSchema>;
 
 // Using "null" in an updated indicates that the value shuld be removed
 export type SearchParamsUpdate = {
-  [K in keyof SearchParams]: SearchParams[K] | null
-}
+  [K in keyof SearchParams]: SearchParams[K] | null;
+};

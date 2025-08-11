@@ -1,46 +1,46 @@
-'use client'
+"use client";
 
-import type { NextPage } from 'next'
-import styles from './SearchResults.module.css'
-import ListingResultsHeader from '../../components/listings/ListingResultsHeader/ListingResultsHeader'
-import { useAppSelector, useAppDispatch } from '../../hooks/app_hooks'
-import { useOpenListingDetail } from '../../hooks/open_listing_detail_hook'
-import { setHighlightedMarker } from '../../store/listingSearch/listingSearchSlice'
-import { selectSearchType } from '../../store/filters/filtersSelectors'
-import ListingCards from '../../components/listings/ListingCards/ListingCards'
-import NoResults from '../../components/listings/NoResults/NoResults'
-import { useEffect, useRef } from 'react'
-import { selectMobileViewType } from '../../store/application/applicationSlice'
-import { useSearchResults } from '~/hooks/useSearchResults'
+import type { NextPage } from "next";
+import styles from "./SearchResults.module.css";
+import ListingResultsHeader from "../../components/listings/ListingResultsHeader/ListingResultsHeader";
+import { useAppSelector, useAppDispatch } from "../../hooks/app_hooks";
+import { useOpenListingDetail } from "../../hooks/open_listing_detail_hook";
+import { setHighlightedMarker } from "../../store/listingSearch/listingSearchSlice";
+import { selectSearchType } from "../../store/filters/filtersSelectors";
+import ListingCards from "../../components/listings/ListingCards/ListingCards";
+import NoResults from "../../components/listings/NoResults/NoResults";
+import { useEffect, useRef } from "react";
+import { selectMobileViewType } from "../../store/application/applicationSlice";
+import { useSearchResults } from "~/hooks/useSearchResults";
 
 const SearchResults: NextPage = () => {
-  const dispatch = useAppDispatch()
-  const searchType = useAppSelector(selectSearchType)
-  const openListingDetail = useOpenListingDetail(false)
-  const searchResultsRef = useRef<HTMLDivElement>(null)
-  const mobileViewType = useAppSelector(selectMobileViewType)
-  const { data: results, isFetching, isError } = useSearchResults()
+  const dispatch = useAppDispatch();
+  const searchType = useAppSelector(selectSearchType);
+  const openListingDetail = useOpenListingDetail(false);
+  const searchResultsRef = useRef<HTMLDivElement>(null);
+  const mobileViewType = useAppSelector(selectMobileViewType);
+  const { data: results, isFetching, isError } = useSearchResults();
 
   useEffect(() => {
     if (isFetching && searchResultsRef?.current?.scrollTop) {
-      searchResultsRef.current.scrollTop = 0
+      searchResultsRef.current.scrollTop = 0;
     }
-  }, [isFetching])
+  }, [isFetching]);
 
   const handleListingCardMouseEnter = (listingId: string) => {
-    dispatch(setHighlightedMarker(listingId))
-  }
+    dispatch(setHighlightedMarker(listingId));
+  };
 
   const handleListingCardMouseLeave = () => {
-    dispatch(setHighlightedMarker(null))
-  }
+    dispatch(setHighlightedMarker(null));
+  };
 
-  const listings = results?.listings ?? []
+  const listings = results?.listings ?? [];
 
   const resultsClassName =
-    mobileViewType === 'list'
+    mobileViewType === "list"
       ? styles.searchResultsMobileListView
-      : styles.searchResults
+      : styles.searchResults;
 
   return (
     <div ref={searchResultsRef} className={resultsClassName}>
@@ -58,9 +58,7 @@ const SearchResults: NextPage = () => {
           onListingCardMouseLeave={handleListingCardMouseLeave}
         />
       )}
-      {listings.length === 0 && !isFetching && (
-        <NoResults />
-      )}
+      {listings.length === 0 && !isFetching && <NoResults />}
       {/* {listings.length > 0 && (
         <ListingResultsPagination
           {...pagination}
@@ -68,7 +66,7 @@ const SearchResults: NextPage = () => {
         />
       )} */}
     </div>
-  )
-}
+  );
+};
 
-export default SearchResults
+export default SearchResults;

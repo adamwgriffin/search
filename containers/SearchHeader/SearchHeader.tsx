@@ -1,9 +1,9 @@
-import styles from './SearchHeader.module.css'
-import Logo from '../../components/header/Logo/Logo'
-import Filters from '../Filters/Filters'
-import UserMenu from '../UserMenu/UserMenu'
-import HideSmallAndDown from '../../components/HideSmallAndDown/HideSmallAndDown'
-import SearchLocation from '~/components/form/SearchLocation'
+import styles from "./SearchHeader.module.css";
+import Logo from "../../components/header/Logo/Logo";
+import Filters from "../Filters/Filters";
+import UserMenu from "../UserMenu/UserMenu";
+import HideSmallAndDown from "../../components/HideSmallAndDown/HideSmallAndDown";
+import SearchLocation from "~/components/form/SearchLocation";
 
 const SearchHeader: React.FC = () => {
   return (
@@ -19,7 +19,7 @@ const SearchHeader: React.FC = () => {
         <Filters />
       </div>
     </header>
-  )
-}
+  );
+};
 
-export default SearchHeader
+export default SearchHeader;

@@ -1,13 +1,13 @@
-import { useId } from 'react'
-import styles from './RadioButton.module.css'
-import { InputHTMLAttributes } from 'react'
+import { useId } from "react";
+import styles from "./RadioButton.module.css";
+import { InputHTMLAttributes } from "react";
 
 export type RadioButtonProps = Pick<
   InputHTMLAttributes<HTMLInputElement>,
-  'name' | 'value' | 'checked' | 'onChange'
+  "name" | "value" | "checked" | "onChange"
 > & {
-  label: string
-}
+  label: string;
+};
 
 const RadioButton: React.FC<RadioButtonProps> = ({
   label,
@@ -16,12 +16,12 @@ const RadioButton: React.FC<RadioButtonProps> = ({
   checked,
   onChange
 }) => {
-  const inputId = `${name}_${value}_${useId()}`
+  const inputId = `${name}_${value}_${useId()}`;
 
   return (
     <div className={styles.radioButton}>
       <input
-        type='radio'
+        type="radio"
         name={name}
         id={inputId}
         className={styles.radioButtonInput}
@@ -33,7 +33,7 @@ const RadioButton: React.FC<RadioButtonProps> = ({
         {label}
       </label>
     </div>
-  )
-}
+  );
+};
 
-export default RadioButton
+export default RadioButton;

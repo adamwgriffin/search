@@ -1,13 +1,13 @@
-import type { SearchParamsInit } from '~/types'
-import isEqual from 'lodash/isEqual'
-import omit from 'lodash/omit'
-import omitBy from 'lodash/omitBy'
+import type { SearchParamsInit } from "~/types";
+import isEqual from "lodash/isEqual";
+import omit from "lodash/omit";
+import omitBy from "lodash/omitBy";
 import type {
   SearchParams,
   SearchParamsUpdate
-} from '~/zod_schemas/searchParamsSchema'
+} from "~/zod_schemas/searchParamsSchema";
 
-export const NonGeocodeParams = ['bounds', 'boundary_id', 'zoom', 'page_index']
+export const NonGeocodeParams = ["bounds", "boundary_id", "zoom", "page_index"];
 
 /**
  * Keep track of a subset of Listing Service param defaults so that we can avoid
@@ -17,9 +17,9 @@ export const NonGeocodeParams = ['bounds', 'boundary_id', 'zoom', 'page_index']
 export const ParamDefaults: Partial<SearchParams> = Object.freeze({
   page_index: 0,
   page_size: 20,
-  sort_by: 'listedDate',
-  sort_direction: 'desc'
-})
+  sort_by: "listedDate",
+  sort_direction: "desc"
+});
 
 /**
  * Remove params marked for removal, as well as params that use default values,
@@ -31,10 +31,10 @@ export function removeUnwantedParams(params: SearchParamsUpdate) {
     return (
       value === null ||
       value === undefined ||
-      value === '' ||
+      value === "" ||
       isEqual(ParamDefaults[key as keyof SearchParamsUpdate], value)
-    )
-  })
+    );
+  });
 }
 
 export function objectToQueryString(params: SearchParams) {
@@ -42,7 +42,7 @@ export function objectToQueryString(params: SearchParams) {
   // Typescript for this is not correct
   return new URLSearchParams(params as SearchParamsInit)
     .toString()
-    .replace(/%2C/g, ',') // Don't encode commas in url params
+    .replace(/%2C/g, ","); // Don't encode commas in url params
 }
 
 export function getUpdatedParams(
@@ -53,17 +53,17 @@ export function getUpdatedParams(
   // newParams. Any other type of search adjustment should request results
   // starting on the first page
   const mergedParams = {
-    ...omit(currentParams, 'page_index'),
+    ...omit(currentParams, "page_index"),
     ...newParams
-  }
-  return removeUnwantedParams(mergedParams)
+  };
+  return removeUnwantedParams(mergedParams);
 }
 
 export function getUpdatedQueryString(
   currentParams: SearchParams,
   newParams: SearchParamsUpdate
 ) {
-  return objectToQueryString(getUpdatedParams(currentParams, newParams))
+  return objectToQueryString(getUpdatedParams(currentParams, newParams));
 }
 
 export function getNewLocationQueryString(
@@ -73,8 +73,8 @@ export function getNewLocationQueryString(
   // Remove params for searching current location with a geospatial search
   // since we're now going to be geocoding a new location. We no only want
   // filter params.
-  const filterParams = omit(currentParams, NonGeocodeParams)
-  return objectToQueryString({ ...filterParams, ...newLocationParams })
+  const filterParams = omit(currentParams, NonGeocodeParams);
+  return objectToQueryString({ ...filterParams, ...newLocationParams });
 }
 
 /**
@@ -84,15 +84,15 @@ export function getNewSearchStateFromMap(
   map: google.maps.Map,
   boundaryId: string | undefined
 ) {
-  const bounds = map.getBounds()?.toUrlValue()
-  if (!bounds) throw new Error('No bounds present in map instance')
-  const params: SearchParamsUpdate = { bounds }
+  const bounds = map.getBounds()?.toUrlValue();
+  if (!bounds) throw new Error("No bounds present in map instance");
+  const params: SearchParamsUpdate = { bounds };
   if (boundaryId) {
-    params.boundary_id = boundaryId
+    params.boundary_id = boundaryId;
   }
-  const zoom = map.getZoom()
+  const zoom = map.getZoom();
   if (zoom) {
-    params.zoom = zoom
+    params.zoom = zoom;
   }
-  return params
+  return params;
 }

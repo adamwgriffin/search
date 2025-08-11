@@ -1,14 +1,14 @@
-import { Fragment } from 'react'
-import { PropertyTypesData } from '../../../lib/property_types'
-import Fieldset from '../../design_system/Fieldset/Fieldset'
-import Legend from '../../design_system/Legend/Legend'
-import styles from './PropertyTypes.module.css'
-import { useSearchParamsState } from '~/providers/SearchParamsProvider'
+import { Fragment } from "react";
+import { PropertyTypesData } from "../../../lib/property_types";
+import Fieldset from "../../design_system/Fieldset/Fieldset";
+import Legend from "../../design_system/Legend/Legend";
+import styles from "./PropertyTypes.module.css";
+import { useSearchParamsState } from "~/providers/SearchParamsProvider";
 
 const PropertyTypes: React.FC = () => {
-  const { searchParamsState, updateSearchParams } = useSearchParamsState()
+  const { searchParamsState, updateSearchParams } = useSearchParamsState();
 
-  const propertyTypes = searchParamsState.property_type?.split(',') ?? []
+  const propertyTypes = searchParamsState.property_type?.split(",") ?? [];
 
   return (
     <Fieldset>
@@ -17,7 +17,7 @@ const PropertyTypes: React.FC = () => {
         {PropertyTypesData.map(({ label, id }) => (
           <Fragment key={`property-type-${label}-${id}`}>
             <input
-              type='checkbox'
+              type="checkbox"
               id={id}
               className={styles.checkbox}
               name={id}
@@ -26,10 +26,10 @@ const PropertyTypes: React.FC = () => {
               onChange={(e) => {
                 const updatedPropertyTypes = e.target.checked
                   ? propertyTypes.concat(id)
-                  : propertyTypes.filter((t) => t !== id)
+                  : propertyTypes.filter((t) => t !== id);
                 updateSearchParams({
-                  property_type: updatedPropertyTypes.join(',')
-                })
+                  property_type: updatedPropertyTypes.join(",")
+                });
               }}
             />
             <label htmlFor={id} className={styles.label}>
@@ -39,7 +39,7 @@ const PropertyTypes: React.FC = () => {
         ))}
       </div>
     </Fieldset>
-  )
-}
+  );
+};
 
-export default PropertyTypes
+export default PropertyTypes;

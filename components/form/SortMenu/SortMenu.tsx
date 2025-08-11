@@ -1,65 +1,65 @@
-import { useState } from 'react'
-import { useSearchParamsState } from '~/providers/SearchParamsProvider'
+import { useState } from "react";
+import { useSearchParamsState } from "~/providers/SearchParamsProvider";
 import type {
   SortDirection,
   SortType
-} from '../../../types/listing_service_params_types'
-import MenuButton from '../../design_system/MenuButton/MenuButton'
-import CheckIcon from '../../design_system/icons/CheckIcon/CheckIcon'
-import styles from './SortMenu.module.css'
+} from "../../../types/listing_service_params_types";
+import MenuButton from "../../design_system/MenuButton/MenuButton";
+import CheckIcon from "../../design_system/icons/CheckIcon/CheckIcon";
+import styles from "./SortMenu.module.css";
 
 export interface SortTypeLabels {
-  label: string
-  type: SortType
-  direction: SortDirection
+  label: string;
+  type: SortType;
+  direction: SortDirection;
 }
 
 export const SortTypeLabels: SortTypeLabels[] = [
   {
-    label: 'Newest',
-    type: 'listedDate',
-    direction: 'desc'
+    label: "Newest",
+    type: "listedDate",
+    direction: "desc"
   },
   {
-    label: 'Price (Lo-Hi)',
-    type: 'listPrice',
-    direction: 'asc'
+    label: "Price (Lo-Hi)",
+    type: "listPrice",
+    direction: "asc"
   },
   {
-    label: 'Price (Hi-Lo)',
-    type: 'listPrice',
-    direction: 'desc'
+    label: "Price (Hi-Lo)",
+    type: "listPrice",
+    direction: "desc"
   },
   {
-    label: 'Beds',
-    type: 'beds',
-    direction: 'desc'
+    label: "Beds",
+    type: "beds",
+    direction: "desc"
   },
   {
-    label: 'Baths',
-    type: 'baths',
-    direction: 'desc'
+    label: "Baths",
+    type: "baths",
+    direction: "desc"
   },
   {
-    label: 'Square Feet',
-    type: 'sqft',
-    direction: 'desc'
+    label: "Square Feet",
+    type: "sqft",
+    direction: "desc"
   }
-]
+];
 
 const getCurrentSortLabel = (sortBy: string, sortDirection: string) => {
   return SortTypeLabels.find(
     ({ type, direction }) => type === sortBy && direction === sortDirection
-  )?.label
-}
+  )?.label;
+};
 
 const SortMenu: React.FC = () => {
-  const [open, setOpen] = useState(false)
-  const { searchParamsState, updateSearchParams } = useSearchParamsState()
+  const [open, setOpen] = useState(false);
+  const { searchParamsState, updateSearchParams } = useSearchParamsState();
 
-  const sort_by = searchParamsState.sort_by ?? 'listedDate'
-  const sort_direction = searchParamsState.sort_direction ?? 'desc'
-  const currentSortLabel = getCurrentSortLabel(sort_by, sort_direction)
+  const sort_by = searchParamsState.sort_by ?? "listedDate";
+  const sort_direction = searchParamsState.sort_direction ?? "desc";
+  const currentSortLabel = getCurrentSortLabel(sort_by, sort_direction);
 
   return (
     <MenuButton
@@ -75,8 +75,8 @@ const SortMenu: React.FC = () => {
           <li
             key={`${type}-${direction}`}
             onClick={() => {
-              setOpen(false)
-              updateSearchParams({ sort_by: type, sort_direction: direction })
+              setOpen(false);
+              updateSearchParams({ sort_by: type, sort_direction: direction });
             }}
             className={styles.menuItem}
           >
@@ -90,7 +90,7 @@ const SortMenu: React.FC = () => {
         ))}
       </ul>
     </MenuButton>
-  )
-}
+  );
+};
 
-export default SortMenu
+export default SortMenu;

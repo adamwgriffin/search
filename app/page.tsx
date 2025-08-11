@@ -1,15 +1,15 @@
-'use client'
+"use client";
 
-import type { NextPage } from 'next'
-import GoogleMapsProvider from '../providers/GoogleMapsProvider'
-import { SearchParamsProvider } from '~/providers/SearchParamsProvider'
-import SearchHeader from '../containers/SearchHeader/SearchHeader'
-import SearchResults from '../containers/SearchResults/SearchResults'
-import ListingMap from '../containers/ListingMap/ListingMap'
-import SearchModals from '../components/SearchModals'
-import styles from './page.module.css'
-import ReactQueryClientProvider from '~/providers/ReactQueryClientProvider'
-import { Suspense } from 'react'
+import type { NextPage } from "next";
+import GoogleMapsProvider from "../providers/GoogleMapsProvider";
+import { SearchParamsProvider } from "~/providers/SearchParamsProvider";
+import SearchHeader from "../containers/SearchHeader/SearchHeader";
+import SearchResults from "../containers/SearchResults/SearchResults";
+import ListingMap from "../containers/ListingMap/ListingMap";
+import SearchModals from "../components/SearchModals";
+import styles from "./page.module.css";
+import ReactQueryClientProvider from "~/providers/ReactQueryClientProvider";
+import { Suspense } from "react";
 
 const SearchPage: NextPage = () => {
   return (
@@ -31,7 +31,7 @@ const SearchPage: NextPage = () => {
         </ReactQueryClientProvider>
       </SearchParamsProvider>
     </GoogleMapsProvider>
-  )
-}
+  );
+};
 
-export default SearchPage
+export default SearchPage;
