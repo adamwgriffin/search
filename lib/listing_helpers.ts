@@ -102,11 +102,12 @@ export const formatSqft = ({ sqft }: Listing | ListingDetail) =>
 export const formatLotSize = (sqft: number) => {
   if (sqft >= SQFT_PER_ACRE) {
     const acres = sqft / SQFT_PER_ACRE
+    const label = acres > 1 ? "acres" : "acre";
     return (
       acres.toLocaleString(Locale, {
         minimumFractionDigits: 2,
         maximumFractionDigits: 2
-      }) + ' acres'
+      }) + ` ${label}`
     )
   }
   return sqft.toLocaleString(Locale) + ' sqft'
