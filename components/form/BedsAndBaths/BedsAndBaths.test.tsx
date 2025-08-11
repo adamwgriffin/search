@@ -7,7 +7,7 @@ describe.skip("BedsAndBaths", () => {
     render(<BedsAndBaths />);
     BedBathValues.forEach((value) => {
       expect(
-        screen.getByText(value === "" ? "Any" : `${value}+`)
+        screen.getByText(value === 0 ? 'Any' : `${value}+`)
       ).toBeInTheDocument();
     });
   });

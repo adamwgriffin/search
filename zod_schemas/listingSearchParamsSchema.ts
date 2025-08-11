@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { booleanEnum } from ".";
 
 export const sortTypeSchema = z.enum([
   "listedDate",
@@ -20,10 +21,6 @@ export const paginationParamsSchema = z.object({
 });
 
 export type PaginationParams = z.infer<typeof paginationParamsSchema>;
-
-const booleanEnum = z
-  .enum(["true", "false"])
-  .transform((value) => value === "true");
 
 export const listingFilterParamsSchema = z
   .object({

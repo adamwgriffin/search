@@ -1,9 +1,9 @@
 import { z } from 'zod'
 import {
-  booleanEnum,
   sortDirectionSchema,
   sortTypeSchema
 } from './listingSearchParamsSchema'
+import { booleanEnum } from '.'
 
 export const searchParamsSchema = z
   .object({
