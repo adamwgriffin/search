@@ -31,6 +31,7 @@ import Features from "../../components/form/Features/Features";
 import SoldDays from "../../components/form/SoldDays/SoldDays";
 import { SearchTypes } from "../../lib/filter";
 import { useSearchParamsState } from "~/providers/SearchParamsProvider";
+import { ParamDefaults } from "~/lib/listingSearchParams";
 
 const More: React.FC = () => {
   const { searchParamsState, updateSearchParams } = useSearchParamsState();
@@ -55,16 +56,6 @@ const More: React.FC = () => {
       dispatch(searchWithUpdatedFilters())
     );
 
-  const handleIncludePendingChange = (includePending: boolean) => {
-    dispatch(setFilters({ includePending }));
-    dispatch(searchWithUpdatedFilters());
-  };
-
-  const handleOpenHouseChange = (e: ChangeEvent<HTMLInputElement>) => {
-    dispatch(setFilters({ openHouse: e.target.checked }));
-    dispatch(searchWithUpdatedFilters());
-  };
-
   const handleChange = (params: Partial<MoreFilters>) => {
     dispatch(setFilters(params));
   };
@@ -80,9 +71,7 @@ const More: React.FC = () => {
     <div className={styles.more}>
       <SearchTypeSelector
         searchType={searchType}
-        onChange={(searchType) =>
-          updateSearchParams({ search_type: searchType })
-        }
+        onChange={(search_type) => updateSearchParams({ search_type })}
       />
       <div className={styles.mobileFilters}>
         <PriceContainer />
@@ -90,10 +79,19 @@ const More: React.FC = () => {
       </div>
       {searchType === SearchTypes.Buy && (
         <div className={styles.buyFilters}>
-          <OpenHouse checked={openHouse} onChange={handleOpenHouseChange} />
+          <OpenHouse
+            checked={searchParamsState.open_houses ?? ParamDefaults.open_houses}
+            onChange={(e) =>
+              updateSearchParams({ open_houses: e.target.checked })
+            }
+          />
           <IncludePending
-            includePending={includePending}
-            onChange={handleIncludePendingChange}
+            includePending={
+              searchParamsState.include_pending ?? ParamDefaults.include_pending
+            }
+            onChange={(include_pending) =>
+              updateSearchParams({ include_pending })
+            }
           />
         </div>
       )}
