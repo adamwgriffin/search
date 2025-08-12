@@ -1,8 +1,5 @@
 import type { MoreFilters } from "../../store/filters/filtersTypes";
-import type {
-  SquareFeetRangeFilters,
-  YearBuiltRangeFilters
-} from "../../store/filters/filtersTypes";
+import type { YearBuiltRangeFilters } from "../../store/filters/filtersTypes";
 import type { AppState } from "../../store";
 import styles from "./More.module.css";
 import { useAppSelector, useAppDispatch } from "../../hooks/app_hooks";
@@ -10,7 +7,6 @@ import { useRunCallbackIfChanged } from "../../hooks/run_callback_if_changed_hoo
 import { searchWithUpdatedFilters } from "../../store/listingSearch/listingSearchCommon";
 import { setFilters } from "../../store/filters/filtersSlice";
 import {
-  selectSquareFeetRange,
   selectYearBuiltRange,
   selectFeatures
 } from "../../store/filters/filtersSelectors";
@@ -33,7 +29,6 @@ const More: React.FC = () => {
   const { searchParamsState, updateSearchParams } = useSearchParamsState();
 
   const dispatch = useAppDispatch();
-  const squareFeetRange = useAppSelector(selectSquareFeetRange);
   const lotSizeMin = useAppSelector(
     (state: AppState) => state.filters.lotSizeMin
   );
@@ -42,10 +37,6 @@ const More: React.FC = () => {
 
   const [setPreviousYearBuilt, runSearchIfYearBuiltChanged] =
     useRunCallbackIfChanged<YearBuiltRangeFilters>(yearBuiltRange, () =>
-      dispatch(searchWithUpdatedFilters())
-    );
-  const [setPreviousSquareFeetRange, runSearchIfSquareFeetChanged] =
-    useRunCallbackIfChanged<SquareFeetRangeFilters>(squareFeetRange, () =>
       dispatch(searchWithUpdatedFilters())
     );
 
@@ -98,10 +89,13 @@ const More: React.FC = () => {
         />
       )}
       <SquareFeet
-        squareFeetRange={squareFeetRange}
-        onChange={handleChange}
-        onFocus={setPreviousSquareFeetRange}
-        onBlur={runSearchIfSquareFeetChanged}
+        squareFeetRange={{
+          sqftMin: searchParamsState.sqft_min ?? null,
+          sqftMax: searchParamsState.sqft_max ?? null
+        }}
+        onBlur={({ sqftMin, sqftMax }) => {
+          updateSearchParams({ sqft_min: sqftMin, sqft_max: sqftMax });
+        }}
       />
       <LotSize
         lotSizeMin={lotSizeMin}
