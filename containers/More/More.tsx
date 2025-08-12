@@ -1,4 +1,3 @@
-import type { ChangeEvent } from "react";
 import type { MoreFilters } from "../../store/filters/filtersTypes";
 import type {
   SquareFeetRangeFilters,
@@ -11,12 +10,9 @@ import { useRunCallbackIfChanged } from "../../hooks/run_callback_if_changed_hoo
 import { searchWithUpdatedFilters } from "../../store/listingSearch/listingSearchCommon";
 import { setFilters } from "../../store/filters/filtersSlice";
 import {
-  selectOpenHouse,
-  selectIncludePending,
   selectSquareFeetRange,
   selectYearBuiltRange,
-  selectFeatures,
-  selectSoldInLast
+  selectFeatures
 } from "../../store/filters/filtersSelectors";
 import SearchTypeSelector from "../../components/form/SearchTypeSelector/SearchTypeSelector";
 import PriceContainer from "../PriceContainer/PriceContainer";
@@ -37,15 +33,12 @@ const More: React.FC = () => {
   const { searchParamsState, updateSearchParams } = useSearchParamsState();
 
   const dispatch = useAppDispatch();
-  const openHouse = useAppSelector(selectOpenHouse);
-  const includePending = useAppSelector(selectIncludePending);
   const squareFeetRange = useAppSelector(selectSquareFeetRange);
   const lotSizeMin = useAppSelector(
     (state: AppState) => state.filters.lotSizeMin
   );
   const yearBuiltRange = useAppSelector(selectYearBuiltRange);
   const features = useAppSelector(selectFeatures);
-  const soldInLast = useAppSelector(selectSoldInLast);
 
   const [setPreviousYearBuilt, runSearchIfYearBuiltChanged] =
     useRunCallbackIfChanged<YearBuiltRangeFilters>(yearBuiltRange, () =>
