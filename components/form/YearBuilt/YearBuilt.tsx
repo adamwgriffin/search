@@ -1,4 +1,3 @@
-import type { NextPage } from "next";
 import type { YearBuiltRangeFilters } from "../../../store/filters/filtersTypes";
 import { useRef } from "react";
 import styles from "./YearBuilt.module.css";
@@ -7,14 +6,14 @@ import Fieldset from "../../design_system/Fieldset/Fieldset";
 import Legend from "../../design_system/Legend/Legend";
 import InputRangeSeparator from "../../design_system/InputRangeSeparator/InputRangeSeparator";
 
-export interface YearBuiltProps {
+export type YearBuiltProps = {
   yearBuiltRange: YearBuiltRangeFilters;
   onFocus?: () => void;
   onBlur?: () => void;
   onChange?: (yearBuiltRange: YearBuiltRangeFilters) => void;
-}
+};
 
-const YearBuilt: NextPage<YearBuiltProps> = ({
+const YearBuilt: React.FC<YearBuiltProps> = ({
   yearBuiltRange,
   onFocus,
   onBlur,
@@ -28,10 +27,6 @@ const YearBuilt: NextPage<YearBuiltProps> = ({
       yearBuiltMin: Number(yearBuiltMinRef.current?.value) || null,
       yearBuiltMax: Number(yearBuiltMaxRef.current?.value) || null
     };
-  };
-
-  const handleChange = () => {
-    onChange?.(getYearBuiltRange());
   };
 
   return (
@@ -49,7 +44,7 @@ const YearBuilt: NextPage<YearBuiltProps> = ({
           id="year_built_min"
           autoComplete="off"
           value={yearBuiltRange.yearBuiltMin || ""}
-          onChange={handleChange}
+          onChange={() => onChange?.(getYearBuiltRange())}
           onFocus={onFocus}
           onBlur={onBlur}
         />
@@ -65,7 +60,7 @@ const YearBuilt: NextPage<YearBuiltProps> = ({
           id="year_built_max"
           autoComplete="off"
           value={yearBuiltRange.yearBuiltMax || ""}
-          onChange={handleChange}
+          onChange={() => onChange?.(getYearBuiltRange())}
           onFocus={onFocus}
           onBlur={onBlur}
         />

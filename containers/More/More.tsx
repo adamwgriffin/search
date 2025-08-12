@@ -1,13 +1,10 @@
 import type { MoreFilters } from "../../store/filters/filtersTypes";
-import type { YearBuiltRangeFilters } from "../../store/filters/filtersTypes";
 import type { AppState } from "../../store";
 import styles from "./More.module.css";
 import { useAppSelector, useAppDispatch } from "../../hooks/app_hooks";
-import { useRunCallbackIfChanged } from "../../hooks/run_callback_if_changed_hook";
 import { searchWithUpdatedFilters } from "../../store/listingSearch/listingSearchCommon";
 import { setFilters } from "../../store/filters/filtersSlice";
 import {
-  selectYearBuiltRange,
   selectFeatures
 } from "../../store/filters/filtersSelectors";
 import SearchTypeSelector from "../../components/form/SearchTypeSelector/SearchTypeSelector";
@@ -17,13 +14,13 @@ import IncludePending from "../../components/form/IncludePending/IncludePending"
 import PropertyType from "../../components/form/PropertyTypes/PropertyTypes";
 import SquareFeet from "../../components/form/SquareFeet/SquareFeet";
 import LotSize from "../../components/form/LotSize/LotSize";
-import YearBuilt from "../../components/form/YearBuilt/YearBuilt";
 import OpenHouse from "../../components/form/OpenHouse/OpenHouse";
 import Features from "../../components/form/Features/Features";
 import SoldDays from "../../components/form/SoldDays/SoldDays";
 import { SearchTypes } from "../../lib/filter";
 import { useSearchParamsState } from "~/providers/SearchParamsProvider";
 import { ParamDefaults } from "~/lib/listingSearchParams";
+import YearBuiltContainer from "../YearBuiltContainer/YearBuiltContainer";
 
 const More: React.FC = () => {
   const { searchParamsState, updateSearchParams } = useSearchParamsState();
@@ -32,17 +29,7 @@ const More: React.FC = () => {
   const lotSizeMin = useAppSelector(
     (state: AppState) => state.filters.lotSizeMin
   );
-  const yearBuiltRange = useAppSelector(selectYearBuiltRange);
   const features = useAppSelector(selectFeatures);
-
-  const [setPreviousYearBuilt, runSearchIfYearBuiltChanged] =
-    useRunCallbackIfChanged<YearBuiltRangeFilters>(yearBuiltRange, () =>
-      dispatch(searchWithUpdatedFilters())
-    );
-
-  const handleChange = (params: Partial<MoreFilters>) => {
-    dispatch(setFilters(params));
-  };
 
   const handleChangeAndInitiateSearch = (params: Partial<MoreFilters>) => {
     dispatch(setFilters(params));
@@ -101,12 +88,7 @@ const More: React.FC = () => {
         lotSizeMin={lotSizeMin}
         onChange={handleChangeAndInitiateSearch}
       />
-      <YearBuilt
-        yearBuiltRange={yearBuiltRange}
-        onChange={handleChange}
-        onFocus={setPreviousYearBuilt}
-        onBlur={runSearchIfYearBuiltChanged}
-      />
+      <YearBuiltContainer />
       <Features
         featureFilters={features}
         onChange={handleChangeAndInitiateSearch}
