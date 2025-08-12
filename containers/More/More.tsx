@@ -1,12 +1,9 @@
 import type { MoreFilters } from "../../store/filters/filtersTypes";
-import type { AppState } from "../../store";
 import styles from "./More.module.css";
 import { useAppSelector, useAppDispatch } from "../../hooks/app_hooks";
 import { searchWithUpdatedFilters } from "../../store/listingSearch/listingSearchCommon";
 import { setFilters } from "../../store/filters/filtersSlice";
-import {
-  selectFeatures
-} from "../../store/filters/filtersSelectors";
+import { selectFeatures } from "../../store/filters/filtersSelectors";
 import SearchTypeSelector from "../../components/form/SearchTypeSelector/SearchTypeSelector";
 import PriceContainer from "../PriceContainer/PriceContainer";
 import BedsAndBaths from "~/components/form/BedsAndBaths/BedsAndBaths";
@@ -26,9 +23,6 @@ const More: React.FC = () => {
   const { searchParamsState, updateSearchParams } = useSearchParamsState();
 
   const dispatch = useAppDispatch();
-  const lotSizeMin = useAppSelector(
-    (state: AppState) => state.filters.lotSizeMin
-  );
   const features = useAppSelector(selectFeatures);
 
   const handleChangeAndInitiateSearch = (params: Partial<MoreFilters>) => {
@@ -85,8 +79,8 @@ const More: React.FC = () => {
         }}
       />
       <LotSize
-        lotSizeMin={lotSizeMin}
-        onChange={handleChangeAndInitiateSearch}
+        lotSizeMin={searchParamsState.lot_size_min ?? null}
+        onChange={(lot_size_min) => updateSearchParams({ lot_size_min })}
       />
       <YearBuiltContainer />
       <Features

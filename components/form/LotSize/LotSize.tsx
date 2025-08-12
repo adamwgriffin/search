@@ -1,16 +1,15 @@
-import type { NextPage } from "next";
 import type { LotSizeFilter } from "../../../store/filters/filtersTypes";
 import { LotSizeValues } from "../../../lib/filter";
 import formStyles from "../../../styles/forms.module.css";
 import Fieldset from "../../design_system/Fieldset/Fieldset";
 import Legend from "../../design_system/Legend/Legend";
 
-export interface LotSizeProps {
+export type LotSizeProps = {
   lotSizeMin: number | null;
-  onChange?: (lotSizeMin: LotSizeFilter) => void;
-}
+  onChange?: (lotSizeMin: number | null) => void;
+};
 
-const LotSize: NextPage<LotSizeProps> = ({ lotSizeMin, onChange }) => {
+const LotSize: React.FC<LotSizeProps> = ({ lotSizeMin, onChange }) => {
   return (
     <Fieldset>
       <Legend>Lot Size</Legend>
@@ -18,7 +17,7 @@ const LotSize: NextPage<LotSizeProps> = ({ lotSizeMin, onChange }) => {
         name="lot-size"
         className={formStyles.select}
         value={Number(lotSizeMin)}
-        onChange={(e) => onChange?.({ lotSizeMin: +e.target.value })}
+        onChange={(e) => onChange?.(Number(e.target.value))}
       >
         {LotSizeValues.map(({ label, value }) => (
           <option key={value.toString()} value={value}>
