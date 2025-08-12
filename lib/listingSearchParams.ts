@@ -15,14 +15,14 @@ export const NonGeocodeParams = ["bounds", "boundary_id", "zoom", "page_index"];
  * sending them in the request if the service would behave this way be default
  * anyway
  */
-export const ParamDefaults: Partial<SearchParams> = Object.freeze({
+export const ParamDefaults = Object.freeze({
   page_index: 0,
   sort_by: "listedDate",
   sort_direction: "desc",
   search_type: SearchTypes.Buy,
   include_pending: false,
   open_houses: false
-});
+} satisfies SearchParams);
 
 /**
  * Remove params marked for removal, as well as params that use default values,
@@ -35,7 +35,7 @@ export function removeUnwantedParams(params: SearchParamsUpdate) {
       value === null ||
       value === undefined ||
       value === "" ||
-      isEqual(ParamDefaults[key as keyof SearchParamsUpdate], value)
+      isEqual(ParamDefaults[key as keyof typeof ParamDefaults], value)
     );
   });
 }
