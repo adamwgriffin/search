@@ -1,4 +1,4 @@
-import type { PayloadAction } from "@reduxjs/toolkit";
+import { type PayloadAction, isAnyOf } from "@reduxjs/toolkit";
 import type { ListingSearchGeocodeResponse } from "../../types/listing_types";
 import { createSlice } from "@reduxjs/toolkit";
 import {
@@ -74,12 +74,6 @@ export const listingSearchSlice = createSlice({
       state.listingSearchRunning = true;
     });
 
-    builder.addCase(newLocationGeocodeSearch.fulfilled, (state) => {
-      if (!state.initialSearchComplete) {
-        state.initialSearchComplete = true;
-      }
-    });
-
     builder.addCase(newLocationGeocodeSearch.rejected, (state, action) => {
       state.listingSearchRunning = false;
       console.error(action.error);
@@ -99,6 +93,18 @@ export const listingSearchSlice = createSlice({
       state.listingSearchRunning = false;
       console.error(action.error);
     });
+
+    builder.addMatcher(
+      isAnyOf(
+        newLocationGeocodeSearch.fulfilled,
+        searchCurrentLocation.fulfilled
+      ),
+      (state) => {
+        if (!state.initialSearchComplete) {
+          state.initialSearchComplete = true;
+        }
+      }
+    );
   }
 });
 
