@@ -48,7 +48,7 @@ function paramsComputedFromState(state: URLParams) {
   }
   if (searchType === SearchTypes.Sold) {
     params.status = "sold";
-    params.sold_in_last = Number(state.sold_in_last ?? DefaultSoldInLast);
+    params.sold_in_last = Number(state.sold_in_last ?? ParamDefaults.sold_in_last);
   }
   return params;
 }

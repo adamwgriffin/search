@@ -4,10 +4,10 @@ import formStyles from "../../../styles/forms.module.css";
 import Fieldset from "../../design_system/Fieldset/Fieldset";
 import Legend from "../../design_system/Legend/Legend";
 
-export interface SoldDaysProps {
-  soldInLast: FiltersState["soldInLast"];
-  onChange?: (soldDays: Pick<FiltersState, "soldInLast">) => void;
-}
+export type SoldDaysProps = {
+  soldInLast: number;
+  onChange?: (soldDays: number) => void;
+};
 
 const SoldDays: NextPage<SoldDaysProps> = ({ soldInLast, onChange }) => {
   return (
@@ -16,7 +16,7 @@ const SoldDays: NextPage<SoldDaysProps> = ({ soldInLast, onChange }) => {
       <select
         className={formStyles.select}
         value={soldInLast || undefined}
-        onChange={(e) => onChange?.({ soldInLast: +e.target.value })}
+        onChange={(e) => onChange?.(Number(e.target.value))}
       >
         <option value="7">Week</option>
         <option value="30">Month</option>

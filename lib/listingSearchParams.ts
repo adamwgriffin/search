@@ -21,7 +21,8 @@ export const ParamDefaults = Object.freeze({
   sort_direction: "desc",
   search_type: SearchTypes.Buy,
   include_pending: false,
-  open_houses: false
+  open_houses: false,
+  sold_in_last: 730
 } satisfies SearchParams);
 
 /**

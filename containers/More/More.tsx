@@ -98,8 +98,10 @@ const More: React.FC = () => {
       {searchType !== SearchTypes.Rent && <PropertyType />}
       {searchType === SearchTypes.Sold && (
         <SoldDays
-          soldInLast={soldInLast}
-          onChange={handleChangeAndInitiateSearch}
+          soldInLast={
+            searchParamsState.sold_in_last ?? ParamDefaults.sold_in_last
+          }
+          onChange={(sold_in_last) => updateSearchParams({ sold_in_last })}
         />
       )}
       <SquareFeet
