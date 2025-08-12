@@ -3,9 +3,21 @@ import type { ReadonlyURLSearchParams } from "next/navigation";
 import { http } from "~/lib/http";
 import type { URLParams } from "~/types";
 import type { ListingSearchResponse } from "~/types";
+import { SearchTypes } from "./filter";
+import { ListingFilterParams } from "~/zod_schemas/listingSearchParamsSchema";
+import { DefaultSoldInLast } from "~/config";
+import { ParamDefaults } from "./listingSearchParams";
 
 function removeNonListingServiceParams(params: URLParams) {
-  return omit(params, "bounds", "boundary_id", "zoom");
+  return omit(
+    params,
+    "bounds",
+    "boundary_id",
+    "zoom",
+    "open_houses",
+    "include_pending",
+    "search_type"
+  );
 }
 
 function removeNonGeospatialParams(params: URLParams) {
@@ -18,6 +30,29 @@ function convertBoundsParamToListingServiceBounds(boundsString: string) {
   return { bounds_south, bounds_west, bounds_north, bounds_east };
 }
 
+/**
+ * Computes some listing service params based on certain state values that do
+ * not have a one-to-one mapping with the equivalent listing service params.
+ */
+function paramsComputedFromState(state: URLParams) {
+  const params: Partial<ListingFilterParams> = {};
+  if (state.open_houses) {
+    params.open_house_after = new Date().toISOString();
+  }
+  const searchType = state.search_type ?? ParamDefaults.search_type;
+  if (searchType === SearchTypes.Buy && state.include_pending) {
+    params.status = "active,pending";
+  }
+  if (searchType === SearchTypes.Rent) {
+    params.rental = true;
+  }
+  if (searchType === SearchTypes.Sold) {
+    params.status = "sold";
+    params.sold_in_last = Number(state.sold_in_last ?? DefaultSoldInLast);
+  }
+  return params;
+}
+
 function paramsForGeospatialSearch(params: URLParams) {
   if (typeof params.bounds !== "string") {
     throw new Error("Bounds not included in params");
@@ -25,16 +60,25 @@ function paramsForGeospatialSearch(params: URLParams) {
   const listingServiceBounds = convertBoundsParamToListingServiceBounds(
     params.bounds
   );
+  const computedParams = paramsComputedFromState(params);
   const newParams = removeNonListingServiceParams(
     removeNonGeospatialParams(params)
   );
-  return { ...newParams, ...listingServiceBounds };
+  return { ...newParams, ...computedParams, ...listingServiceBounds };
+}
+
+function paramsForNewLocationSearch(
+  params: URLParams
+): Partial<ListingFilterParams> {
+  const computedParams = paramsComputedFromState(params);
+  const newParams = removeNonListingServiceParams(params);
+  return { ...newParams, ...computedParams };
 }
 
 async function searchNewLocation(params: URLParams) {
   return http<ListingSearchResponse>(
     "/api/listing/search/geocode",
-    removeNonListingServiceParams(params)
+    paramsForNewLocationSearch(params)
   );
 }
 

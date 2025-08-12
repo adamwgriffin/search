@@ -4,15 +4,13 @@ import type {
   SquareFeetRangeFilters,
   YearBuiltRangeFilters
 } from "../../store/filters/filtersTypes";
-import type { SearchTypeOption } from "../../store/filters/filtersTypes";
 import type { AppState } from "../../store";
 import styles from "./More.module.css";
 import { useAppSelector, useAppDispatch } from "../../hooks/app_hooks";
 import { useRunCallbackIfChanged } from "../../hooks/run_callback_if_changed_hook";
 import { searchWithUpdatedFilters } from "../../store/listingSearch/listingSearchCommon";
-import { setFilters, setSearchType } from "../../store/filters/filtersSlice";
+import { setFilters } from "../../store/filters/filtersSlice";
 import {
-  selectSearchType,
   selectOpenHouse,
   selectIncludePending,
   selectSquareFeetRange,
@@ -32,10 +30,12 @@ import OpenHouse from "../../components/form/OpenHouse/OpenHouse";
 import Features from "../../components/form/Features/Features";
 import SoldDays from "../../components/form/SoldDays/SoldDays";
 import { SearchTypes } from "../../lib/filter";
+import { useSearchParamsState } from "~/providers/SearchParamsProvider";
 
 const More: React.FC = () => {
+  const { searchParamsState, updateSearchParams } = useSearchParamsState();
+
   const dispatch = useAppDispatch();
-  const searchType = useAppSelector(selectSearchType);
   const openHouse = useAppSelector(selectOpenHouse);
   const includePending = useAppSelector(selectIncludePending);
   const squareFeetRange = useAppSelector(selectSquareFeetRange);
@@ -54,11 +54,6 @@ const More: React.FC = () => {
     useRunCallbackIfChanged<SquareFeetRangeFilters>(squareFeetRange, () =>
       dispatch(searchWithUpdatedFilters())
     );
-
-  const handleSearchTypeChange = (searchType: SearchTypeOption) => {
-    dispatch(setSearchType(searchType));
-    dispatch(searchWithUpdatedFilters());
-  };
 
   const handleIncludePendingChange = (includePending: boolean) => {
     dispatch(setFilters({ includePending }));
@@ -79,11 +74,15 @@ const More: React.FC = () => {
     dispatch(searchWithUpdatedFilters());
   };
 
+  const searchType = searchParamsState.search_type ?? SearchTypes.Buy;
+
   return (
     <div className={styles.more}>
       <SearchTypeSelector
         searchType={searchType}
-        onChange={handleSearchTypeChange}
+        onChange={(searchType) =>
+          updateSearchParams({ search_type: searchType })
+        }
       />
       <div className={styles.mobileFilters}>
         <PriceContainer />

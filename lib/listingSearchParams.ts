@@ -6,6 +6,7 @@ import type {
   SearchParams,
   SearchParamsUpdate
 } from "~/zod_schemas/searchParamsSchema";
+import { SearchTypes } from "./filter";
 
 export const NonGeocodeParams = ["bounds", "boundary_id", "zoom", "page_index"];
 
@@ -16,9 +17,11 @@ export const NonGeocodeParams = ["bounds", "boundary_id", "zoom", "page_index"];
  */
 export const ParamDefaults: Partial<SearchParams> = Object.freeze({
   page_index: 0,
-  page_size: 20,
   sort_by: "listedDate",
-  sort_direction: "desc"
+  sort_direction: "desc",
+  search_type: SearchTypes.Buy,
+  include_pending: false,
+  open_houses: false
 });
 
 /**
