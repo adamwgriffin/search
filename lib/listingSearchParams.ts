@@ -85,17 +85,6 @@ export function getUpdatedQueryString(
   return objectToQueryString(getUpdatedParams(currentParams, newParams));
 }
 
-export function getNewLocationQueryString(
-  currentParams: SearchState,
-  newLocationParams: SearchState
-) {
-  // Remove params for searching current location with a geospatial search
-  // since we're now going to be geocoding a new location. We no only want
-  // filter params.
-  const filterParams = omit(currentParams, NonGeocodeParams);
-  return objectToQueryString({ ...filterParams, ...newLocationParams });
-}
-
 /**
  * Get bounds & zoom from Google Map object to updates the search state
  */
