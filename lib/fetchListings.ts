@@ -102,17 +102,17 @@ export async function fetchListings(state: SearchState) {
   const { bounds, boundary_id } = state;
   // The user entered a new search in the search field
   if (location && !bounds) {
-    return await searchNewLocation(params);
+    return searchNewLocation(state);
   }
   // We have previously performed a new search and now we are performing subsequent
   // searches on the same location with different criteria
   if (location && bounds && boundary_id) {
-    return await searchCurrentLocation(params);
+    return searchCurrentLocation(state);
   }
   // The user removed the location boundary so we are just performing searches
   // on the bounds of the map viewport
   if (bounds && !location && !boundary_id) {
-    return await searchBounds(params);
+    return searchBounds(state);
   }
   return {};
 }
