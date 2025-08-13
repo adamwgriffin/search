@@ -1,21 +1,37 @@
-import type { NextPage } from "next";
-import type { FeatureFilters } from "../../../store/filters/filtersTypes";
-import type { ChangeEvent } from "react";
-import styles from "./Features.module.css";
+import { useCallback } from "react";
 import formStyles from "../../../styles/forms.module.css";
-import { FeatureLabels } from "../../../lib/filter";
 import Fieldset from "../../design_system/Fieldset/Fieldset";
 import Legend from "../../design_system/Legend/Legend";
+import styles from "./Features.module.css";
+import { type FeatureFilters } from "~/zod_schemas";
 
-export interface FeaturesProps {
+export type FeaturesProps = {
   featureFilters: FeatureFilters;
   onChange?: (param: Partial<FeatureFilters>) => void;
-}
+};
 
-const Features: NextPage<FeaturesProps> = ({ featureFilters, onChange }) => {
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    onChange?.({ [e.target.name]: e.target.checked });
-  };
+export type FeatureLabelsType = {
+  [key in keyof FeatureFilters]: string;
+};
+
+export const FeatureLabels: Readonly<FeatureLabelsType> = Object.freeze({
+  waterfront: "Waterfront",
+  view: "Views",
+  fireplace: "Fireplace",
+  basement: "Basement",
+  garage: "Garage",
+  new_construction: "New Construction",
+  pool: "Pool",
+  air_conditioning: "Air Conditioning"
+});
+
+const Features: React.FC<FeaturesProps> = ({ featureFilters, onChange }) => {
+  const handleChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      onChange?.({ [e.target.name]: e.target.checked || null });
+    },
+    [onChange]
+  );
 
   return (
     <Fieldset>
@@ -28,7 +44,7 @@ const Features: NextPage<FeaturesProps> = ({ featureFilters, onChange }) => {
               id={name}
               className={formStyles.checkbox}
               name={name}
-              checked={!!value}
+              checked={value}
               onChange={handleChange}
             />
             <label htmlFor={name} className={formStyles.inputListLabel}>

@@ -1,9 +1,4 @@
-import type { MoreFilters } from "../../store/filters/filtersTypes";
 import styles from "./More.module.css";
-import { useAppSelector, useAppDispatch } from "../../hooks/app_hooks";
-import { searchWithUpdatedFilters } from "../../store/listingSearch/listingSearchCommon";
-import { setFilters } from "../../store/filters/filtersSlice";
-import { selectFeatures } from "../../store/filters/filtersSelectors";
 import SearchTypeSelector from "../../components/form/SearchTypeSelector/SearchTypeSelector";
 import PriceContainer from "../PriceContainer/PriceContainer";
 import BedsAndBaths from "~/components/form/BedsAndBaths/BedsAndBaths";
@@ -21,14 +16,6 @@ import YearBuiltContainer from "../YearBuiltContainer/YearBuiltContainer";
 
 const More: React.FC = () => {
   const { searchParamsState, updateSearchParams } = useSearchParamsState();
-
-  const dispatch = useAppDispatch();
-  const features = useAppSelector(selectFeatures);
-
-  const handleChangeAndInitiateSearch = (params: Partial<MoreFilters>) => {
-    dispatch(setFilters(params));
-    dispatch(searchWithUpdatedFilters());
-  };
 
   const searchType = searchParamsState.search_type ?? SearchTypes.Buy;
 
@@ -84,8 +71,17 @@ const More: React.FC = () => {
       />
       <YearBuiltContainer />
       <Features
-        featureFilters={features}
-        onChange={handleChangeAndInitiateSearch}
+        featureFilters={{
+          waterfront: !!searchParamsState.waterfront,
+          view: !!searchParamsState.view,
+          fireplace: !!searchParamsState.fireplace,
+          basement: !!searchParamsState.basement,
+          garage: !!searchParamsState.garage,
+          new_construction: !!searchParamsState.new_construction,
+          pool: !!searchParamsState.pool,
+          air_conditioning: !!searchParamsState.air_conditioning
+        }}
+        onChange={(param) => updateSearchParams(param)}
       />
     </div>
   );

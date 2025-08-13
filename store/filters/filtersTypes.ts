@@ -96,7 +96,3 @@ export type FeatureFilters = Pick<
   | "pool"
   | "airConditioning"
 >;
-
-export type FeatureLabelsType = {
-  [key in keyof FeatureFilters]: string;
-};

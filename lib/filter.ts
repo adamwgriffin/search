@@ -1,5 +1,4 @@
 import type { CountOption } from "../types";
-import type { FeatureLabelsType } from "../store/filters/filtersTypes";
 
 export const SearchTypes = {
   Buy: "buy",
@@ -59,14 +58,3 @@ export const LotSizeValues: Array<CountOption> = [
     value: 435600
   }
 ];
-
-export const FeatureLabels: FeatureLabelsType = {
-  waterfront: "Waterfront",
-  view: "Views",
-  fireplace: "Fireplace",
-  basement: "Basement",
-  garage: "Garage",
-  newConstruction: "New Construction",
-  pool: "Pool",
-  airConditioning: "Air Conditioning"
-};
