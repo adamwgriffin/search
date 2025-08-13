@@ -15,7 +15,7 @@ import { ParamDefaults } from "~/lib/listingSearchParams";
 import YearBuiltContainer from "../YearBuiltContainer/YearBuiltContainer";
 
 const More: React.FC = () => {
-  const { searchState, setSearchState } = useSearchState();
+  const { searchState, setSearchState, setSearchType } = useSearchState();
 
   const searchType = searchState.search_type ?? SearchTypes.Buy;
 
@@ -23,7 +23,7 @@ const More: React.FC = () => {
     <div className={styles.more}>
       <SearchTypeSelector
         searchType={searchType}
-        onChange={(search_type) => setSearchState({ search_type })}
+        onChange={(search_type) => setSearchType(search_type)}
       />
       <div className={styles.mobileFilters}>
         <PriceContainer />
