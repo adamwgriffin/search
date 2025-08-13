@@ -7,9 +7,15 @@ import {
   useEffect,
   type ReactNode
 } from "react";
-import { useSearchParams, useRouter, usePathname } from "next/navigation";
+import {
+  useSearchParams,
+  useRouter,
+  usePathname,
+  ReadonlyURLSearchParams
+} from "next/navigation";
 import {
   getUpdatedQueryString,
+  NonGeocodeParams,
   objectToQueryString
 } from "~/lib/listingSearchParams";
 import {
@@ -17,16 +23,31 @@ import {
   type SearchParamsUpdate,
   searchParamsSchema
 } from "~/zod_schemas/searchParamsSchema";
+import omit from "lodash/omit";
+import { parseAndStripInvalidProperties } from "~/zod_schemas";
+
+type NewLocationState =
+  | { address: string }
+  | { place_id: string; address_types: string };
 
 type SearchParamsContextValue = {
   searchParamsState: Readonly<SearchParams>;
   updateSearchParams: (newParams: SearchParamsUpdate) => void;
+  setNewLocation: (newLocationState: NewLocationState) => void;
   clearSearchParamsFilters: () => void;
 };
 
 const SearchParamsContext = createContext<SearchParamsContextValue | undefined>(
   undefined
 );
+
+function getStateFromParams(
+  searchParams: ReadonlyURLSearchParams
+): Readonly<SearchParams> {
+  const params = Object.fromEntries(searchParams.entries());
+  const parsed = parseAndStripInvalidProperties(searchParamsSchema, params);
+  return Object.freeze(parsed);
+}
 
 export const SearchParamsProvider: React.FC<{ children: ReactNode }> = ({
   children
@@ -36,14 +57,10 @@ export const SearchParamsProvider: React.FC<{ children: ReactNode }> = ({
   const pathname = usePathname();
   const [searchParamsState, setSearchParamsState] = useState<
     Readonly<SearchParams>
-  >({});
+  >(getStateFromParams(searchParams));
 
   useEffect(() => {
-    const params = Object.fromEntries(searchParams.entries());
-    // TODO: Handle schema errors after parsing. Remove any error keys and try
-    // parsing again. Would also need to do this in the react query hooks
-    const parsed = searchParamsSchema.parse(params);
-    setSearchParamsState(Object.freeze(parsed));
+    setSearchParamsState(getStateFromParams(searchParams));
   }, [searchParams]);
 
   const updateSearchParams = (newParams: SearchParamsUpdate) => {
@@ -56,6 +73,21 @@ export const SearchParamsProvider: React.FC<{ children: ReactNode }> = ({
         ? pathname
         : `${pathname}?${updatedQueryString}`;
     router.push(url);
+  };
+
+  const setNewLocation = (newLocationState: NewLocationState) => {
+    // Remove params for searching current location with a geospatial search.
+    // Since we're now going to be geocoding a new location, we only want filter
+    // params. Remove address/place_id for existing location so that we can
+    // replace it with new state
+    const params = omit(searchParamsState, [
+      ...NonGeocodeParams,
+      "address",
+      "place_id",
+      "address_types"
+    ]);
+    Object.assign(params, newLocationState);
+    router.push(`${pathname}?${objectToQueryString(params)}`);
   };
 
   const clearSearchParamsFilters = () => {
@@ -71,6 +103,7 @@ export const SearchParamsProvider: React.FC<{ children: ReactNode }> = ({
       value={{
         searchParamsState,
         updateSearchParams,
+        setNewLocation,
         clearSearchParamsFilters
       }}
     >

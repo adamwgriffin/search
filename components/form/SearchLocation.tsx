@@ -1,16 +1,15 @@
+"use client";
+
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
-import { useSearchParams } from "next/navigation";
 import { useState } from "react";
-import { useSearchNewLocation } from "~/hooks/useSearchNewLocation";
 import { getPlaceAutocompletePredictions } from "~/lib/getPlaceAutocompletePredictions";
 import SearchField from "./SearchField/SearchField";
+import { useSearchParamsState } from "~/providers/SearchParamsProvider";
 
 export default function SearchLocation() {
-  const searchParams = useSearchParams();
-  const searchNewLocation = useSearchNewLocation();
-  // Not using searchParamsState because it doesn't update in time to get the address
-  // from the url on first render
-  const [value, setValue] = useState(searchParams.get("address") ?? "");
+  const { searchParamsState, setNewLocation, updateSearchParams } =
+    useSearchParamsState();
+  const [value, setValue] = useState(searchParamsState.address);
   const [searchString, setSearchString] = useState<string | null>(null);
   const { data, isError, error } = useQuery({
     queryKey: ["searchString", searchString],
@@ -20,20 +19,26 @@ export default function SearchLocation() {
   });
 
   if (isError) {
-    console.log("Error fetching autocomplete:", error);
+    console.error("Error fetching autocomplete:", error);
   }
 
   return (
     <form name="search-form" onSubmit={(e) => e.preventDefault()}>
       <SearchField
-        value={value}
+        value={value ?? ""}
         options={data || []}
         onInput={(details) => setValue(details)}
         onGetPlaceAutocompletePredictions={(val) => setSearchString(val)}
         onClearPlaceAutocompletePredictions={() => setSearchString(null)}
-        onSearchInitiated={() => searchNewLocation({ address: value })}
+        onSearchInitiated={() => {
+          if (value) updateSearchParams({ address: value });
+        }}
         onOptionSelected={(autocompletePrediction) => {
-          searchNewLocation({ address: autocompletePrediction.description });
+          setValue(autocompletePrediction.description);
+          setNewLocation({
+            place_id: autocompletePrediction.place_id,
+            address_types: autocompletePrediction.types.join(",")
+          });
         }}
       />
     </form>
