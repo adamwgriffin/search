@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useSearchParamsState } from "~/providers/SearchParamsProvider";
+import { useSearchState } from "~/providers/SearchStateProvider";
 import type {
   SortDirection,
   SortType
@@ -55,10 +55,10 @@ const getCurrentSortLabel = (sortBy: string, sortDirection: string) => {
 
 const SortMenu: React.FC = () => {
   const [open, setOpen] = useState(false);
-  const { searchParamsState, updateSearchParams } = useSearchParamsState();
+  const { searchState, setSearchState } = useSearchState();
 
-  const sort_by = searchParamsState.sort_by ?? "listedDate";
-  const sort_direction = searchParamsState.sort_direction ?? "desc";
+  const sort_by = searchState.sort_by ?? "listedDate";
+  const sort_direction = searchState.sort_direction ?? "desc";
   const currentSortLabel = getCurrentSortLabel(sort_by, sort_direction);
 
   return (
@@ -76,7 +76,7 @@ const SortMenu: React.FC = () => {
             key={`${type}-${direction}`}
             onClick={() => {
               setOpen(false);
-              updateSearchParams({ sort_by: type, sort_direction: direction });
+              setSearchState({ sort_by: type, sort_direction: direction });
             }}
             className={styles.menuItem}
           >

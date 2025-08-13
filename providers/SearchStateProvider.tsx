@@ -19,10 +19,10 @@ import {
   objectToQueryString
 } from "~/lib/listingSearchParams";
 import {
-  type SearchParams,
-  type SearchParamsUpdate,
-  searchParamsSchema
-} from "~/zod_schemas/searchParamsSchema";
+  type SearchState,
+  type SearchStateUpdate,
+  searchStateSchema
+} from "~/zod_schemas/searchStateSchema";
 import omit from "lodash/omit";
 import { parseAndStripInvalidProperties } from "~/zod_schemas";
 
@@ -30,40 +30,40 @@ type NewLocationState =
   | { address: string }
   | { place_id: string; address_types: string };
 
-type SearchParamsContextValue = {
-  searchParamsState: Readonly<SearchParams>;
-  updateSearchParams: (newParams: SearchParamsUpdate) => void;
+type SearchStateContextValue = {
+  searchState: Readonly<SearchState>;
+  setSearchState: (newParams: SearchStateUpdate) => void;
   setNewLocation: (newLocationState: NewLocationState) => void;
-  clearSearchParamsFilters: () => void;
+  clearFilters: () => void;
 };
 
-const SearchParamsContext = createContext<SearchParamsContextValue | undefined>(
+const SearchStateContext = createContext<SearchStateContextValue | undefined>(
   undefined
 );
 
 function getStateFromParams(
   searchParams: ReadonlyURLSearchParams
-): Readonly<SearchParams> {
+): Readonly<SearchState> {
   const params = Object.fromEntries(searchParams.entries());
-  const parsed = parseAndStripInvalidProperties(searchParamsSchema, params);
+  const parsed = parseAndStripInvalidProperties(searchStateSchema, params);
   return Object.freeze(parsed);
 }
 
-export const SearchParamsProvider: React.FC<{ children: ReactNode }> = ({
+export const SearchStateProvider: React.FC<{ children: ReactNode }> = ({
   children
 }) => {
   const searchParams = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();
   const [searchParamsState, setSearchParamsState] = useState<
-    Readonly<SearchParams>
+    Readonly<SearchState>
   >(getStateFromParams(searchParams));
 
   useEffect(() => {
     setSearchParamsState(getStateFromParams(searchParams));
   }, [searchParams]);
 
-  const updateSearchParams = (newParams: SearchParamsUpdate) => {
+  const setSearchState = (newParams: SearchStateUpdate) => {
     const updatedQueryString = getUpdatedQueryString(
       searchParamsState,
       newParams
@@ -90,7 +90,7 @@ export const SearchParamsProvider: React.FC<{ children: ReactNode }> = ({
     router.push(`${pathname}?${objectToQueryString(params)}`);
   };
 
-  const clearSearchParamsFilters = () => {
+  const clearFilters = () => {
     const address = searchParams.get("address");
     const url = address
       ? `${pathname}?${objectToQueryString({ address })}`
@@ -99,21 +99,21 @@ export const SearchParamsProvider: React.FC<{ children: ReactNode }> = ({
   };
 
   return (
-    <SearchParamsContext.Provider
+    <SearchStateContext.Provider
       value={{
-        searchParamsState,
-        updateSearchParams,
+        searchState: searchParamsState,
+        setSearchState,
         setNewLocation,
-        clearSearchParamsFilters
+        clearFilters: clearFilters
       }}
     >
       {children}
-    </SearchParamsContext.Provider>
+    </SearchStateContext.Provider>
   );
 };
 
-export const useSearchParamsState = (): SearchParamsContextValue => {
-  const context = useContext(SearchParamsContext);
+export const useSearchState = (): SearchStateContextValue => {
+  const context = useContext(SearchStateContext);
   if (context === undefined) {
     throw new Error("useSearchState must be used within a SearchStateProvider");
   }

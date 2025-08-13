@@ -1,6 +1,6 @@
 import { useId } from "react";
 import RadioButton from "~/components/design_system/RadioButton/RadioButton";
-import { useSearchParamsState } from "~/providers/SearchParamsProvider";
+import { useSearchState } from "~/providers/SearchStateProvider";
 import RadioButtonGroup from "../../design_system/RadioButtonGroup/RadioButtonGroup";
 import styles from "./BedsAndBaths.module.css";
 
@@ -10,7 +10,7 @@ const BedsAndBaths: React.FC = () => {
   // Name needs to be unique because this component is in two places & it won't
   // work right otherwise
   const id = useId();
-  const { searchParamsState, updateSearchParams } = useSearchParamsState();
+  const { searchState, setSearchState } = useSearchState();
 
   return (
     <fieldset className={styles.bedsAndBaths}>
@@ -21,8 +21,8 @@ const BedsAndBaths: React.FC = () => {
             name={`beds_min_${id}`}
             label={value === 0 ? "Any" : `${value}+`}
             value={value}
-            checked={(searchParamsState.beds_min ?? 0) === value}
-            onChange={() => updateSearchParams({ beds_min: value })}
+            checked={(searchState.beds_min ?? 0) === value}
+            onChange={() => setSearchState({ beds_min: value })}
           />
         ))}
       </RadioButtonGroup>
@@ -33,8 +33,8 @@ const BedsAndBaths: React.FC = () => {
             name={`baths_min_${id}`}
             label={value === 0 ? "Any" : `${value}+`}
             value={value}
-            checked={(searchParamsState.baths_min ?? 0) === value}
-            onChange={() => updateSearchParams({ baths_min: value })}
+            checked={(searchState.baths_min ?? 0) === value}
+            onChange={() => setSearchState({ baths_min: value })}
           />
         ))}
       </RadioButtonGroup>

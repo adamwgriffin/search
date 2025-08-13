@@ -3,12 +3,12 @@ import { PropertyTypesData } from "../../../lib/property_types";
 import Fieldset from "../../design_system/Fieldset/Fieldset";
 import Legend from "../../design_system/Legend/Legend";
 import styles from "./PropertyTypes.module.css";
-import { useSearchParamsState } from "~/providers/SearchParamsProvider";
+import { useSearchState } from "~/providers/SearchStateProvider";
 
 const PropertyTypes: React.FC = () => {
-  const { searchParamsState, updateSearchParams } = useSearchParamsState();
+  const { searchState, setSearchState } = useSearchState();
 
-  const propertyTypes = searchParamsState.property_type?.split(",") ?? [];
+  const propertyTypes = searchState.property_type?.split(",") ?? [];
 
   return (
     <Fieldset>
@@ -27,7 +27,7 @@ const PropertyTypes: React.FC = () => {
                 const updatedPropertyTypes = e.target.checked
                   ? propertyTypes.concat(id)
                   : propertyTypes.filter((t) => t !== id);
-                updateSearchParams({
+                setSearchState({
                   property_type: updatedPropertyTypes.join(",")
                 });
               }}

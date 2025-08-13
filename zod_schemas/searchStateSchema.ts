@@ -9,7 +9,7 @@ import { featureFiltersSchema } from ".";
 /** A type which represents params that can be added to the url. Most of these
  * are listing service request filters but there are additional params for app
  * state as well. */
-export const searchParamsSchema = z
+export const searchStateSchema = z
   .object({
     search_type: z.enum(["buy", "rent", "sold"]),
     address: z.string(),
@@ -36,9 +36,9 @@ export const searchParamsSchema = z
   .merge(featureFiltersSchema)
   .partial();
 
-export type SearchParams = z.infer<typeof searchParamsSchema>;
+export type SearchState = z.infer<typeof searchStateSchema>;
 
 // Using "null" in an update indicates that the value should be removed
-export type SearchParamsUpdate = {
-  [K in keyof SearchParams]: SearchParams[K] | null;
+export type SearchStateUpdate = {
+  [K in keyof SearchState]: SearchState[K] | null;
 };

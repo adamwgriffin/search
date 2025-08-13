@@ -4,12 +4,11 @@ import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { getPlaceAutocompletePredictions } from "~/lib/getPlaceAutocompletePredictions";
 import SearchField from "./SearchField/SearchField";
-import { useSearchParamsState } from "~/providers/SearchParamsProvider";
+import { useSearchState } from "~/providers/SearchStateProvider";
 
 export default function SearchLocation() {
-  const { searchParamsState, setNewLocation, updateSearchParams } =
-    useSearchParamsState();
-  const [value, setValue] = useState(searchParamsState.address);
+  const { searchState, setNewLocation, setSearchState } = useSearchState();
+  const [value, setValue] = useState(searchState.address);
   const [searchString, setSearchString] = useState<string | null>(null);
   const { data, isError, error } = useQuery({
     queryKey: ["searchString", searchString],
@@ -31,7 +30,7 @@ export default function SearchLocation() {
         onGetPlaceAutocompletePredictions={(val) => setSearchString(val)}
         onClearPlaceAutocompletePredictions={() => setSearchString(null)}
         onSearchInitiated={() => {
-          if (value) updateSearchParams({ address: value });
+          if (value) setSearchState({ address: value });
         }}
         onOptionSelected={(autocompletePrediction) => {
           setValue(autocompletePrediction.description);

@@ -10,7 +10,7 @@ import { useMapSearchState } from "~/hooks/useMapSearchState";
 import { useSearchResultsData } from "~/hooks/useSearchResultsData";
 import { getAvailableBoundsFromSearchResults } from "~/lib/boundary";
 import { getNewSearchStateFromMap } from "~/lib/listingSearchParams";
-import { useSearchParamsState } from "~/providers/SearchParamsProvider";
+import { useSearchState } from "~/providers/SearchStateProvider";
 import { setSelectedListing } from "~/store/listingSearch/listingSearchSlice";
 import GoogleMap from "../../components/map/GoogleMap/GoogleMap";
 import ListingMarker from "../../components/map/ListingMarker/ListingMarker";
@@ -33,7 +33,7 @@ const ListingMap: NextPage = () => {
   const openListingDetail = useOpenListingDetail(true);
   const isSmallAndUp = useMedia("(min-width: 576px)", false);
   const highlightedMarker = useAppSelector(selectHighlightedMarker);
-  const { updateSearchParams } = useSearchParamsState();
+  const { setSearchState } = useSearchState();
   const mapSearchState = useMapSearchState();
   const results = useSearchResultsData();
 
@@ -62,24 +62,24 @@ const ListingMap: NextPage = () => {
     updateFiltersOnMapIdle.current = false;
     if (!googleMap) return;
     const newParams = getNewSearchStateFromMap(googleMap, results.boundaryId);
-    updateSearchParams(newParams);
-  }, [googleMap, results.boundaryId, updateSearchParams]);
+    setSearchState(newParams);
+  }, [googleMap, results.boundaryId, setSearchState]);
 
   const handleZoomIn = useCallback(() => {
     if (!googleMap) return;
     const newParams = getNewSearchStateFromMap(googleMap, results.boundaryId);
     newParams.zoom =
       typeof newParams.zoom === "number" ? newParams.zoom + 1 : 1;
-    updateSearchParams(newParams);
-  }, [googleMap, results.boundaryId, updateSearchParams]);
+    setSearchState(newParams);
+  }, [googleMap, results.boundaryId, setSearchState]);
 
   const handleZoomOut = useCallback(() => {
     if (!googleMap) return;
     const newParams = getNewSearchStateFromMap(googleMap, results.boundaryId);
     newParams.zoom =
       typeof newParams.zoom === "number" ? newParams.zoom - 1 : 1;
-    updateSearchParams(newParams);
-  }, [googleMap, results.boundaryId, updateSearchParams]);
+    setSearchState(newParams);
+  }, [googleMap, results.boundaryId, setSearchState]);
 
   const handleUserAdjustedMap = useCallback(() => {
     updateFiltersOnMapIdle.current = true;

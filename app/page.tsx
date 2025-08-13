@@ -2,7 +2,7 @@
 
 import type { NextPage } from "next";
 import GoogleMapsProvider from "../providers/GoogleMapsProvider";
-import { SearchParamsProvider } from "~/providers/SearchParamsProvider";
+import { SearchStateProvider } from "~/providers/SearchStateProvider";
 import SearchHeader from "../containers/SearchHeader/SearchHeader";
 import SearchResults from "../containers/SearchResults/SearchResults";
 import ListingMap from "../containers/ListingMap/ListingMap";
@@ -14,7 +14,7 @@ import { Suspense } from "react";
 const SearchPage: NextPage = () => {
   return (
     <GoogleMapsProvider>
-      <SearchParamsProvider>
+      <SearchStateProvider>
         <ReactQueryClientProvider>
           <div className={styles.search}>
             <SearchHeader />
@@ -29,7 +29,7 @@ const SearchPage: NextPage = () => {
             <SearchModals />
           </div>
         </ReactQueryClientProvider>
-      </SearchParamsProvider>
+      </SearchStateProvider>
     </GoogleMapsProvider>
   );
 };

@@ -10,20 +10,20 @@ import OpenHouse from "../../components/form/OpenHouse/OpenHouse";
 import Features from "../../components/form/Features/Features";
 import SoldDays from "../../components/form/SoldDays/SoldDays";
 import { SearchTypes } from "../../lib/filter";
-import { useSearchParamsState } from "~/providers/SearchParamsProvider";
+import { useSearchState } from "~/providers/SearchStateProvider";
 import { ParamDefaults } from "~/lib/listingSearchParams";
 import YearBuiltContainer from "../YearBuiltContainer/YearBuiltContainer";
 
 const More: React.FC = () => {
-  const { searchParamsState, updateSearchParams } = useSearchParamsState();
+  const { searchState, setSearchState } = useSearchState();
 
-  const searchType = searchParamsState.search_type ?? SearchTypes.Buy;
+  const searchType = searchState.search_type ?? SearchTypes.Buy;
 
   return (
     <div className={styles.more}>
       <SearchTypeSelector
         searchType={searchType}
-        onChange={(search_type) => updateSearchParams({ search_type })}
+        onChange={(search_type) => setSearchState({ search_type })}
       />
       <div className={styles.mobileFilters}>
         <PriceContainer />
@@ -32,56 +32,50 @@ const More: React.FC = () => {
       {searchType === SearchTypes.Buy && (
         <div className={styles.buyFilters}>
           <OpenHouse
-            checked={searchParamsState.open_houses ?? ParamDefaults.open_houses}
-            onChange={(e) =>
-              updateSearchParams({ open_houses: e.target.checked })
-            }
+            checked={searchState.open_houses ?? ParamDefaults.open_houses}
+            onChange={(e) => setSearchState({ open_houses: e.target.checked })}
           />
           <IncludePending
             includePending={
-              searchParamsState.include_pending ?? ParamDefaults.include_pending
+              searchState.include_pending ?? ParamDefaults.include_pending
             }
-            onChange={(include_pending) =>
-              updateSearchParams({ include_pending })
-            }
+            onChange={(include_pending) => setSearchState({ include_pending })}
           />
         </div>
       )}
       {searchType !== SearchTypes.Rent && <PropertyType />}
       {searchType === SearchTypes.Sold && (
         <SoldDays
-          soldInLast={
-            searchParamsState.sold_in_last ?? ParamDefaults.sold_in_last
-          }
-          onChange={(sold_in_last) => updateSearchParams({ sold_in_last })}
+          soldInLast={searchState.sold_in_last ?? ParamDefaults.sold_in_last}
+          onChange={(sold_in_last) => setSearchState({ sold_in_last })}
         />
       )}
       <SquareFeet
         squareFeetRange={{
-          sqftMin: searchParamsState.sqft_min ?? null,
-          sqftMax: searchParamsState.sqft_max ?? null
+          sqftMin: searchState.sqft_min ?? null,
+          sqftMax: searchState.sqft_max ?? null
         }}
         onBlur={({ sqftMin, sqftMax }) => {
-          updateSearchParams({ sqft_min: sqftMin, sqft_max: sqftMax });
+          setSearchState({ sqft_min: sqftMin, sqft_max: sqftMax });
         }}
       />
       <LotSize
-        lotSizeMin={searchParamsState.lot_size_min ?? null}
-        onChange={(lot_size_min) => updateSearchParams({ lot_size_min })}
+        lotSizeMin={searchState.lot_size_min ?? null}
+        onChange={(lot_size_min) => setSearchState({ lot_size_min })}
       />
       <YearBuiltContainer />
       <Features
         featureFilters={{
-          waterfront: !!searchParamsState.waterfront,
-          view: !!searchParamsState.view,
-          fireplace: !!searchParamsState.fireplace,
-          basement: !!searchParamsState.basement,
-          garage: !!searchParamsState.garage,
-          new_construction: !!searchParamsState.new_construction,
-          pool: !!searchParamsState.pool,
-          air_conditioning: !!searchParamsState.air_conditioning
+          waterfront: !!searchState.waterfront,
+          view: !!searchState.view,
+          fireplace: !!searchState.fireplace,
+          basement: !!searchState.basement,
+          garage: !!searchState.garage,
+          new_construction: !!searchState.new_construction,
+          pool: !!searchState.pool,
+          air_conditioning: !!searchState.air_conditioning
         }}
-        onChange={(param) => updateSearchParams(param)}
+        onChange={(param) => setSearchState(param)}
       />
     </div>
   );

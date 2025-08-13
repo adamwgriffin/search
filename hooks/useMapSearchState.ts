@@ -1,11 +1,11 @@
 import { convertURLBoundsParamToLatLngBoundsLiteral } from "~/lib/boundary";
-import { useSearchParamsState } from "~/providers/SearchParamsProvider";
+import { useSearchState } from "~/providers/SearchStateProvider";
 
 /**
  * A hook that handles computing state derived from the search state params
  */
 export function useMapSearchState() {
-  const { searchParamsState: searchState } = useSearchParamsState();
+  const { searchState } = useSearchState();
 
   const bounds = searchState.bounds
     ? convertURLBoundsParamToLatLngBoundsLiteral(searchState.bounds)

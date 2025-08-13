@@ -1,6 +1,6 @@
 import { useGoogleMaps } from "~/providers/GoogleMapsProvider";
-import { useSearchParamsState } from "~/providers/SearchParamsProvider";
-import type { SearchParamsUpdate } from "~/zod_schemas/searchParamsSchema";
+import { useSearchState } from "~/providers/SearchStateProvider";
+import type { SearchStateUpdate } from "~/zod_schemas/searchStateSchema";
 import LoadingDots from "../../design_system/LoadingDots/LoadingDots";
 import styles from "./BoundaryControl.module.css";
 
@@ -10,7 +10,7 @@ export type BoundaryControlProps = {
 
 const BoundaryControl: React.FC<BoundaryControlProps> = ({ loading }) => {
   const { googleMap } = useGoogleMaps();
-  const { updateSearchParams } = useSearchParamsState();
+  const { setSearchState } = useSearchState();
 
   return (
     <div className={styles.boundaryControl}>
@@ -21,15 +21,15 @@ const BoundaryControl: React.FC<BoundaryControlProps> = ({ loading }) => {
             if (!googleMap) return;
             const bounds = googleMap?.getBounds()?.toUrlValue();
             if (!bounds) throw new Error("No bounds present in map instance");
-            // Setting params to null removes them from the request and indicates
-            // to the fetchListings function that we should search by bounds
-            // instead of location
-            const updatedFilters: SearchParamsUpdate = {
+            // Setting params to null removes them from the request and
+            // indicates to the fetchListings function that we should search by
+            // bounds instead of location
+            const updatedFilters: SearchStateUpdate = {
               bounds,
               address: null,
               boundary_id: null
             };
-            updateSearchParams(updatedFilters);
+            setSearchState(updatedFilters);
           }}
         >
           Remove Boundary

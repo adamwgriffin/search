@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback } from "react";
-import { useSearchParamsState } from "~/providers/SearchParamsProvider";
+import { useSearchState } from "~/providers/SearchStateProvider";
 import ContainedButton from "../../../components/design_system/ContainedButton/ContainedButton";
 import Footer from "../../../components/design_system/Footer/Footer";
 import Modal from "../../../components/design_system/modal/Modal/Modal";
@@ -23,7 +23,7 @@ const FiltersModal: React.FC = () => {
   const dispatch = useAppDispatch();
   const modalOpen = useAppSelector(selectFiltersModalOpen);
   const totalListings = useAppSelector(selectTotalListings);
-  const { clearSearchParamsFilters } = useSearchParamsState();
+  const { clearFilters } = useSearchState();
 
   const handleClose = useCallback(() => dispatch(closeModal()), [dispatch]);
 
@@ -39,7 +39,7 @@ const FiltersModal: React.FC = () => {
         <More />
       </ModalBody>
       <Footer>
-        <TextButton onClick={clearSearchParamsFilters}>Clear All</TextButton>
+        <TextButton onClick={clearFilters}>Clear All</TextButton>
         <ContainedButton onClick={handleClose}>
           {showListingsMessage(totalListings)}
         </ContainedButton>

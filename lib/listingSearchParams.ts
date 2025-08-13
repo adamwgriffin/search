@@ -3,9 +3,9 @@ import isEqual from "lodash/isEqual";
 import omit from "lodash/omit";
 import omitBy from "lodash/omitBy";
 import type {
-  SearchParams,
-  SearchParamsUpdate
-} from "~/zod_schemas/searchParamsSchema";
+  SearchState,
+  SearchStateUpdate
+} from "~/zod_schemas/searchStateSchema";
 import { SearchTypes } from "./filter";
 
 export const NonGeocodeParams = ["bounds", "boundary_id", "zoom", "page_index"];
@@ -23,14 +23,14 @@ export const ParamDefaults = Object.freeze({
   include_pending: false,
   open_houses: false,
   sold_in_last: 730
-} satisfies SearchParams);
+} satisfies SearchState);
 
 /**
  * Remove params marked for removal, as well as params that use default values,
  * or params that otherwise could cause a conflict. Setting a param to the
  * falsey values below indicates indicates that it was marked for removal.
  */
-export function removeUnwantedParams(params: SearchParamsUpdate) {
+export function removeUnwantedParams(params: SearchStateUpdate) {
   return omitBy(params, (value, key) => {
     return (
       value === null ||
@@ -41,7 +41,7 @@ export function removeUnwantedParams(params: SearchParamsUpdate) {
   });
 }
 
-export function objectToQueryString(params: SearchParams) {
+export function objectToQueryString(params: SearchState) {
   // Casting params as SearchParamsInit because the current type provided by
   // Typescript for this is not correct
   return new URLSearchParams(params as SearchParamsInit)
@@ -50,8 +50,8 @@ export function objectToQueryString(params: SearchParams) {
 }
 
 export function getUpdatedParams(
-  currentParams: SearchParams,
-  newParams: SearchParamsUpdate
+  currentParams: SearchState,
+  newParams: SearchStateUpdate
 ) {
   // Only keep the page_index if it was specifically added to the update in
   // newParams. Any other type of search adjustment should request results
@@ -64,15 +64,15 @@ export function getUpdatedParams(
 }
 
 export function getUpdatedQueryString(
-  currentParams: SearchParams,
-  newParams: SearchParamsUpdate
+  currentParams: SearchState,
+  newParams: SearchStateUpdate
 ) {
   return objectToQueryString(getUpdatedParams(currentParams, newParams));
 }
 
 export function getNewLocationQueryString(
-  currentParams: SearchParams,
-  newLocationParams: SearchParams
+  currentParams: SearchState,
+  newLocationParams: SearchState
 ) {
   // Remove params for searching current location with a geospatial search
   // since we're now going to be geocoding a new location. We no only want
@@ -90,7 +90,7 @@ export function getNewSearchStateFromMap(
 ) {
   const bounds = map.getBounds()?.toUrlValue();
   if (!bounds) throw new Error("No bounds present in map instance");
-  const params: SearchParamsUpdate = { bounds };
+  const params: SearchStateUpdate = { bounds };
   if (boundaryId) {
     params.boundary_id = boundaryId;
   }
