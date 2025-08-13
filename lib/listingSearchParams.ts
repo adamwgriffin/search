@@ -8,7 +8,9 @@ import type {
 } from "~/zod_schemas/searchStateSchema";
 import { SearchTypes } from "./filter";
 
-export const NonGeocodeParams = ["bounds", "boundary_id", "zoom", "page_index"];
+export const NonGeocodeParams: ReadonlyArray<keyof SearchState> = Object.freeze(
+  ["bounds", "boundary_id", "zoom", "page_index"]
+);
 
 /**
  * Params to keep when when clearing filters from search state

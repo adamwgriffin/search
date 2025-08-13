@@ -79,8 +79,6 @@ export type ListingSearchResponse = {
   viewport?: ViewportLatLngBounds;
 };
 
-export type URLParams = Record<string, string | number | null>;
-
 export type SortType = "listedDate" | "listPrice" | "beds" | "baths" | "sqft";
 
 export type SortDirection = "asc" | "desc";
