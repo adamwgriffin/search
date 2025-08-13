@@ -21,7 +21,7 @@ function removeNonListingServiceParams(params: URLParams) {
 }
 
 function removeNonGeospatialParams(params: URLParams) {
-  return omit(params, "address", "place_id");
+  return omit(params, "address", "place_id", "address_types");
 }
 
 function convertBoundsParamToListingServiceBounds(boundsString: string) {

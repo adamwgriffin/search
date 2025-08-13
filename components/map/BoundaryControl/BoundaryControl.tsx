@@ -21,15 +21,16 @@ const BoundaryControl: React.FC<BoundaryControlProps> = ({ loading }) => {
             if (!googleMap) return;
             const bounds = googleMap?.getBounds()?.toUrlValue();
             if (!bounds) throw new Error("No bounds present in map instance");
-            // Setting params to null removes them from the request and
-            // indicates to the fetchListings function that we should search by
-            // bounds instead of location
-            const updatedFilters: SearchStateUpdate = {
+            // Setting params to null removes them from the request and indicates
+            // to the fetchListings function that we should search by bounds
+            // instead of location
+            setSearchState({
               bounds,
               address: null,
+              place_id: null,
+              address_types: null,
               boundary_id: null
-            };
-            setSearchState(updatedFilters);
+            });
           }}
         >
           Remove Boundary

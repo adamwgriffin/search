@@ -1,30 +1,33 @@
 "use client";
 
+import isEmpty from "lodash/isEmpty";
+import omit from "lodash/omit";
+import pick from "lodash/pick";
+import {
+  ReadonlyURLSearchParams,
+  usePathname,
+  useRouter,
+  useSearchParams
+} from "next/navigation";
 import {
   createContext,
   useContext,
-  useState,
   useEffect,
+  useState,
   type ReactNode
 } from "react";
 import {
-  useSearchParams,
-  useRouter,
-  usePathname,
-  ReadonlyURLSearchParams
-} from "next/navigation";
-import {
+  ClearFiltersParams,
   getUpdatedQueryString,
   NonGeocodeParams,
   objectToQueryString
 } from "~/lib/listingSearchParams";
-import {
-  type SearchState,
-  type SearchStateUpdate,
-  searchStateSchema
-} from "~/zod_schemas/searchStateSchema";
-import omit from "lodash/omit";
 import { parseAndStripInvalidProperties } from "~/zod_schemas";
+import {
+  searchStateSchema,
+  type SearchState,
+  type SearchStateUpdate
+} from "~/zod_schemas/searchStateSchema";
 
 type NewLocationState =
   | { address: string }
@@ -91,10 +94,10 @@ export const SearchStateProvider: React.FC<{ children: ReactNode }> = ({
   };
 
   const clearFilters = () => {
-    const address = searchParams.get("address");
-    const url = address
-      ? `${pathname}?${objectToQueryString({ address })}`
-      : pathname;
+    const keptParams = pick(searchParamsState, ClearFiltersParams);
+    const url = isEmpty(keptParams)
+      ? pathname
+      : `${pathname}?${objectToQueryString(keptParams)}`;
     router.push(url);
   };
 
@@ -104,7 +107,7 @@ export const SearchStateProvider: React.FC<{ children: ReactNode }> = ({
         searchState: searchParamsState,
         setSearchState,
         setNewLocation,
-        clearFilters: clearFilters
+        clearFilters
       }}
     >
       {children}
