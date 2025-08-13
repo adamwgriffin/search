@@ -9,7 +9,9 @@ export default function ReactQueryClientProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const queryClient = new QueryClient();
+  const queryClient = new QueryClient({
+    defaultOptions: { queries: { refetchOnWindowFocus: false } }
+  });
 
   return (
     <QueryClientProvider client={queryClient}>
