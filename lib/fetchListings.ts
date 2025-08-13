@@ -1,5 +1,4 @@
 import omit from "lodash/omit";
-import type { ReadonlyURLSearchParams } from "next/navigation";
 import { http } from "~/lib/http";
 import type { URLParams } from "~/types";
 import type { ListingSearchResponse } from "~/types";
@@ -96,11 +95,11 @@ async function searchBounds(params: URLParams) {
   );
 }
 
-export async function fetchListings(searchParams: ReadonlyURLSearchParams) {
-  if (searchParams.size === 0) return {};
-  const params = Object.fromEntries(searchParams.entries());
-  const location = params.place_id || params.address;
-  const { bounds, boundary_id } = params;
+export async function fetchListings(state: SearchState) {
+  if (isEmpty(state)) return {};
+
+  const location = state.place_id || state.address;
+  const { bounds, boundary_id } = state;
   // The user entered a new search in the search field
   if (location && !bounds) {
     return await searchNewLocation(params);

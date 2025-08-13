@@ -1,5 +1,5 @@
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
-import { useSearchParams } from "next/navigation";
+import { useSearchState } from "~/providers/SearchStateProvider";
 import { useMemo } from "react";
 import { sortListingsByLatLng } from "~/lib/listing_helpers";
 import { searchQueryOptions } from "~/lib/queries";
@@ -10,7 +10,7 @@ import { convertBoundaryToGeoJSON } from "~/lib/boundary";
  * A hook that handles computing derived data from the search results.
  */
 export function useSearchResultsData() {
-  const searchParams = useSearchParams();
+  const { searchState } = useSearchState();
   // Using keepPreviousData with placeholderData keeps the data from the last
   // request so that we can still show the current data while new data is being
   // fetched. We're doing this so that the map markers won't blink from being
@@ -18,7 +18,7 @@ export function useSearchResultsData() {
   // details:
   // https://tanstack.com/query/latest/docs/framework/react/guides/paginated-queries
   const queryResult = useQuery({
-    ...searchQueryOptions(searchParams),
+    ...searchQueryOptions(searchState),
     placeholderData: keepPreviousData
   });
 
@@ -31,8 +31,7 @@ export function useSearchResultsData() {
   // order they were rendered in. Keeping the order stable by making sure they
   // always sort the same way fixes this.
   const listings = useMemo(() => {
-    if (!results?.listings) return [];
-    return sortListingsByLatLng(results.listings);
+    return results?.listings ? sortListingsByLatLng(results.listings) : [];
   }, [results?.listings]);
 
   const geoJSONBoundary: GeoJSONBoundary | null = results?.boundary
