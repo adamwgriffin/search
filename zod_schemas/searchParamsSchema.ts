@@ -1,10 +1,14 @@
 import { z } from "zod";
+import { booleanEnum } from ".";
 import {
   sortDirectionSchema,
   sortTypeSchema
 } from "./listingSearchParamsSchema";
-import { booleanEnum } from ".";
+import { featureFiltersSchema } from ".";
 
+/** A type which represents params that can be added to the url. Most of these
+ * are listing service request filters but there are additional params for app
+ * state as well. */
 export const searchParamsSchema = z
   .object({
     search_type: z.enum(["buy", "rent", "sold"]),
@@ -27,21 +31,14 @@ export const searchParamsSchema = z
     lot_size_min: z.coerce.number(),
     year_built_min: z.coerce.number(),
     year_built_max: z.coerce.number(),
-    waterfront: booleanEnum,
-    view: booleanEnum,
-    fireplace: booleanEnum,
-    basement: booleanEnum,
-    garage: booleanEnum,
-    new_construction: booleanEnum,
-    pool: booleanEnum,
-    air_conditioning: booleanEnum,
     sold_in_last: z.coerce.number()
   })
+  .merge(featureFiltersSchema)
   .partial();
 
 export type SearchParams = z.infer<typeof searchParamsSchema>;
 
-// Using "null" in an updated indicates that the value shuld be removed
+// Using "null" in an update indicates that the value should be removed
 export type SearchParamsUpdate = {
   [K in keyof SearchParams]: SearchParams[K] | null;
 };
