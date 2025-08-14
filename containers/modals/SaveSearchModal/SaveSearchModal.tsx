@@ -1,27 +1,27 @@
 "use client";
 
-import type { SavedSearchData } from "../../../store/user/userSlice";
+import { useSearchState } from "@/providers/SearchStateProvider";
 import { useCallback } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
-import formStyles from "../../../styles/forms.module.css";
+import ContainedButton from "../../../components/design_system/ContainedButton/ContainedButton";
+import ModalFooter from "../../../components/design_system/Footer/Footer";
+import Modal from "../../../components/design_system/modal/Modal/Modal";
+import ModalBody from "../../../components/design_system/modal/ModalBody/ModalBody";
+import ModalHeader from "../../../components/design_system/modal/ModalHeader/ModalHeader";
+import TextButton from "../../../components/design_system/TextButton/TextButton";
 import { useAppDispatch, useAppSelector } from "../../../hooks/app_hooks";
 import {
-  selectSaveSearchModalOpen,
-  closeModal
+  closeModal,
+  selectSaveSearchModalOpen
 } from "../../../store/application/applicationSlice";
-import {
-  selectCurrentUser,
-  createSavedSearch
-} from "../../../store/user/userSlice";
 import { selectLocationSearchField } from "../../../store/filters/filtersSelectors";
-import Modal from "../../../components/design_system/modal/Modal/Modal";
-import ModalHeader from "../../../components/design_system/modal/ModalHeader/ModalHeader";
-import ModalBody from "../../../components/design_system/modal/ModalBody/ModalBody";
-import ModalFooter from "../../../components/design_system/Footer/Footer";
-import TextButton from "../../../components/design_system/TextButton/TextButton";
-import ContainedButton from "../../../components/design_system/ContainedButton/ContainedButton";
-import { selectSearchState } from "../../../store/filters/filtersSelectors";
+import type { SavedSearchData } from "../../../store/user/userSlice";
+import {
+  createSavedSearch,
+  selectCurrentUser
+} from "../../../store/user/userSlice";
+import formStyles from "../../../styles/forms.module.css";
 
 export type SaveSearchFormData = Pick<
   SavedSearchData,
@@ -32,7 +32,7 @@ const SaveSearchModal: React.FC = () => {
   const dispatch = useAppDispatch();
   const modalOpen = useAppSelector(selectSaveSearchModalOpen);
   const locationSearchField = useAppSelector(selectLocationSearchField);
-  const searchState = useAppSelector(selectSearchState);
+  const { searchState } = useSearchState();
   const currentUser = useAppSelector(selectCurrentUser);
 
   const { register, handleSubmit } = useForm<SaveSearchFormData>({
@@ -55,7 +55,7 @@ const SaveSearchModal: React.FC = () => {
           userId: currentUser.id,
           name: formData.name,
           messageCadence: Number(formData.messageCadence),
-          searchState: searchState
+          searchState
         })
       );
       handleClose();

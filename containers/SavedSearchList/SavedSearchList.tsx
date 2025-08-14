@@ -15,6 +15,7 @@ import {
 import SavedSearchCard from "../../components/SavedSearchCard/SavedSearchCard";
 import SavedSearchCardLoader from "../../components/SavedSearchCardLoader/SavedSearchCardLoader";
 import styles from "./SavedSearchList.module.css";
+import { useSearchState } from "@/providers/SearchStateProvider";
 
 const SavedSearchList: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -22,6 +23,7 @@ const SavedSearchList: React.FC = () => {
   const pushParamsToSearchUrl = usePushParamsToSearchUrl();
   const getSavedSearchesLoading = useAppSelector(selectGetSavedSearchesLoading);
   const savedSearches = useAppSelector(selectSavedSearches);
+  const { setSearchState } = useSearchState();
 
   useEffect(() => {
     if (currentUser?.id) {
@@ -36,7 +38,7 @@ const SavedSearchList: React.FC = () => {
           <li key={savedSearch.id}>
             <SavedSearchCard
               savedSearch={savedSearch}
-              onClick={() => pushParamsToSearchUrl(savedSearch.searchState)}
+              onClick={() => setSearchState(savedSearch.searchState)}
               onUpdate={(update) =>
                 dispatch(updateSavedSearch({ id: savedSearch.id, ...update }))
               }

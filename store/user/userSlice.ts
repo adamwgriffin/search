@@ -1,13 +1,13 @@
+import type { SearchState } from "@/zod_schemas/searchStateSchema";
+import type { SavedSearch, User } from "@prisma/client";
 import type { PayloadAction } from "@reduxjs/toolkit";
-import type { AppState } from "..";
-import type { User, SavedSearch } from "@prisma/client";
-import type { Listing } from "../../types/listing_types";
-import type { FiltersState } from "../filters/filtersTypes";
-import type { DefaultAPIResponse } from "../../types";
-import { createSelector, createSlice } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 import omit from "lodash/omit";
-import { createAppAsyncThunk } from "../../lib/store_helpers";
+import type { AppState } from "..";
 import axiosInstance from "../../lib/http";
+import { createAppAsyncThunk } from "../../lib/store_helpers";
+import type { DefaultAPIResponse } from "../../types";
+import type { Listing } from "../../types/listing_types";
 
 export type SavedSearchData = Omit<
   SavedSearch,
@@ -15,7 +15,7 @@ export type SavedSearchData = Omit<
 > & {
   createdAt: string;
   updatedAt: string;
-  searchState: Partial<FiltersState>;
+  searchState: SearchState;
 };
 
 export type CreateSavedSearchData = Omit<
