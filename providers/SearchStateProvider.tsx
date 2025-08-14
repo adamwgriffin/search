@@ -38,6 +38,7 @@ type Searchtype = Exclude<SearchState["search_type"], undefined>;
 
 type SearchStateContextValue = {
   searchState: Readonly<SearchState>;
+  searchType: Searchtype;
   setSearchState: (newParams: SearchStateUpdate) => void;
   setNewLocation: (newLocationState: NewLocationState) => void;
   setSearchType: (newSearchType: Searchtype) => void;
@@ -117,6 +118,7 @@ export const SearchStateProvider: React.FC<{ children: ReactNode }> = ({
     <SearchStateContext.Provider
       value={{
         searchState: searchParamsState,
+        searchType: searchParamsState.search_type || ParamDefaults.search_type,
         setSearchState,
         setNewLocation,
         setSearchType,

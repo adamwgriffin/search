@@ -6,7 +6,6 @@ import ListingResultsHeader from "../../components/listings/ListingResultsHeader
 import { useAppSelector, useAppDispatch } from "../../hooks/app_hooks";
 import { useOpenListingDetail } from "../../hooks/open_listing_detail_hook";
 import { setHighlightedMarker } from "../../store/listingSearch/listingSearchSlice";
-import { selectSearchType } from "../../store/filters/filtersSelectors";
 import ListingCards from "../../components/listings/ListingCards/ListingCards";
 import NoResults from "../../components/listings/NoResults/NoResults";
 import { useEffect, useRef } from "react";
@@ -16,12 +15,11 @@ import { useSearchState } from "~/providers/SearchStateProvider";
 
 const SearchResults: NextPage = () => {
   const dispatch = useAppDispatch();
-  const searchType = useAppSelector(selectSearchType);
   const openListingDetail = useOpenListingDetail(false);
   const searchResultsRef = useRef<HTMLDivElement>(null);
   const mobileViewType = useAppSelector(selectMobileViewType);
   const { data: results, isFetching } = useSearchResults();
-  const { searchState } = useSearchState();
+  const { searchState, searchType } = useSearchState();
 
   useEffect(() => {
     if (isFetching && searchResultsRef?.current?.scrollTop) {

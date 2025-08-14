@@ -15,9 +15,8 @@ import { ParamDefaults } from "~/lib/listingSearchParams";
 import YearBuiltContainer from "../YearBuiltContainer/YearBuiltContainer";
 
 const More: React.FC = () => {
-  const { searchState, setSearchState, setSearchType } = useSearchState();
-
-  const searchType = searchState.search_type ?? SearchTypes.Buy;
+  const { searchState, searchType, setSearchState, setSearchType } =
+    useSearchState();
 
   return (
     <div className={styles.more}>
