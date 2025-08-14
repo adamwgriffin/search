@@ -1,25 +1,39 @@
 "use client";
 
-import type { NextPage } from "next";
-import styles from "./SearchResults.module.css";
-import ListingResultsHeader from "../../components/listings/ListingResultsHeader/ListingResultsHeader";
-import { useAppSelector, useAppDispatch } from "../../hooks/app_hooks";
-import { useOpenListingDetail } from "../../hooks/open_listing_detail_hook";
-import { setHighlightedMarker } from "../../store/listingSearch/listingSearchSlice";
-import ListingCards from "../../components/listings/ListingCards/ListingCards";
-import NoResults from "../../components/listings/NoResults/NoResults";
-import { useEffect, useRef } from "react";
-import { selectMobileViewType } from "../../store/application/applicationSlice";
+import ListingResultsPagination, {
+  type Pagination
+} from "@/components/listings/ListingResultsPagination/ListingResultsPagination";
 import { useSearchResults } from "@/hooks/useSearchResults";
 import { useSearchState } from "@/providers/SearchStateProvider";
+import { ListingSearchPagination } from "@/types";
+import range from "lodash/range";
+import { useEffect, useRef } from "react";
+import ListingCards from "../../components/listings/ListingCards/ListingCards";
+import ListingResultsHeader from "../../components/listings/ListingResultsHeader/ListingResultsHeader";
+import NoResults from "../../components/listings/NoResults/NoResults";
+import { useAppDispatch, useAppSelector } from "../../hooks/app_hooks";
+import { useOpenListingDetail } from "../../hooks/open_listing_detail_hook";
+import { selectMobileViewType } from "../../store/application/applicationSlice";
+import { setHighlightedMarker } from "../../store/listingSearch/listingSearchSlice";
+import styles from "./SearchResults.module.css";
 
-const SearchResults: NextPage = () => {
+const getPagination = (p: ListingSearchPagination): Pagination => {
+  return {
+    start: p.page * p.pageSize + 1,
+    end: p.page * p.pageSize + p.numberReturned,
+    total: p.numberAvailable,
+    pages: range(0, p.numberOfPages),
+    currentPage: p.page
+  };
+};
+
+const SearchResults: React.FC = () => {
   const dispatch = useAppDispatch();
   const openListingDetail = useOpenListingDetail(false);
   const searchResultsRef = useRef<HTMLDivElement>(null);
   const mobileViewType = useAppSelector(selectMobileViewType);
   const { data: results, isFetching } = useSearchResults();
-  const { searchState, searchType } = useSearchState();
+  const { searchState, searchType, setSearchState } = useSearchState();
 
   useEffect(() => {
     if (isFetching && searchResultsRef?.current?.scrollTop) {
@@ -61,12 +75,12 @@ const SearchResults: NextPage = () => {
         />
       )}
       {searchParamsPresent && listings.length === 0 && <NoResults />}
-      {/* {listings.length > 0 && (
+      {listings.length > 0 && results?.pagination && (
         <ListingResultsPagination
-          {...pagination}
-          onClick={handlePaginationButtonClick}
+          {...getPagination(results.pagination)}
+          onClick={(page_index) => setSearchState({ page_index })}
         />
-      )} */}
+      )}
     </div>
   );
 };
