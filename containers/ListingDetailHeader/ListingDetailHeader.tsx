@@ -1,17 +1,16 @@
-import type { NextPage } from "next";
 import styles from "./ListingDetailHeader.module.css";
 import Logo from "../../components/header/Logo/Logo";
-import StandaloneSearchField from "../StandaloneSearchField/StandaloneSearchField";
+import SearchLocation from "@/components/form/SearchLocation";
 import UserMenu from "../UserMenu/UserMenu";
 import HideSmallAndDown from "../../components/HideSmallAndDown/HideSmallAndDown";
 
-const ListingDetailHeader: NextPage = () => {
+const ListingDetailHeader: React.FC = () => {
   return (
     <header className={styles.header}>
       <HideSmallAndDown>
         <Logo />
       </HideSmallAndDown>
-      <StandaloneSearchField />
+      <SearchLocation />
       <UserMenu />
     </header>
   );
