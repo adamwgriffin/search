@@ -12,6 +12,7 @@ import NoResults from "../../components/listings/NoResults/NoResults";
 import { useEffect, useRef } from "react";
 import { selectMobileViewType } from "../../store/application/applicationSlice";
 import { useSearchResults } from "~/hooks/useSearchResults";
+import { useSearchState } from "~/providers/SearchStateProvider";
 
 const SearchResults: NextPage = () => {
   const dispatch = useAppDispatch();
@@ -19,7 +20,8 @@ const SearchResults: NextPage = () => {
   const openListingDetail = useOpenListingDetail(false);
   const searchResultsRef = useRef<HTMLDivElement>(null);
   const mobileViewType = useAppSelector(selectMobileViewType);
-  const { data: results, isFetching, isError } = useSearchResults();
+  const { data: results, isFetching } = useSearchResults();
+  const { searchState } = useSearchState();
 
   useEffect(() => {
     if (isFetching && searchResultsRef?.current?.scrollTop) {
@@ -42,23 +44,25 @@ const SearchResults: NextPage = () => {
       ? styles.searchResultsMobileListView
       : styles.searchResults;
 
+  const searchParamsPresent = Object.keys(searchState).length > 0;
+
   return (
     <div ref={searchResultsRef} className={resultsClassName}>
       <ListingResultsHeader
         totalListings={results?.pagination?.numberAvailable ?? 0}
-        loading={isFetching}
+        loading={searchParamsPresent && isFetching}
         searchType={searchType}
       />
       {(listings.length > 0 || isFetching) && (
         <ListingCards
           listings={listings}
-          listingSearchRunning={isFetching}
+          listingSearchRunning={searchParamsPresent && isFetching}
           onListingCardClick={openListingDetail}
           onListingCardMouseEnter={handleListingCardMouseEnter}
           onListingCardMouseLeave={handleListingCardMouseLeave}
         />
       )}
-      {listings.length === 0 && !isFetching && <NoResults />}
+      {searchParamsPresent && listings.length === 0 && <NoResults />}
       {/* {listings.length > 0 && (
         <ListingResultsPagination
           {...pagination}
