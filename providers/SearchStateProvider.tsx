@@ -1,21 +1,5 @@
 "use client";
 
-import isEmpty from "lodash/isEmpty";
-import omit from "lodash/omit";
-import pick from "lodash/pick";
-import {
-  ReadonlyURLSearchParams,
-  usePathname,
-  useRouter,
-  useSearchParams
-} from "next/navigation";
-import {
-  createContext,
-  useContext,
-  useEffect,
-  useState,
-  type ReactNode
-} from "react";
 import {
   ClearFiltersParams,
   getUpdatedQueryString,
@@ -29,6 +13,21 @@ import {
   type SearchState,
   type SearchStateUpdate
 } from "@/zod_schemas/searchStateSchema";
+import isEmpty from "lodash/isEmpty";
+import omit from "lodash/omit";
+import pick from "lodash/pick";
+import {
+  ReadonlyURLSearchParams,
+  useRouter,
+  useSearchParams
+} from "next/navigation";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  type ReactNode
+} from "react";
 
 type NewLocationState =
   | { address: string }
@@ -49,6 +48,8 @@ const SearchStateContext = createContext<SearchStateContextValue | undefined>(
   undefined
 );
 
+const SearchPathname = "/";
+
 function getStateFromParams(
   searchParams: ReadonlyURLSearchParams
 ): Readonly<SearchState> {
@@ -62,7 +63,6 @@ export const SearchStateProvider: React.FC<{ children: ReactNode }> = ({
 }) => {
   const searchParams = useSearchParams();
   const router = useRouter();
-  const pathname = usePathname();
   const [searchParamsState, setSearchParamsState] = useState<
     Readonly<SearchState>
   >(getStateFromParams(searchParams));
@@ -78,8 +78,8 @@ export const SearchStateProvider: React.FC<{ children: ReactNode }> = ({
     );
     const url =
       updatedQueryString === ""
-        ? pathname
-        : `${pathname}?${updatedQueryString}`;
+        ? SearchPathname
+        : `${SearchPathname}?${updatedQueryString}`;
     router.push(url);
   };
 
@@ -95,7 +95,7 @@ export const SearchStateProvider: React.FC<{ children: ReactNode }> = ({
       "address_types"
     ]);
     Object.assign(params, newLocationState);
-    router.push(`${pathname}?${objectToQueryString(params)}`);
+    router.push(`${SearchPathname}?${objectToQueryString(params)}`);
   };
 
   const setSearchType = (newSearchType: Searchtype) => {
@@ -103,14 +103,14 @@ export const SearchStateProvider: React.FC<{ children: ReactNode }> = ({
     if (newSearchType !== ParamDefaults.search_type) {
       newParams.search_type = newSearchType;
     }
-    router.push(`${pathname}?${objectToQueryString(newParams)}`);
+    router.push(`${SearchPathname}?${objectToQueryString(newParams)}`);
   };
 
   const clearFilters = () => {
     const keptParams = pick(searchParamsState, ClearFiltersParams);
     const url = isEmpty(keptParams)
-      ? pathname
-      : `${pathname}?${objectToQueryString(keptParams)}`;
+      ? SearchPathname
+      : `${SearchPathname}?${objectToQueryString(keptParams)}`;
     router.push(url);
   };
 
