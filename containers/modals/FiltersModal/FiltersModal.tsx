@@ -13,8 +13,8 @@ import {
   closeModal,
   selectFiltersModalOpen
 } from "../../../store/application/applicationSlice";
-import { selectTotalListings } from "../../../store/listingSearch/listingSearchSelectors";
 import More from "../../More/More";
+import { useSearchResults } from "@/hooks/useSearchResults";
 
 const showListingsMessage = (n: number) =>
   `Show ${n.toLocaleString()} ${n === 1 ? "Home" : "Homes"}`;
@@ -22,8 +22,8 @@ const showListingsMessage = (n: number) =>
 const FiltersModal: React.FC = () => {
   const dispatch = useAppDispatch();
   const modalOpen = useAppSelector(selectFiltersModalOpen);
-  const totalListings = useAppSelector(selectTotalListings);
   const { clearFilters } = useSearchState();
+  const { data: results } = useSearchResults();
 
   const handleClose = useCallback(() => dispatch(closeModal()), [dispatch]);
 
@@ -41,7 +41,7 @@ const FiltersModal: React.FC = () => {
       <Footer>
         <TextButton onClick={clearFilters}>Clear All</TextButton>
         <ContainedButton onClick={handleClose}>
-          {showListingsMessage(totalListings)}
+          {showListingsMessage(results?.pagination?.numberAvailable ?? 0)}
         </ContainedButton>
       </Footer>
     </Modal>
