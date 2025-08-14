@@ -2,7 +2,7 @@ import type {
   GeoLayerCoordinates,
   MultiPolygon,
   ViewportLatLngBounds
-} from "../store/listingMap/listingMapTypes";
+} from "../types/listingMapTypes";
 
 /*
 we need to transform the geojson we get from the service into a shape that works for the Polygon class we need to use
