@@ -1,34 +1,40 @@
-import type {
-  FiltersState,
-  SearchTypeOption
-} from "../store/filters/filtersTypes";
+import type { SearchTypeOption } from "../types/filtersTypes";
 import { SearchTypes } from "./filter";
 import { SearchTypeLabels } from "./filter";
 import { getPropertyTypeLabel } from "./property_types";
 import { formatPrice, ShortCurrencyFormat } from "./listing_helpers";
+import { type SearchState } from "@/zod_schemas/searchStateSchema";
+import { PropertyType } from "./property_types";
 
-export const getSearchDescription = (
-  savedSearchState: Partial<FiltersState>
-) => {
-  const { searchType, priceMin, priceMax, propertyTypes, bedsMin, bathsMin } =
-    savedSearchState;
-  const searchTypeOption = searchType ? searchType : SearchTypes.Buy;
+export const getSearchDescription = (savedSearchState: SearchState) => {
+  const {
+    search_type,
+    price_min,
+    price_max,
+    property_type,
+    beds_min,
+    baths_min
+  } = savedSearchState;
+  const searchTypeOption = search_type ?? SearchTypes.Buy;
   let description: string[] = [];
 
   description.push(SearchTypeLabels[searchTypeOption]);
-  if (priceMin || priceMax) {
-    description.push(formatPriceRange(priceMin, priceMax, searchTypeOption));
+  if (price_min || price_max) {
+    description.push(formatPriceRange(price_min, price_max, searchTypeOption));
   }
-  if (propertyTypes) {
+  if (property_type) {
     description.push(
-      propertyTypes.map((t) => getPropertyTypeLabel(t)).join(", ")
+      property_type
+        .split(",")
+        .map((t) => getPropertyTypeLabel(t as PropertyType))
+        .join(", ")
     );
   }
-  if (bedsMin) {
-    description.push(`${bedsMin}+ beds`);
+  if (beds_min) {
+    description.push(`${beds_min}+ beds`);
   }
-  if (bathsMin) {
-    description.push(`${bathsMin}+ baths`);
+  if (baths_min) {
+    description.push(`${baths_min}+ baths`);
   }
   return description.join(" | ");
 };

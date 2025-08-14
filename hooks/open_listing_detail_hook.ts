@@ -1,7 +1,12 @@
 import { useMedia } from "react-use";
 import { useAppDispatch } from "./app_hooks";
 import { openModal } from "../store/application/applicationSlice";
-import { addUrlToBrowserHistory } from "../lib/url";
+
+export const addUrlToBrowserHistory = (url: string) => {
+  const currentUrl = window.location.href;
+  history.replaceState({}, "", url);
+  history.replaceState({}, "", currentUrl);
+};
 
 export const useOpenListingDetail = (addUrlOnModalOpen = true) => {
   const dispatch = useAppDispatch();

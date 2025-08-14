@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useSearchState } from "@/providers/SearchStateProvider";
-import type { PriceRangeFilters } from "@/store/filters/filtersTypes";
+import type { PriceRangeFilters } from "@/types/filtersTypes";
 import PriceRange from "../../components/form/PriceRange/PriceRange";
 
 const PriceContainer: React.FC = () => {

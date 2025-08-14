@@ -1,8 +1,11 @@
-import type {
-  GeoLayerCoordinates,
-  MultiPolygon,
-  ViewportLatLngBounds
-} from "../types/listingMapTypes";
+export type MultiPolygon = Array<Array<Array<Array<number>>>>;
+
+export type GeoLayerCoordinates = Array<Array<google.maps.LatLngLiteral>>;
+
+export type ViewportLatLngBounds = {
+  northeast: google.maps.LatLngLiteral;
+  southwest: google.maps.LatLngLiteral;
+};
 
 /*
 we need to transform the geojson we get from the service into a shape that works for the Polygon class we need to use

@@ -15,7 +15,6 @@ import {
   closeModal,
   selectSaveSearchModalOpen
 } from "../../../store/application/applicationSlice";
-import { selectLocationSearchField } from "../../../store/filters/filtersSelectors";
 import type { SavedSearchData } from "../../../store/user/userSlice";
 import {
   createSavedSearch,
@@ -31,13 +30,12 @@ export type SaveSearchFormData = Pick<
 const SaveSearchModal: React.FC = () => {
   const dispatch = useAppDispatch();
   const modalOpen = useAppSelector(selectSaveSearchModalOpen);
-  const locationSearchField = useAppSelector(selectLocationSearchField);
   const { searchState } = useSearchState();
   const currentUser = useAppSelector(selectCurrentUser);
 
   const { register, handleSubmit } = useForm<SaveSearchFormData>({
     defaultValues: {
-      name: locationSearchField,
+      name: searchState.address ?? "Saved Search",
       messageCadence: 1
     }
   });

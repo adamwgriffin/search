@@ -1,4 +1,4 @@
-import type { LotSizeFilter } from "../../../store/filters/filtersTypes";
+import type { LotSizeFilter } from "../../../types/filtersTypes";
 import { LotSizeValues } from "../../../lib/filter";
 import formStyles from "../../../styles/forms.module.css";
 import Fieldset from "../../design_system/Fieldset/Fieldset";

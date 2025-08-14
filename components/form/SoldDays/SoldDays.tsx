@@ -1,5 +1,4 @@
 import type { NextPage } from "next";
-import type { FiltersState } from "../../../store/filters/filtersTypes";
 import formStyles from "../../../styles/forms.module.css";
 import Fieldset from "../../design_system/Fieldset/Fieldset";
 import Legend from "../../design_system/Legend/Legend";

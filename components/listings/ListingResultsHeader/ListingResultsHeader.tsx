@@ -1,4 +1,4 @@
-import type { SearchTypeOption } from "../../../store/filters/filtersTypes";
+import type { SearchTypeOption } from "../../../types/filtersTypes";
 import styles from "./ListingResultsHeader.module.css";
 import ContentLoader from "react-content-loader";
 import SortMenu from "../../form/SortMenu/SortMenu";

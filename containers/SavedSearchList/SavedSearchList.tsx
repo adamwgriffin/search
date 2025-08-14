@@ -4,7 +4,6 @@ import { useEffect } from "react";
 import toast from "react-hot-toast";
 import { useAppSelector, useAppDispatch } from "../../hooks/app_hooks";
 import { selectGetSavedSearchesLoading } from "../../store/user/userSlice";
-import { usePushParamsToSearchUrl } from "../../hooks/push_params_to_search_url_hook";
 import { useGetCurrentUser } from "../../hooks/get_current_user_hook";
 import {
   getSavedSearches,
@@ -20,7 +19,6 @@ import { useSearchState } from "@/providers/SearchStateProvider";
 const SavedSearchList: React.FC = () => {
   const dispatch = useAppDispatch();
   const currentUser = useGetCurrentUser();
-  const pushParamsToSearchUrl = usePushParamsToSearchUrl();
   const getSavedSearchesLoading = useAppSelector(selectGetSavedSearchesLoading);
   const savedSearches = useAppSelector(selectSavedSearches);
   const { setSearchState } = useSearchState();

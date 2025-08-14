@@ -1,4 +1,4 @@
-import type { YearBuiltRangeFilters } from "../../../store/filters/filtersTypes";
+import type { YearBuiltRangeFilters } from "../../../types/filtersTypes";
 import { useRef } from "react";
 import styles from "./YearBuilt.module.css";
 import formStyles from "../../../styles/forms.module.css";

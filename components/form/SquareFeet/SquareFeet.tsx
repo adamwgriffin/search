@@ -1,4 +1,4 @@
-import type { SquareFeetRangeFilters } from "../../../store/filters/filtersTypes";
+import type { SquareFeetRangeFilters } from "../../../types/filtersTypes";
 import styles from "./SquareFeet.module.css";
 import formStyles from "../../../styles/forms.module.css";
 import { NumericFormat } from "react-number-format";
