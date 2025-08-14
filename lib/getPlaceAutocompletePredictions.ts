@@ -1,4 +1,4 @@
-import { GoogleMapsAutocompleteOptions } from "~/config/googleMapsOptions";
+import { GoogleMapsAutocompleteOptions } from "@/config/googleMapsOptions";
 
 let autocompleteService: google.maps.places.AutocompleteService;
 

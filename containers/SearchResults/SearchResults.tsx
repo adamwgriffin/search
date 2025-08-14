@@ -10,8 +10,8 @@ import ListingCards from "../../components/listings/ListingCards/ListingCards";
 import NoResults from "../../components/listings/NoResults/NoResults";
 import { useEffect, useRef } from "react";
 import { selectMobileViewType } from "../../store/application/applicationSlice";
-import { useSearchResults } from "~/hooks/useSearchResults";
-import { useSearchState } from "~/providers/SearchStateProvider";
+import { useSearchResults } from "@/hooks/useSearchResults";
+import { useSearchState } from "@/providers/SearchStateProvider";
 
 const SearchResults: NextPage = () => {
   const dispatch = useAppDispatch();

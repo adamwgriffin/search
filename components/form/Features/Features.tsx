@@ -3,7 +3,7 @@ import formStyles from "../../../styles/forms.module.css";
 import Fieldset from "../../design_system/Fieldset/Fieldset";
 import Legend from "../../design_system/Legend/Legend";
 import styles from "./Features.module.css";
-import { type FeatureFilters } from "~/zod_schemas";
+import { type FeatureFilters } from "@/zod_schemas";
 
 export type FeaturesProps = {
   featureFilters: FeatureFilters;

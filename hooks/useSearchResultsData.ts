@@ -1,10 +1,10 @@
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
-import { useSearchState } from "~/providers/SearchStateProvider";
+import { useSearchState } from "@/providers/SearchStateProvider";
 import { useMemo } from "react";
-import { sortListingsByLatLng } from "~/lib/listing_helpers";
-import { searchQueryOptions } from "~/lib/queries";
-import type { GeoJSONBoundary } from "~/types";
-import { convertBoundaryToGeoJSON } from "~/lib/boundary";
+import { sortListingsByLatLng } from "@/lib/listing_helpers";
+import { searchQueryOptions } from "@/lib/queries";
+import type { GeoJSONBoundary } from "@/types";
+import { convertBoundaryToGeoJSON } from "@/lib/boundary";
 
 /**
  * A hook that handles computing derived data from the search results.

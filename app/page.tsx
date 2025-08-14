@@ -2,13 +2,13 @@
 
 import type { NextPage } from "next";
 import GoogleMapsProvider from "../providers/GoogleMapsProvider";
-import { SearchStateProvider } from "~/providers/SearchStateProvider";
+import { SearchStateProvider } from "@/providers/SearchStateProvider";
 import SearchHeader from "../containers/SearchHeader/SearchHeader";
 import SearchResults from "../containers/SearchResults/SearchResults";
 import ListingMap from "../containers/ListingMap/ListingMap";
 import SearchModals from "../components/SearchModals";
 import styles from "./page.module.css";
-import ReactQueryClientProvider from "~/providers/ReactQueryClientProvider";
+import ReactQueryClientProvider from "@/providers/ReactQueryClientProvider";
 import { Suspense } from "react";
 
 const SearchPage: NextPage = () => {

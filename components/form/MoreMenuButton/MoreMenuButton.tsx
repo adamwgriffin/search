@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useSearchState } from "~/providers/SearchStateProvider";
+import { useSearchState } from "@/providers/SearchStateProvider";
 import More from "../../../containers/More/More";
 import ContainedButton from "../../design_system/ContainedButton/ContainedButton";
 import Footer from "../../design_system/Footer/Footer";

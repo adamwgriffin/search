@@ -1,11 +1,11 @@
-import type { SearchParamsInit } from "~/types";
+import type { SearchParamsInit } from "@/types";
 import isEqual from "lodash/isEqual";
 import omit from "lodash/omit";
 import omitBy from "lodash/omitBy";
 import type {
   SearchState,
   SearchStateUpdate
-} from "~/zod_schemas/searchStateSchema";
+} from "@/zod_schemas/searchStateSchema";
 import { SearchTypes } from "./filter";
 
 export const NonGeocodeParams: ReadonlyArray<keyof SearchState> = Object.freeze(

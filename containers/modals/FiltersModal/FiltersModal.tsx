@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback } from "react";
-import { useSearchState } from "~/providers/SearchStateProvider";
+import { useSearchState } from "@/providers/SearchStateProvider";
 import ContainedButton from "../../../components/design_system/ContainedButton/ContainedButton";
 import Footer from "../../../components/design_system/Footer/Footer";
 import Modal from "../../../components/design_system/modal/Modal/Modal";

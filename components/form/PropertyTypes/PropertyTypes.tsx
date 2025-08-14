@@ -3,7 +3,7 @@ import { PropertyTypesData } from "../../../lib/property_types";
 import Fieldset from "../../design_system/Fieldset/Fieldset";
 import Legend from "../../design_system/Legend/Legend";
 import styles from "./PropertyTypes.module.css";
-import { useSearchState } from "~/providers/SearchStateProvider";
+import { useSearchState } from "@/providers/SearchStateProvider";
 
 const PropertyTypes: React.FC = () => {
   const { searchState, setSearchState } = useSearchState();

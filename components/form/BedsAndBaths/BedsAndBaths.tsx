@@ -1,6 +1,6 @@
 import { useId } from "react";
-import RadioButton from "~/components/design_system/RadioButton/RadioButton";
-import { useSearchState } from "~/providers/SearchStateProvider";
+import RadioButton from "@/components/design_system/RadioButton/RadioButton";
+import { useSearchState } from "@/providers/SearchStateProvider";
 import RadioButtonGroup from "../../design_system/RadioButtonGroup/RadioButtonGroup";
 import styles from "./BedsAndBaths.module.css";
 

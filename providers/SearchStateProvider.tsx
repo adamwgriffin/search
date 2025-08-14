@@ -22,13 +22,13 @@ import {
   NonGeocodeParams,
   objectToQueryString,
   ParamDefaults
-} from "~/lib/listingSearchParams";
-import { parseAndStripInvalidProperties } from "~/zod_schemas";
+} from "@/lib/listingSearchParams";
+import { parseAndStripInvalidProperties } from "@/zod_schemas";
 import {
   searchStateSchema,
   type SearchState,
   type SearchStateUpdate
-} from "~/zod_schemas/searchStateSchema";
+} from "@/zod_schemas/searchStateSchema";
 
 type NewLocationState =
   | { address: string }

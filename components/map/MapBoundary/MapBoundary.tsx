@@ -1,6 +1,6 @@
-import { useGoogleMaps } from "~/providers/GoogleMapsProvider";
+import { useGoogleMaps } from "@/providers/GoogleMapsProvider";
 import { useEffect } from "react";
-import type { GeoJSONBoundary } from "~/types";
+import type { GeoJSONBoundary } from "@/types";
 
 export type MapBoundaryProps = {
   boundary: GeoJSONBoundary | null;

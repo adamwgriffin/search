@@ -1,7 +1,7 @@
 import styles from "./More.module.css";
 import SearchTypeSelector from "../../components/form/SearchTypeSelector/SearchTypeSelector";
 import PriceContainer from "../PriceContainer/PriceContainer";
-import BedsAndBaths from "~/components/form/BedsAndBaths/BedsAndBaths";
+import BedsAndBaths from "@/components/form/BedsAndBaths/BedsAndBaths";
 import IncludePending from "../../components/form/IncludePending/IncludePending";
 import PropertyType from "../../components/form/PropertyTypes/PropertyTypes";
 import SquareFeet from "../../components/form/SquareFeet/SquareFeet";
@@ -10,8 +10,8 @@ import OpenHouse from "../../components/form/OpenHouse/OpenHouse";
 import Features from "../../components/form/Features/Features";
 import SoldDays from "../../components/form/SoldDays/SoldDays";
 import { SearchTypes } from "../../lib/filter";
-import { useSearchState } from "~/providers/SearchStateProvider";
-import { ParamDefaults } from "~/lib/listingSearchParams";
+import { useSearchState } from "@/providers/SearchStateProvider";
+import { ParamDefaults } from "@/lib/listingSearchParams";
 import YearBuiltContainer from "../YearBuiltContainer/YearBuiltContainer";
 
 const More: React.FC = () => {
