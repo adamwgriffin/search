@@ -46,17 +46,14 @@ export const SearchStateProvider: React.FC<{ children: ReactNode }> = ({
   const searchParams = useSearchParams();
   const router = useRouter();
 
-  const searchParamsState: Readonly<SearchState> = useMemo(() => {
+  const searchState: Readonly<SearchState> = useMemo(() => {
     const params = Object.fromEntries(searchParams.entries());
     const parsed = parseAndStripInvalidProperties(searchStateSchema, params);
     return Object.freeze(parsed);
   }, [searchParams]);
 
   const setSearchState = (newParams: SearchStateUpdate) => {
-    const updatedQueryString = getUpdatedQueryString(
-      searchParamsState,
-      newParams
-    );
+    const updatedQueryString = getUpdatedQueryString(searchState, newParams);
     const url =
       updatedQueryString === ""
         ? SearchPathname
@@ -69,7 +66,7 @@ export const SearchStateProvider: React.FC<{ children: ReactNode }> = ({
     // Since we're now going to be geocoding a new location, we only want filter
     // params. Remove address/place_id for existing location so that we can
     // replace it with new state
-    const params = omit(searchParamsState, [
+    const params = omit(searchState, [
       ...NonGeocodeParams,
       "address",
       "place_id",
@@ -80,7 +77,7 @@ export const SearchStateProvider: React.FC<{ children: ReactNode }> = ({
   };
 
   const setSearchType = (newSearchType: Searchtype) => {
-    const newParams = pick<SearchState>(searchParamsState, ClearFiltersParams);
+    const newParams = pick<SearchState>(searchState, ClearFiltersParams);
     if (newSearchType !== ParamDefaults.search_type) {
       newParams.search_type = newSearchType;
     }
@@ -88,7 +85,7 @@ export const SearchStateProvider: React.FC<{ children: ReactNode }> = ({
   };
 
   const clearFilters = () => {
-    const keptParams = pick(searchParamsState, ClearFiltersParams);
+    const keptParams = pick(searchState, ClearFiltersParams);
     const url = isEmpty(keptParams)
       ? SearchPathname
       : `${SearchPathname}?${objectToQueryString(keptParams)}`;
@@ -98,8 +95,8 @@ export const SearchStateProvider: React.FC<{ children: ReactNode }> = ({
   return (
     <SearchStateContext.Provider
       value={{
-        searchState: searchParamsState,
-        searchType: searchParamsState.search_type || ParamDefaults.search_type,
+        searchState,
+        searchType: searchState.search_type || ParamDefaults.search_type,
         setSearchState,
         setNewLocation,
         setSearchType,
