@@ -1,4 +1,4 @@
-import isEmpty from "lodash/isEmpty";
+import { hasProperties } from "@/lib";
 import omit from "lodash/omit";
 import { http } from "@/lib/http";
 import type { ListingSearchResponse } from "@/types";
@@ -109,7 +109,7 @@ async function searchBounds(state: SearchState) {
 }
 
 export async function fetchListings(state: SearchState) {
-  if (isEmpty(state)) return {};
+  if (!hasProperties(state)) return {};
 
   const location = state.place_id || state.address;
   const { bounds, boundary_id } = state;

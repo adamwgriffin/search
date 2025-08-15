@@ -67,3 +67,13 @@ export const elementIsVisible = (
     elementRect.bottom <= containerRect.bottom
   );
 };
+
+/**
+ * Check if an object has any properties
+ */
+export function hasProperties(obj: object): boolean {
+  for (const key in obj) {
+    return true;
+  }
+  return false;
+}

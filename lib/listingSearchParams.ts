@@ -7,6 +7,7 @@ import type {
   SearchStateUpdate
 } from "@/zod_schemas/searchStateSchema";
 import { SearchTypes } from "./filter";
+import { hasProperties } from "@/lib";
 
 export const NonGeocodeParams: ReadonlyArray<keyof SearchState> = Object.freeze(
   ["bounds", "boundary_id", "zoom", "page_index"]
@@ -64,8 +65,8 @@ export function objectToQueryString(params: SearchState) {
     .replace(/%2C/g, ","); // Don't encode commas in url params
 }
 
-export function buildUrl(path: string, params: SearchState) {
-  const queryString = objectToQueryString(params);
+export function buildUrl(path: string, params?: object) {
+  const queryString = params && objectToQueryString(params);
   return queryString ? `${path}?${queryString}` : path;
 }
 
