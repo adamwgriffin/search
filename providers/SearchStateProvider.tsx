@@ -1,10 +1,10 @@
 "use client";
 
 import {
+  buildUrl,
   ClearFiltersParams,
-  getUpdatedQueryString,
+  getUpdatedParams,
   NonGeocodeParams,
-  objectToQueryString,
   ParamDefaults
 } from "@/lib/listingSearchParams";
 import { parseAndStripInvalidProperties } from "@/zod_schemas";
@@ -13,7 +13,6 @@ import {
   type SearchState,
   type SearchStateUpdate
 } from "@/zod_schemas/searchStateSchema";
-import isEmpty from "lodash/isEmpty";
 import omit from "lodash/omit";
 import pick from "lodash/pick";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -53,12 +52,8 @@ export const SearchStateProvider: React.FC<{ children: ReactNode }> = ({
   }, [searchParams]);
 
   const setSearchState = (newParams: SearchStateUpdate) => {
-    const updatedQueryString = getUpdatedQueryString(searchState, newParams);
-    const url =
-      updatedQueryString === ""
-        ? SearchPathname
-        : `${SearchPathname}?${updatedQueryString}`;
-    router.push(url);
+    const params = getUpdatedParams(searchState, newParams);
+    router.push(buildUrl(SearchPathname, params));
   };
 
   const setNewLocation = (newLocationState: NewLocationState) => {
@@ -73,23 +68,20 @@ export const SearchStateProvider: React.FC<{ children: ReactNode }> = ({
       "address_types"
     ]);
     Object.assign(params, newLocationState);
-    router.push(`${SearchPathname}?${objectToQueryString(params)}`);
+    router.push(buildUrl(SearchPathname, params));
   };
 
   const setSearchType = (newSearchType: Searchtype) => {
-    const newParams = pick<SearchState>(searchState, ClearFiltersParams);
+    const params = pick<SearchState>(searchState, ClearFiltersParams);
     if (newSearchType !== ParamDefaults.search_type) {
-      newParams.search_type = newSearchType;
+      params.search_type = newSearchType;
     }
-    router.push(`${SearchPathname}?${objectToQueryString(newParams)}`);
+    router.push(buildUrl(SearchPathname, params));
   };
 
   const clearFilters = () => {
-    const keptParams = pick(searchState, ClearFiltersParams);
-    const url = isEmpty(keptParams)
-      ? SearchPathname
-      : `${SearchPathname}?${objectToQueryString(keptParams)}`;
-    router.push(url);
+    const params = pick(searchState, ClearFiltersParams);
+    router.push(buildUrl(SearchPathname, params));
   };
 
   return (

@@ -64,6 +64,11 @@ export function objectToQueryString(params: SearchState) {
     .replace(/%2C/g, ","); // Don't encode commas in url params
 }
 
+export function buildUrl(path: string, params: SearchState) {
+  const queryString = objectToQueryString(params);
+  return queryString ? `${path}?${queryString}` : path;
+}
+
 export function getUpdatedParams(
   currentParams: SearchState,
   newParams: SearchStateUpdate
@@ -76,13 +81,6 @@ export function getUpdatedParams(
     ...newParams
   };
   return removeUnwantedParams(mergedParams);
-}
-
-export function getUpdatedQueryString(
-  currentParams: SearchState,
-  newParams: SearchStateUpdate
-) {
-  return objectToQueryString(getUpdatedParams(currentParams, newParams));
 }
 
 /**
