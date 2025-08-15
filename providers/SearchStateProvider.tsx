@@ -18,11 +18,17 @@ import pick from "lodash/pick";
 import { useRouter, useSearchParams } from "next/navigation";
 import { createContext, useContext, useMemo, type ReactNode } from "react";
 
-type NewLocationState = {
-  address: string;
-  place_id: string | null;
-  address_types: string | null;
-};
+type NewLocationState =
+  | {
+      address: string;
+      place_id?: never;
+      address_types?: never;
+    }
+  | {
+      address: string;
+      place_id: string;
+      address_types: string;
+    };
 
 type Searchtype = Exclude<SearchState["search_type"], undefined>;
 
