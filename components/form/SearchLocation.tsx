@@ -30,11 +30,19 @@ export default function SearchLocation() {
         onGetPlaceAutocompletePredictions={(val) => setSearchString(val)}
         onClearPlaceAutocompletePredictions={() => setSearchString(null)}
         onSearchInitiated={() => {
-          if (value) setSearchState({ address: value });
+          // Remove place_id & address_types since the user likely typed a free
+          // form location rather than something from the dropdown
+          if (value)
+            setSearchState({
+              address: value,
+              place_id: null,
+              address_types: null
+            });
         }}
         onOptionSelected={(autocompletePrediction) => {
           setValue(autocompletePrediction.description);
           setNewLocation({
+            address: autocompletePrediction.description,
             place_id: autocompletePrediction.place_id,
             address_types: autocompletePrediction.types.join(",")
           });
