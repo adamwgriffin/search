@@ -45,7 +45,7 @@ export const ParamDefaults = Object.freeze({
  * or params that otherwise could cause a conflict. Setting a param to the
  * falsey values below indicates indicates that it was marked for removal.
  */
-export function removeUnwantedParams(params: SearchStateUpdate) {
+export function removeUnwantedParams(params: SearchStateUpdate): SearchState {
   return omitBy(params, (value, key) => {
     return (
       value === null ||
