@@ -33,10 +33,8 @@ export default function SearchLocation() {
           // Remove place_id & address_types since the user likely typed a free
           // form location rather than something from the dropdown
           if (value)
-            setSearchState({
-              address: value,
-              place_id: null,
-              address_types: null
+            setNewLocation({
+              address: value
             });
         }}
         onOptionSelected={(autocompletePrediction) => {
