@@ -16,18 +16,8 @@ import {
 import isEmpty from "lodash/isEmpty";
 import omit from "lodash/omit";
 import pick from "lodash/pick";
-import {
-  ReadonlyURLSearchParams,
-  useRouter,
-  useSearchParams
-} from "next/navigation";
-import {
-  createContext,
-  useContext,
-  useEffect,
-  useState,
-  type ReactNode
-} from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { createContext, useContext, useMemo, type ReactNode } from "react";
 
 type NewLocationState =
   | { address: string }
@@ -50,25 +40,16 @@ const SearchStateContext = createContext<SearchStateContextValue | undefined>(
 
 const SearchPathname = "/";
 
-function getStateFromParams(
-  searchParams: ReadonlyURLSearchParams
-): Readonly<SearchState> {
-  const params = Object.fromEntries(searchParams.entries());
-  const parsed = parseAndStripInvalidProperties(searchStateSchema, params);
-  return Object.freeze(parsed);
-}
-
 export const SearchStateProvider: React.FC<{ children: ReactNode }> = ({
   children
 }) => {
   const searchParams = useSearchParams();
   const router = useRouter();
-  const [searchParamsState, setSearchParamsState] = useState<
-    Readonly<SearchState>
-  >(getStateFromParams(searchParams));
 
-  useEffect(() => {
-    setSearchParamsState(getStateFromParams(searchParams));
+  const searchParamsState: Readonly<SearchState> = useMemo(() => {
+    const params = Object.fromEntries(searchParams.entries());
+    const parsed = parseAndStripInvalidProperties(searchStateSchema, params);
+    return Object.freeze(parsed);
   }, [searchParams]);
 
   const setSearchState = (newParams: SearchStateUpdate) => {
