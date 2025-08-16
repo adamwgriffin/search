@@ -1,5 +1,6 @@
 "use client";
 
+import { SearchPathname } from "@/config";
 import {
   buildUrl,
   ClearFiltersParams,
@@ -44,8 +45,6 @@ type SearchStateContextValue = {
 const SearchStateContext = createContext<SearchStateContextValue | undefined>(
   undefined
 );
-
-const SearchPathname = "/";
 
 export const SearchStateProvider: React.FC<{ children: ReactNode }> = ({
   children
