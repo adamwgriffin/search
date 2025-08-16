@@ -7,6 +7,7 @@ import { useSearchResultsData } from "@/hooks/useSearchResultsData";
 import { getAvailableBoundsFromSearchResults } from "@/lib/boundary";
 import { getNewSearchStateFromMap } from "@/lib/listingSearchParams";
 import { useSearchState } from "@/providers/SearchStateProvider";
+import { selectHighlightedMarker } from "@/store/application/applicationSlice";
 import { useCallback, useEffect, useRef } from "react";
 import GoogleMap from "../../components/map/GoogleMap/GoogleMap";
 import ListingMarker from "../../components/map/ListingMarker/ListingMarker";
@@ -18,7 +19,6 @@ import {
 import { useAppSelector } from "../../hooks/app_hooks";
 import { useOpenListingDetail } from "../../hooks/open_listing_detail_hook";
 import { useGoogleMaps } from "../../providers/GoogleMapsProvider";
-import { selectHighlightedMarker } from "../../store/listingSearch/listingSearchSelectors";
 import styles from "./ListingMap.module.css";
 
 const ListingMap: React.FC = () => {

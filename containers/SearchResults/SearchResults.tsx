@@ -14,7 +14,7 @@ import NoResults from "../../components/listings/NoResults/NoResults";
 import { useAppDispatch, useAppSelector } from "../../hooks/app_hooks";
 import { useOpenListingDetail } from "../../hooks/open_listing_detail_hook";
 import { selectMobileViewType } from "../../store/application/applicationSlice";
-import { setHighlightedMarker } from "../../store/listingSearch/listingSearchSlice";
+import { setHighlightedMarker } from "../../store/application/applicationSlice";
 import styles from "./SearchResults.module.css";
 import { hasProperties } from "@/lib";
 
