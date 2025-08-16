@@ -1,6 +1,10 @@
 import { type ReactNode, useRef, useEffect, useCallback } from "react";
 import { useGoogleMaps } from "../../../providers/GoogleMapsProvider";
 import styles from "./GoogleMap.module.css";
+import {
+  useGoogleMapsEventListener,
+  useDomEventListener
+} from "../../../providers/GoogleMapsProvider";
 
 export type GoogleMapState = {
   bounds: google.maps.LatLngBoundsLiteral | undefined;
@@ -36,6 +40,7 @@ const GoogleMap: React.FC<GoogleMapProps> = ({
 
   useEffect(() => {
     if (!mapEl.current) return;
+
     if (!googleMap) {
       setGoogleMap(new google.maps.Map(mapEl.current, options));
     } else {
@@ -43,45 +48,15 @@ const GoogleMap: React.FC<GoogleMapProps> = ({
     }
   }, [googleMap, options, setGoogleMap]);
 
-  const onWheelCallback = useCallback(
-    () => onWheel?.(getCurrentMapState()),
-    [getCurrentMapState, onWheel]
+  useGoogleMapsEventListener(googleMap, "dragend", () =>
+    onDragEnd?.(getCurrentMapState())
   );
-
-  useEffect(() => {
-    if (!googleMap) return;
-    const mapEventListeners: google.maps.MapsEventListener[] = [];
-    onDragEnd &&
-      mapEventListeners.push(
-        google.maps.event.addListener(googleMap, "dragend", () =>
-          onDragEnd?.(getCurrentMapState())
-        )
-      );
-    onIdle &&
-      mapEventListeners.push(
-        google.maps.event.addListener(googleMap, "idle", () => {
-          onIdle?.(getCurrentMapState());
-        })
-      );
-    onWheel && googleMap.getDiv().addEventListener("wheel", onWheelCallback);
-    // The events get re-added each time a dependency changes in this useEffect,
-    // so we have to clean them up, otherwise they will multiply quickly and
-    // cause many unecessary api requests.
-    return () => {
-      mapEventListeners.forEach((eventListener) =>
-        google.maps.event.removeListener(eventListener)
-      );
-      googleMap.getDiv().removeEventListener("wheel", onWheelCallback);
-      mapEventListeners.length = 0;
-    };
-  }, [
-    getCurrentMapState,
-    googleMap,
-    onDragEnd,
-    onIdle,
-    onWheel,
-    onWheelCallback
-  ]);
+  useGoogleMapsEventListener(googleMap, "idle", () =>
+    onIdle?.(getCurrentMapState())
+  );
+  useDomEventListener(googleMap?.getDiv(), "wheel", () =>
+    onWheel?.(getCurrentMapState())
+  );
 
   return (
     <div ref={mapEl} id={styles.googleMap}>
