@@ -70,9 +70,9 @@ const ListingMap: React.FC = () => {
     updateFiltersOnMapIdle.current = true;
   }, []);
 
-  // No bounds param in the url means it's a new search, so call fitBounds()
-  // to adjust the map to fit the new boundary that was returned from the
-  // search results
+  // No bounds param in the url means it's a new search, so call fitBounds() to
+  // adjust the map to fit the new boundary that was returned from the search
+  // results
   useEffect(() => {
     if (!googleMap || mapSearchState.bounds) return;
 
