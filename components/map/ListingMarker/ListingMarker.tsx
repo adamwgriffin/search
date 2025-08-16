@@ -1,92 +1,87 @@
 "use client";
 
 import type { Listing } from "../../../types/listing_types";
-import { useEffect, useState, useCallback, memo } from "react";
+import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { useGoogleMaps } from "../../../providers/GoogleMapsProvider";
-import ListingMarkerContent from "../ListingMarkerContent/ListingMarkerContent";
-import { listingLocationToLatLngLiteral } from "../../../lib/listing_helpers";
-import { objectsValuesEqual } from "../../../lib";
+import ListingMarkerContent from "@/components/map/ListingMarkerContent/ListingMarkerContent";
+import {
+  useGoogleMapsEventListener,
+  useDomEventListener
+} from "../../../providers/GoogleMapsProvider";
 
 export type ListingMarkerProps = {
   listing: Listing;
+  latitude: number;
+  longitude: number;
   highlighted?: boolean;
-  zIndex: number;
-  authenticaticated: boolean;
+  raisedZIndex?: number;
+  onClick?: (listingSlug: string) => void;
   onMouseEnter?: (listingid: string) => void;
   onMouseLeave?: () => void;
-  onClick?: (listingSlug: string) => void;
 };
 
 const ListingMarker: React.FC<ListingMarkerProps> = ({
   listing,
+  latitude,
+  longitude,
   highlighted,
-  zIndex,
+  raisedZIndex = 1000,
+  onClick,
   onMouseEnter,
-  onMouseLeave,
-  onClick
+  onMouseLeave
 }) => {
   const { googleMap } = useGoogleMaps();
+  const [marker, setMarker] =
+    useState<google.maps.marker.AdvancedMarkerElement | null>(null);
   const [markerContainer, setMarkerContainer] = useState<HTMLDivElement | null>(
     null
   );
 
-  const createMarker = useCallback(
-    (
-      markerContainer: HTMLElement
-    ): google.maps.marker.AdvancedMarkerElement => {
-      return new google.maps.marker.AdvancedMarkerElement({
-        map: googleMap,
-        position: listingLocationToLatLngLiteral(listing),
-        content: markerContainer
-      });
-    },
-    [googleMap, listing]
-  );
-
-  const addEventListenersToMarker = useCallback(
-    (
-      marker: google.maps.marker.AdvancedMarkerElement
-    ): { handleMouseEnter: () => void; handleMouseLeave: () => void } => {
-      marker.addListener("gmp-click", () => onClick?.(listing.slug));
-      // there are currently only a few events that AdvancedMarkerElement
-      // supports, so we have to attach events to the element itself for others
-      // to work. Note: marker.element is not the the markerContainer we created
-      const markerElement = marker.element;
-      markerElement.style.zIndex = highlighted ? "10000" : zIndex.toString();
-      const handleMouseEnter = () => {
-        markerElement.style.zIndex = "10000";
-        onMouseEnter?.(listing._id);
-      };
-      const handleMouseLeave = () => {
-        markerElement.style.zIndex = zIndex.toString();
-        onMouseLeave?.();
-      };
-      markerElement.addEventListener("mouseenter", handleMouseEnter);
-      markerElement.addEventListener("mouseleave", handleMouseLeave);
-      return { handleMouseEnter, handleMouseLeave };
-    },
-    [highlighted, listing, onClick, onMouseEnter, onMouseLeave, zIndex]
-  );
-
+  // We use latitude/longitude separately from listing here because the
+  // reference to a listing object is not stable, even if the latitude/longitude
+  // are identical. Adding listing as a dependency to this useEffect causes the
+  // markers to flicker when the map is moved because the marker will be
+  // re-created when the reference to listing changes.
   useEffect(() => {
     if (!googleMap) return;
+
     const markerContainer = document.createElement("div");
-    const marker = createMarker(markerContainer);
-    const { handleMouseEnter, handleMouseLeave } =
-      addEventListenersToMarker(marker);
+    const marker = new google.maps.marker.AdvancedMarkerElement({
+      map: googleMap,
+      position: {
+        lat: latitude,
+        lng: longitude
+      },
+      content: markerContainer
+    });
+
+    setMarker(marker);
     setMarkerContainer(markerContainer);
-    // Clean up by removing event listeners, removing the marker from the map
-    // and removing the div element we created from the DOM.
+
     return () => {
-      marker.element.removeEventListener("mouseenter", handleMouseEnter);
-      marker.element.removeEventListener("mouseleave", handleMouseLeave);
       marker.map = null;
       markerContainer.remove();
     };
-  }, [addEventListenersToMarker, createMarker, googleMap]);
+  }, [googleMap, latitude, longitude]);
 
-  if (markerContainer === null) return;
+  useGoogleMapsEventListener(marker, "click", () => onClick?.(listing.slug));
+  useDomEventListener(marker?.element, "mouseenter", () => {
+    if (!marker) return;
+    marker.element.style.zIndex = String(raisedZIndex);
+    onMouseEnter?.(listing._id);
+  });
+  useDomEventListener(marker?.element, "mouseleave", () => {
+    if (!marker) return;
+    marker.element.style.zIndex = "";
+    onMouseLeave?.();
+  });
+
+  if (!markerContainer) return;
+
+  if (marker) {
+    marker.element.style.zIndex = highlighted ? String(raisedZIndex) : "";
+  }
 
   return createPortal(
     <ListingMarkerContent
@@ -98,25 +93,4 @@ const ListingMarker: React.FC<ListingMarkerProps> = ({
   );
 };
 
-// Don't re-render the marker if all of these conditions are true
-const propsAreEqual = (
-  prevProps: Readonly<ListingMarkerProps>,
-  nextProps: Readonly<ListingMarkerProps>
-) => {
-  return objectsValuesEqual(prevProps, nextProps, [
-    "listing._id",
-    "listing.latitude",
-    "listing.longitude",
-    "highlighted",
-    // we need to re-render every time the authentication status changes,
-    // otherwise the favorite button will not re-render and get the new value
-    // from useSession. it depends on the session state in order to know whether
-    // to open the login modal if the user isn't logged in
-    "authenticaticated"
-  ]);
-};
-
-// use the memo() HOC to avoid re-rendering markers on the map so it's more
-// effecient and doesn't cause every marker to flicker each time the map is
-// dragged
-export default memo(ListingMarker, propsAreEqual);
+export default ListingMarker;

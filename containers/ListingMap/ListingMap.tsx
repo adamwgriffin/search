@@ -1,9 +1,5 @@
 "use client";
 
-import type { NextPage } from "next";
-import { useSession } from "next-auth/react";
-import { useCallback, useEffect, useRef } from "react";
-import { useMedia } from "react-use";
 import BoundaryControl from "@/components/map/BoundaryControl/BoundaryControl";
 import ZoomControl from "@/components/map/ZoomControl/ZoomControl";
 import { useMapSearchState } from "@/hooks/useMapSearchState";
@@ -11,7 +7,7 @@ import { useSearchResultsData } from "@/hooks/useSearchResultsData";
 import { getAvailableBoundsFromSearchResults } from "@/lib/boundary";
 import { getNewSearchStateFromMap } from "@/lib/listingSearchParams";
 import { useSearchState } from "@/providers/SearchStateProvider";
-import { setSelectedListing } from "@/store/listingSearch/listingSearchSlice";
+import { useCallback, useEffect, useRef } from "react";
 import GoogleMap from "../../components/map/GoogleMap/GoogleMap";
 import ListingMarker from "../../components/map/ListingMarker/ListingMarker";
 import MapBoundary from "../../components/map/MapBoundary/MapBoundary";
@@ -19,36 +15,22 @@ import {
   GoogleMapsMapOptions,
   MapBoundaryStyleOptions
 } from "../../config/googleMapsOptions";
-import { useAppDispatch, useAppSelector } from "../../hooks/app_hooks";
+import { useAppSelector } from "../../hooks/app_hooks";
 import { useOpenListingDetail } from "../../hooks/open_listing_detail_hook";
 import { useGoogleMaps } from "../../providers/GoogleMapsProvider";
 import { selectHighlightedMarker } from "../../store/listingSearch/listingSearchSelectors";
 import styles from "./ListingMap.module.css";
 
-const ListingMap: NextPage = () => {
-  const dispatch = useAppDispatch();
+const ListingMap: React.FC = () => {
   const updateFiltersOnMapIdle = useRef(false);
   const { googleLoaded, googleMap } = useGoogleMaps();
-  const { status } = useSession();
   const openListingDetail = useOpenListingDetail(true);
-  const isSmallAndUp = useMedia("(min-width: 576px)", false);
   const highlightedMarker = useAppSelector(selectHighlightedMarker);
   const { setSearchState } = useSearchState();
   const mapSearchState = useMapSearchState();
   const results = useSearchResultsData();
 
   const { isFetching } = results.queryResult;
-
-  const handleListingMarkerMouseEnter = useCallback(
-    (listingid: string) => {
-      isSmallAndUp && dispatch(setSelectedListing(listingid));
-    },
-    [dispatch, isSmallAndUp]
-  );
-
-  const handleListingMarkerMouseLeave = useCallback(() => {
-    isSmallAndUp && dispatch(setSelectedListing(null));
-  }, [dispatch, isSmallAndUp]);
 
   const handleListingMarkerMouseClick = useCallback(
     (listingSlug: string) => {
@@ -59,6 +41,7 @@ const ListingMap: NextPage = () => {
 
   const handleIdle = useCallback(() => {
     if (!updateFiltersOnMapIdle.current) return;
+
     updateFiltersOnMapIdle.current = false;
     if (!googleMap) return;
     const newParams = getNewSearchStateFromMap(googleMap, results.boundaryId);
@@ -67,6 +50,7 @@ const ListingMap: NextPage = () => {
 
   const handleZoomIn = useCallback(() => {
     if (!googleMap) return;
+
     const newParams = getNewSearchStateFromMap(googleMap, results.boundaryId);
     newParams.zoom =
       typeof newParams.zoom === "number" ? newParams.zoom + 1 : 1;
@@ -75,6 +59,7 @@ const ListingMap: NextPage = () => {
 
   const handleZoomOut = useCallback(() => {
     if (!googleMap) return;
+
     const newParams = getNewSearchStateFromMap(googleMap, results.boundaryId);
     newParams.zoom =
       typeof newParams.zoom === "number" ? newParams.zoom - 1 : 1;
@@ -90,6 +75,7 @@ const ListingMap: NextPage = () => {
   // search results
   useEffect(() => {
     if (!googleMap || mapSearchState.bounds) return;
+
     const feature = results.geoJSONBoundary?.id
       ? googleMap.data.getFeatureById(results.geoJSONBoundary.id)
       : undefined;
@@ -111,6 +97,7 @@ const ListingMap: NextPage = () => {
   // location, so use the bounds & zoom from the url to adjust the map
   useEffect(() => {
     if (!googleMap) return;
+
     if (mapSearchState.bounds) {
       const center = new google.maps.LatLngBounds(
         mapSearchState.bounds
@@ -132,15 +119,13 @@ const ListingMap: NextPage = () => {
         onDragEnd={handleUserAdjustedMap}
         onWheel={handleUserAdjustedMap}
       >
-        {results.listings.map((l, i) => (
+        {results.listings.map((l) => (
           <ListingMarker
-            key={l._id.toString()}
-            authenticaticated={status === "authenticated"}
+            key={l._id}
             listing={l}
+            latitude={l.latitude}
+            longitude={l.longitude}
             highlighted={highlightedMarker === l._id}
-            zIndex={i}
-            onMouseEnter={handleListingMarkerMouseEnter}
-            onMouseLeave={handleListingMarkerMouseLeave}
             onClick={handleListingMarkerMouseClick}
           />
         ))}

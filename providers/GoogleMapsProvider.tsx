@@ -73,4 +73,42 @@ const GoogleMapsProvider: React.FC<GoogleMapsProviderProps> = ({
   );
 };
 
+/**
+ * Used to bind events to Google Maps objects.
+ */
+export function useGoogleMapsEventListener(
+  instance?: object | null,
+  eventName?: string,
+  handler?: Function | null
+) {
+  useEffect(() => {
+    if (!instance || !eventName || !handler) return;
+
+    const listener = google.maps.event.addListener(
+      instance,
+      eventName,
+      handler
+    );
+
+    return () => listener.remove();
+  }, [eventName, handler, instance]);
+}
+
+/**
+ * Used to bind events to DOM nodes.
+ */
+export function useDomEventListener(
+  node?: Node | null,
+  type?: string,
+  callback?: EventListenerOrEventListenerObject | null
+) {
+  useEffect(() => {
+    if (!node || !type || !callback) return;
+
+    node.addEventListener(type, callback);
+
+    return () => node.removeEventListener(type, callback);
+  }, [type, node, callback]);
+}
+
 export default GoogleMapsProvider;
