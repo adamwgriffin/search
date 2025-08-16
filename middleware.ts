@@ -1,12 +1,31 @@
-// Without a defined matcher, this one line applies next-auth to the entire project
-export { default } from "next-auth/middleware";
+import { AuthPathRegex } from "@/config";
+import { DefaultParams } from "@/lib/listingSearchParams";
+import { withAuth } from "next-auth/middleware";
+import { NextResponse } from "next/server";
+import { SearchPathname } from "@/config";
 
-// Will need to keep this in sync with matcher below. They reprent the same thing but have to be different data types
-// because of the apis that consume them
-export const AuthPaths = [/^\/account.*/];
+export default withAuth(
+  function middleware(req) {
+    if (req.nextUrl.pathname === SearchPathname && req.nextUrl.search === "") {
+      const url = req.nextUrl.clone();
+      url.search = `?${DefaultParams}`;
+      return NextResponse.redirect(url);
+    }
 
-// Applies next-auth only to matching routes - can be regex
-// Docs: https://nextjs.org/docs/app/building-your-application/routing/middleware#matcher
+    return NextResponse.next();
+  },
+  {
+    callbacks: {
+      authorized: ({ token, req }) => {
+        if (AuthPathRegex.test(req.nextUrl.pathname)) {
+          return !!token;
+        }
+        return true;
+      }
+    }
+  }
+);
+
 export const config = {
-  matcher: ["/account/:path*"]
+  matcher: ["/((?!api|_next/static|_next/image|icon.svg).*)"]
 };

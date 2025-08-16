@@ -1,26 +1,25 @@
 "use client";
 
+import { AuthPathRegex } from "@/config";
 import type { NextPage } from "next";
+import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { signOut } from "next-auth/react";
-import { useToggle } from "react-use";
 import { useCallback } from "react";
-import { useSession } from "next-auth/react";
 import toast from "react-hot-toast";
-import { useAppDispatch } from "../../hooks/app_hooks";
-import { openModal } from "../../store/application/applicationSlice";
-import { resetCurrentUser } from "../../store/user/userSlice";
-import { AuthPaths } from "../../middleware";
-import styles from "./UserMenu.module.css";
+import { useToggle } from "react-use";
 import MenuContainter from "../../components/design_system/MenuContainter/MenuContainter";
 import MenuDropdown from "../../components/design_system/MenuDropdown/MenuDropdown";
 import HamburgerIcon from "../../components/design_system/icons/HamburgerIcon/HamburgerIcon";
-import ThemeSwitcher from "../../components/header/ThemeSwitcher/ThemeSwitcher";
 import Avatar from "../../components/header/Avatar/Avatar";
+import ThemeSwitcher from "../../components/header/ThemeSwitcher/ThemeSwitcher";
+import { useAppDispatch } from "../../hooks/app_hooks";
+import { openModal } from "../../store/application/applicationSlice";
+import { resetCurrentUser } from "../../store/user/userSlice";
+import styles from "./UserMenu.module.css";
 
 export const pathRequiresAuth = (pathname: string | null) =>
-  AuthPaths.some((pattern) => pattern.test(String(pathname)));
+  AuthPathRegex.test(String(pathname));
 
 const UserMenu: NextPage = () => {
   const dispatch = useAppDispatch();
