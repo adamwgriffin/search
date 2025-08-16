@@ -11,27 +11,15 @@ import {
 import { parseAndStripInvalidProperties } from "@/zod_schemas";
 import {
   searchStateSchema,
+  type NewLocationState,
   type SearchState,
-  type SearchStateUpdate
+  type SearchStateUpdate,
+  type Searchtype
 } from "@/zod_schemas/searchStateSchema";
 import omit from "lodash/omit";
 import pick from "lodash/pick";
 import { useRouter, useSearchParams } from "next/navigation";
 import { createContext, useContext, useMemo, type ReactNode } from "react";
-
-type NewLocationState =
-  | {
-      address: string;
-      place_id?: never;
-      address_types?: never;
-    }
-  | {
-      address: string;
-      place_id: string;
-      address_types: string;
-    };
-
-type Searchtype = Exclude<SearchState["search_type"], undefined>;
 
 type SearchStateContextValue = {
   searchState: Readonly<SearchState>;

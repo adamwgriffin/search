@@ -7,7 +7,7 @@ import SearchField from "./SearchField/SearchField";
 import { useSearchState } from "@/providers/SearchStateProvider";
 
 export default function SearchLocation() {
-  const { searchState, setNewLocation, setSearchState } = useSearchState();
+  const { searchState, setNewLocation } = useSearchState();
   const [value, setValue] = useState(searchState.address);
   const [searchString, setSearchString] = useState<string | null>(null);
   const { data, isError, error } = useQuery({

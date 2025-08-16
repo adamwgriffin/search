@@ -6,10 +6,10 @@ import {
 } from "./listingSearchParamsSchema";
 import { featureFiltersSchema } from ".";
 
-/** A type which represents params that can be added to the url. Most of these
- * are listing service request filters but there are additional params for app
- * state as well. */
-export const searchStateSchema = z
+// Only making the public exported interface of this schema partial for the sake
+// of convenience because creating the other types based on it is a hassle when
+// it is created as .partial() to begin with
+const schema = z
   .object({
     search_type: z.enum(["buy", "rent", "sold"]),
     address: z.string(),
@@ -35,10 +35,27 @@ export const searchStateSchema = z
     year_built_max: z.coerce.number(),
     sold_in_last: z.coerce.number()
   })
-  .merge(featureFiltersSchema)
-  .partial();
+  .merge(featureFiltersSchema);
+
+/** A type which represents params that can be added to the url. Most of these
+ * are listing service request filters but there are additional params for app
+ * state as well. */
+export const searchStateSchema = schema.partial();
 
 export type SearchState = z.infer<typeof searchStateSchema>;
+
+type SchemaType = z.infer<typeof schema>;
+
+type NewLocation = Pick<SchemaType, "address" | "place_id" | "address_types">;
+
+type NewLocationAddressOnly = Pick<SchemaType, "address"> & {
+  place_id?: never;
+  address_types?: never;
+};
+
+export type NewLocationState = NewLocation | NewLocationAddressOnly;
+
+export type Searchtype = SchemaType["search_type"];
 
 // Using "null" in an update indicates that the value should be removed
 export type SearchStateUpdate = {

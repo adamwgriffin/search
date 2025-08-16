@@ -16,6 +16,7 @@ import { useOpenListingDetail } from "../../hooks/open_listing_detail_hook";
 import { selectMobileViewType } from "../../store/application/applicationSlice";
 import { setHighlightedMarker } from "../../store/listingSearch/listingSearchSlice";
 import styles from "./SearchResults.module.css";
+import { hasProperties } from "@/lib";
 
 const getPagination = (p: ListingSearchPagination): Pagination => {
   return {
@@ -56,7 +57,7 @@ const SearchResults: React.FC = () => {
       ? styles.searchResultsMobileListView
       : styles.searchResults;
 
-  const searchParamsPresent = Object.keys(searchState).length > 0;
+  const searchParamsPresent = hasProperties(searchState);
 
   return (
     <div ref={searchResultsRef} className={resultsClassName}>
