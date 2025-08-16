@@ -1,5 +1,5 @@
 import { AuthPathRegex } from "@/config";
-import { DefaultParams } from "@/lib/listingSearchParams";
+import { DefaultParams } from "@/config/googleMapsOptions";
 import { withAuth } from "next-auth/middleware";
 import { NextResponse } from "next/server";
 import { SearchPathname } from "@/config";

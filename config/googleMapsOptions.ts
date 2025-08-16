@@ -5,6 +5,9 @@ export const GoogleMapsStreetViewURL =
 
 export const GoogleStreetViewMaxImageSize = 640;
 
+export const DefaultParams =
+  "bounds=47.541366,-122.391511,47.677927,-122.289887&zoom=12";
+
 // Options for @googlemaps/loader, which loads Google Maps by creating a script
 // tag with these params in it. Things like your api key and the libraries you
 // want to load go here
