@@ -8,9 +8,6 @@ import omit from "lodash/omit";
 import omitBy from "lodash/omitBy";
 import { SearchTypes } from "./filter";
 
-export const DefaultParams =
-  "bounds=47.541366,-122.391511,47.677927,-122.289887&zoom=12";
-
 export const NonGeocodeParams: ReadonlyArray<keyof SearchState> = Object.freeze(
   ["bounds", "boundary_id", "zoom", "page_index"]
 );
