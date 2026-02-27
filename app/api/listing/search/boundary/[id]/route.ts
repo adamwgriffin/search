@@ -12,7 +12,7 @@ import {
 } from "../../../../../../zod_schemas/boundarySearchRequestSchema";
 
 export type BoundaryRequstParams = {
-  params: BoundarySearchParams;
+  params: Promise<BoundarySearchParams>;
 };
 
 export async function GET(
@@ -26,22 +26,28 @@ export async function GET(
   );
   const result = boundarySearchRequestSchema.safeParse({
     query: searchParamsObject,
-    params
+    params: await params
   });
   if (!result.success) {
-    return NextResponse.json(result.error, { status: 400 });
+    console.error(result.error);
+    return NextResponse.json("Type error encounted when parsing request", {
+      status: 400
+    });
   }
-  const searchParams = result.data.query;
+  const {
+    query,
+    params: { id }
+  } = result.data;
 
-  const boundary = await Boundary.findById(params.id);
+  const boundary = await Boundary.findById(id);
   if (!boundary) {
     return NextResponse.json(
-      { message: `No boundary found for boundary id ${params.id}.` },
+      { message: `No boundary found for boundary id ${id}.` },
       { status: 404 }
     );
   }
-  const pagination = getPaginationParams(searchParams);
-  const bounds = getBoundaryGeometryWithBounds(boundary, searchParams);
+  const pagination = getPaginationParams(query);
+  const bounds = getBoundaryGeometryWithBounds(boundary, query);
   // Map viewport bounds were included but the boundary was moved outside the
   // viewport, so there's nothing to search.
   if (bounds === null) {
@@ -49,11 +55,7 @@ export async function GET(
       listingSearchBoundaryView(boundary, null, pagination)
     );
   }
-  const results = await Listing.findWithinBounds(
-    bounds,
-    searchParams,
-    pagination
-  );
+  const results = await Listing.findWithinBounds(bounds, query, pagination);
   return NextResponse.json(
     listingSearchBoundaryView(boundary, results, pagination)
   );
