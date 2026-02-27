@@ -7,17 +7,14 @@ import ListingDetail from "../../../components/listings/listing_detail/ListingDe
 import LoginOrRegisterModal from "../../../containers/modals/LoginOrRegisterModal/LoginOrRegisterModal";
 import styles from "./page.module.css";
 
-export type ListingPageProps = {
-  params: ListingDetailParams;
-};
-
-const ListingPage: React.FC<ListingPageProps> = async ({ params }) => {
+const ListingPage: React.FC<ListingDetailParams> = async ({ params }) => {
   let listingDetail = null;
   let error = false;
 
   try {
     await mongooseConnect();
-    const listing = await getListingDetail(params.slug);
+    const { slug } = await params;
+    const listing = await getListingDetail(slug);
     // We have to serialize the listing because we get errors when trying to pass
     // the POJO returned from the db query in getListingDetail()
     listingDetail = JSON.parse(

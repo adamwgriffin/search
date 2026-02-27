@@ -4,19 +4,22 @@ import mongooseConnect from "../../../../lib/mongooseConnect";
 import { getListingDetail } from "../../../../lib/listing_search_helpers";
 
 export type ListingDetailParams = {
-  slug: string;
+  params: Promise<{
+    slug: string;
+  }>;
 };
 
 export async function GET(
   _request: NextRequest,
-  { params }: { params: ListingDetailParams }
+  { params }: ListingDetailParams
 ) {
   await mongooseConnect();
+  const requestParams = await params;
 
-  const listing = await getListingDetail(params.slug);
+  const listing = await getListingDetail(requestParams.slug);
   if (!listing) {
     return NextResponse.json(
-      { message: `Listing not found with slug ${params.slug}` },
+      { message: `Listing not found with slug ${requestParams.slug}` },
       { status: 404 }
     );
   }
