@@ -7,16 +7,19 @@ export type ListingDetailParams = {
   slug: string;
 };
 
+export type ListingDetailRequestParams = { params: ListingDetailParams };
+
 export async function GET(
   _request: NextRequest,
-  { params }: { params: ListingDetailParams }
+  { params }: ListingDetailRequestParams
 ) {
   await mongooseConnect();
+  const requestParams = await params;
 
-  const listing = await getListingDetail(params.slug);
+  const listing = await getListingDetail(requestParams.slug);
   if (!listing) {
     return NextResponse.json(
-      { message: `Listing not found with slug ${params.slug}` },
+      { message: `Listing not found with slug ${requestParams.slug}` },
       { status: 404 }
     );
   }
