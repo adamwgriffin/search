@@ -4,14 +4,14 @@ import mongooseConnect from "../../../../lib/mongooseConnect";
 import { getListingDetail } from "../../../../lib/listing_search_helpers";
 
 export type ListingDetailParams = {
-  slug: string;
+  params: Promise<{
+    slug: string;
+  }>;
 };
-
-export type ListingDetailRequestParams = { params: ListingDetailParams };
 
 export async function GET(
   _request: NextRequest,
-  { params }: ListingDetailRequestParams
+  { params }: ListingDetailParams
 ) {
   await mongooseConnect();
   const requestParams = await params;
