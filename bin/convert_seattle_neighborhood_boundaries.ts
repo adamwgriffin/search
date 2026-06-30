@@ -3,7 +3,7 @@ import type {
   Feature,
   Polygon,
   MultiPolygon
-} from "@turf/turf";
+} from "geojson";
 import type { IBoundary } from "../models/BoundaryModel";
 import fs from "fs";
 import path from "path";
@@ -88,11 +88,6 @@ const processArgv = async () => {
       "Convert City of Seattle Neighborhood Map Atlas Neighborhoods" +
         "or Districts FeatureCollection into an array of JSON Boundary objects"
     ).argv;
-
-  if (argv.help) {
-    yargs.showHelp();
-    process.exit(0);
-  }
 
   return argv;
 };

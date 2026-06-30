@@ -30,11 +30,6 @@ const processArgv = async () => {
     .help("help")
     .usage(`Usage: $0 [options]`).argv;
 
-  if (argv.help) {
-    yargs.showHelp();
-    process.exit(0);
-  }
-
   return argv;
 };
 

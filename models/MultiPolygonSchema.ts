@@ -1,4 +1,4 @@
-import type { MultiPolygon } from "@turf/turf";
+import type { MultiPolygon } from "geojson";
 import { Schema } from "mongoose";
 
 const MultiPolygonSchema = new Schema<MultiPolygon>({

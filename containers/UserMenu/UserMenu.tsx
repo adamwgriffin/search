@@ -11,7 +11,7 @@ import toast from "react-hot-toast";
 import { useAppDispatch } from "../../hooks/app_hooks";
 import { openModal } from "../../store/application/applicationSlice";
 import { resetCurrentUser } from "../../store/user/userSlice";
-import { AuthPaths } from "../../middleware";
+import { AuthPaths } from "../../proxy";
 import styles from "./UserMenu.module.css";
 import MenuContainter from "../../components/design_system/MenuContainter/MenuContainter";
 import MenuDropdown from "../../components/design_system/MenuDropdown/MenuDropdown";
