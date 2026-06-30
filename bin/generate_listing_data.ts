@@ -45,11 +45,6 @@ const processArgv = async () => {
     .epilogue("Generate random Listing data from listing geocode data file")
     .argv;
 
-  if (argv.help) {
-    yargs.showHelp();
-    process.exit(0);
-  }
-
   return argv;
 };
 

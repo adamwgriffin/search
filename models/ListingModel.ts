@@ -1,4 +1,4 @@
-import type { MultiPolygon, Point, Polygon } from "@turf/turf";
+import type { MultiPolygon, Point, Polygon } from "geojson";
 import type { GeocodeBoundaryQueryParams } from "../zod_schemas/geocodeBoundarySearchSchema";
 import type {
   ListingResultWithSelectedFields,

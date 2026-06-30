@@ -55,7 +55,12 @@ const Modal: NextPage<ModalProps> = ({
       onAfterClose={onAfterClose}
       closeTimeoutMS={closeTimeoutMS}
     >
-      {children}
+      {/* TODO: Change this once React Modal is fixed.
+      Using <> is just a hacky workaround for the fact
+      that the types used in @types/react 19 do not align
+      with the older React types used by @types/react-modal.
+      See: https://github.com/vercel/next.js/discussions/64753#discussioncomment-9236067 */}
+      <>{children}</>
     </ReactModal>
   );
 };

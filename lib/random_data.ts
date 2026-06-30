@@ -10,7 +10,7 @@ import type {
   PropertyType,
   ListingAmenities
 } from "../models/ListingModel";
-import type { Point, Polygon, MultiPolygon } from "@turf/turf";
+import type { Point, Polygon, MultiPolygon } from "geojson";
 import { bbox, randomPoint, booleanPointInPolygon } from "@turf/turf";
 import { faker } from "@faker-js/faker";
 import { subMonths, addHours, addMonths } from "date-fns";

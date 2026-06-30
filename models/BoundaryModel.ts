@@ -1,4 +1,4 @@
-import type { MultiPolygon } from "@turf/turf";
+import type { MultiPolygon } from "geojson";
 import mongoose, { Model, Schema, model } from "mongoose";
 import MultiPolygonSchema from "./MultiPolygonSchema";
 

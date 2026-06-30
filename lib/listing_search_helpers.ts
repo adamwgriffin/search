@@ -1,10 +1,10 @@
-import type { Polygon, MultiPolygon } from "@turf/turf";
+import type { Polygon, MultiPolygon } from "geojson";
 import type { ListingAddress } from "../zod_schemas/listingSchema";
 import type { IBoundary } from "../models/BoundaryModel";
 import type { GeocodeBoundaryQueryParams } from "../zod_schemas/geocodeBoundarySearchSchema";
 import type { BoundsParams } from "../zod_schemas/listingSearchParamsSchema";
 import type { BoundarySearchQueryParams } from "../zod_schemas/boundarySearchRequestSchema";
-import { bboxPolygon, intersect } from "@turf/turf";
+import { bboxPolygon, feature, featureCollection, intersect } from "@turf/turf";
 import { differenceInDays } from "date-fns";
 import {
   addressComponentsToListingAddress,
@@ -50,12 +50,18 @@ export const boundsParamsToGeoJSONPolygon = (bounds: BoundsParams): Polygon => {
  * boundary is outside the viewport, which case we can return null as a signal
  * to avoid trying to search.
  */
-export const removePartsOfBoundaryOutsideOfBounds = (
+const removePartsOfBoundaryOutsideOfBounds = (
   bounds: BoundsParams,
   boundary: Polygon | MultiPolygon
 ) => {
-  const boundsPolygon = boundsParamsToGeoJSONPolygon(bounds);
-  return intersect(boundsPolygon, boundary)?.geometry || null;
+  return (
+    intersect(
+      featureCollection([
+        feature(boundsParamsToGeoJSONPolygon(bounds)),
+        feature(boundary)
+      ])
+    )?.geometry || null
+  );
 };
 
 /**
