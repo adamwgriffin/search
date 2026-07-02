@@ -1,5 +1,5 @@
 import { subDays } from "date-fns";
-import type { FilterQuery } from "mongoose";
+import type { QueryFilter } from "mongoose";
 import type { IListingModel } from "../models/ListingModel";
 import type { GeocodeBoundaryQueryParams } from "../zod_schemas/geocodeBoundarySearchSchema";
 
@@ -15,7 +15,7 @@ export const numberRangeQuery = (
   min: number | undefined,
   max: number | undefined
 ) => {
-  const query: FilterQuery<IListingModel> = { [field]: {} };
+  const query: QueryFilter<IListingModel> = { [field]: {} };
   if (min) {
     query[field].$gte = min;
   }
@@ -28,7 +28,7 @@ export const numberRangeQuery = (
 export const openHouseQuery = (
   open_house_after: string | undefined,
   open_house_before: string | undefined
-): FilterQuery<IListingModel> => {
+): QueryFilter<IListingModel> => {
   const query: { $gte?: Date; $lte?: Date } = {};
   if (open_house_after) {
     query.$gte = new Date(open_house_after);
@@ -52,7 +52,7 @@ export const openHouseQuery = (
  */
 export const buildFilterQueries = (
   queryParams: GeocodeBoundaryQueryParams
-): FilterQuery<IListingModel>[] => {
+): QueryFilter<IListingModel>[] => {
   // TODO: refactor this. the list is way too long.
   const {
     property_type,
@@ -173,7 +173,7 @@ export const buildFilterQueries = (
  */
 export const buildfilterQueriesObject = (
   queryParams: GeocodeBoundaryQueryParams
-): FilterQuery<IListingModel> => {
+): QueryFilter<IListingModel> => {
   return buildFilterQueries(queryParams).reduce(
     (q, acc) => ({ ...acc, ...q }),
     {}
@@ -193,7 +193,7 @@ export const buildfilterQueriesObject = (
  */
 export const listingSortQuery = (
   queryParams: GeocodeBoundaryQueryParams
-): FilterQuery<IListingModel> => {
+): QueryFilter<IListingModel> => {
   const sortBy = queryParams.sort_by || "listedDate";
   const sortDirection = queryParams.sort_direction === "asc" ? 1 : -1;
   return { [sortBy]: sortDirection };
