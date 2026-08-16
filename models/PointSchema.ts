@@ -1,4 +1,4 @@
-import type { Point } from "@turf/turf";
+import type { Point } from "geojson";
 import { Schema } from "mongoose";
 
 // the coordinates array puts the lat/lng backwards, e.g., coordinates: [longitude, latitude]

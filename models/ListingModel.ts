@@ -1,4 +1,4 @@
-import type { MultiPolygon, Point, Polygon } from "@turf/turf";
+import type { MultiPolygon, Point, Polygon } from "geojson";
 import type { GeocodeBoundaryQueryParams } from "../zod_schemas/geocodeBoundarySearchSchema";
 import type {
   ListingResultWithSelectedFields,
@@ -303,7 +303,7 @@ const ListingSchema = new Schema<IListing, IListingModel>({
   }
 });
 
-ListingSchema.pre("save", async function (next) {
+ListingSchema.pre("save", async function () {
   if (this.isModified("address") || !this.slug) {
     const address = Object.values(this.address).filter(Boolean).join(" ");
     const baseSlug = slugify(address, { lower: true, strict: true });
@@ -315,7 +315,6 @@ ListingSchema.pre("save", async function (next) {
     }
     this.slug = slug;
   }
-  next();
 });
 
 /**

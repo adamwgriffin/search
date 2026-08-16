@@ -67,11 +67,6 @@ const processArgv = async () => {
       "Generate random geospatial data to use for random listing generator script"
     ).argv;
 
-  if (argv.help) {
-    yargs.showHelp();
-    process.exit(0);
-  }
-
   return argv;
 };
 

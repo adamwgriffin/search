@@ -8,9 +8,13 @@ import {
   type ReactNode
 } from "react";
 import type { Dispatch } from "react";
-import type { LoaderOptions, Libraries } from "@googlemaps/js-api-loader";
-import { Loader } from "@googlemaps/js-api-loader";
 import {
+  setOptions,
+  type APIOptions,
+  importLibrary
+} from "@googlemaps/js-api-loader";
+import {
+  type LibraryName,
   DefaultGoogleMapsLoaderOptions,
   DefaultGoogleMapsLibraries
 } from "../config/googleMapsOptions";
@@ -23,8 +27,8 @@ export type GoogleMapsContextInterface = {
 
 export type GoogleMapsProviderProps = {
   children: ReactNode;
-  loaderOptions?: LoaderOptions;
-  libraries?: Libraries;
+  loaderOptions?: APIOptions;
+  libraries?: LibraryName[];
 };
 
 const GoogleMapsContext = createContext<GoogleMapsContextInterface>({
@@ -53,8 +57,10 @@ const GoogleMapsProvider: React.FC<GoogleMapsProviderProps> = ({
   // execute whatever code depends on the API after the promise resolves.
   useEffect(() => {
     const initializeGoogleMaps = async () => {
-      const loader = new Loader(loaderOptions);
-      await Promise.all(libraries.map((l) => loader.importLibrary(l)));
+      setOptions(DefaultGoogleMapsLoaderOptions);
+      // Just preload all the libraries at once rather than loading dynamically
+      // in each component for now.
+      await Promise.all(libraries.map((l) => importLibrary(l)));
       setGoogleLoaded(true);
     };
     initializeGoogleMaps().catch((error) =>

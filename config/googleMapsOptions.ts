@@ -1,26 +1,25 @@
-import type { Libraries, LoaderOptions } from "@googlemaps/js-api-loader";
+import type { LibraryMap, APIOptions } from "@googlemaps/js-api-loader";
 
 export const GoogleMapsStreetViewURL =
   "https://maps.googleapis.com/maps/api/streetview";
 
 export const GoogleStreetViewMaxImageSize = 640;
 
-export const DefaultParams =
-  "bounds=47.541366,-122.391511,47.677927,-122.289887&zoom=12";
+export type LibraryName = keyof LibraryMap;
 
-// Options for @googlemaps/loader, which loads Google Maps by creating a script
-// tag with these params in it. Things like your api key and the libraries you
-// want to load go here
-export const DefaultGoogleMapsLoaderOptions: LoaderOptions = {
-  apiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY!,
-  version: "quarterly"
-};
-
-export const DefaultGoogleMapsLibraries: Libraries = [
+export const DefaultGoogleMapsLibraries: LibraryName[] = [
   "maps",
   "places",
   "marker"
 ];
+
+// Options for @googlemaps/loader, which loads Google Maps by creating a script
+// tag with these params in it. Things like your api key and the libraries you
+// want to load go here
+export const DefaultGoogleMapsLoaderOptions: APIOptions = {
+  key: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY!,
+  v: "quarterly"
+};
 
 // Default options for the map itself, such as what UI controls to enable, etc.
 // Seems that we can't use Object.freeze on this object, otherwise the map won't

@@ -3,20 +3,22 @@ import { getServerSession } from "next-auth/next";
 import authOptions from "../../../../lib/auth_options";
 import prisma from "../../../../lib/prismadb";
 
-interface FavoritesParams {
-  listingId: string;
-}
+export type FavoritesParams = {
+  params: Promise<{
+    listingId: string;
+  }>;
+};
 
 export async function POST(
   _request: Request,
-  { params }: { params: FavoritesParams }
+  { params }: FavoritesParams
 ) {
   const session = await getServerSession(authOptions);
   if (!session?.user) {
     return new NextResponse(null, { status: 401 });
   }
 
-  const { listingId } = params;
+  const { listingId } = await params;
 
   if (!listingId || typeof listingId !== "string") {
     return NextResponse.json({ error: "Invalid listing ID" }, { status: 400 });
@@ -56,14 +58,14 @@ export async function POST(
 
 export async function DELETE(
   _request: Request,
-  { params }: { params: FavoritesParams }
+  { params }: FavoritesParams
 ) {
   const session = await getServerSession(authOptions);
   if (!session?.user) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const { listingId } = params;
+  const { listingId } = await params;
 
   if (!listingId || typeof listingId !== "string") {
     throw new Error("Invalid ID");
