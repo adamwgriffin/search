@@ -6,7 +6,7 @@ import { useMapSearchState } from "@/hooks/useMapSearchState";
 import { useSearchResultsData } from "@/hooks/useSearchResultsData";
 import { getAvailableBoundsFromSearchResults } from "@/lib/boundary";
 import { getNewSearchStateFromMap } from "@/lib/listingSearchParams";
-import { useSearchState } from "@/providers/SearchStateProvider";
+import { useSearchState } from "@/hooks/useSearchState";
 import { selectHighlightedMarker } from "@/store/application/applicationSlice";
 import { useCallback, useEffect, useRef } from "react";
 import GoogleMap from "../../components/map/GoogleMap/GoogleMap";

@@ -1,6 +1,5 @@
-"use client";
-
 import { SearchPathname } from "@/config";
+import { useAppDispatch, useAppSelector } from "@/hooks/app_hooks";
 import {
   buildUrl,
   ClearFiltersParams,
@@ -8,6 +7,7 @@ import {
   NonGeocodeParams,
   ParamDefaults
 } from "@/lib/listingSearchParams";
+import { setSearch } from "@/store/search/searchSlice";
 import { parseAndStripInvalidProperties } from "@/zod_schemas";
 import {
   searchStateSchema,
@@ -19,34 +19,25 @@ import {
 import omit from "lodash/omit";
 import pick from "lodash/pick";
 import { useRouter, useSearchParams } from "next/navigation";
-import { createContext, useContext, useMemo, type ReactNode } from "react";
+import { useEffect } from "react";
 
-type SearchStateContextValue = {
-  searchState: Readonly<SearchState>;
-  searchType: Searchtype;
-  setSearchState: (newParams: SearchStateUpdate) => void;
-  setNewLocation: (newLocationState: NewLocationState) => void;
-  setSearchType: (newSearchType: Searchtype) => void;
-  clearFilters: () => void;
-};
-
-const SearchStateContext = createContext<SearchStateContextValue | undefined>(
-  undefined
-);
-
-export const SearchStateProvider: React.FC<{ children: ReactNode }> = ({
-  children
-}) => {
+export function useSearchState() {
   const searchParams = useSearchParams();
   const router = useRouter();
+  const dispatch = useAppDispatch();
+  const searchState: SearchState = useAppSelector((state) => state.search);
+  const searchType: Searchtype = useAppSelector(
+    (state) => state.search.search_type || ParamDefaults.search_type
+  );
 
-  const searchState: Readonly<SearchState> = useMemo(() => {
+  useEffect(() => {
     const params = Object.fromEntries(searchParams.entries());
     const parsed = parseAndStripInvalidProperties(searchStateSchema, params);
-    return Object.freeze(parsed);
+    dispatch(setSearch(parsed));
   }, [searchParams]);
 
   const setSearchState = (newParams: SearchStateUpdate) => {
+    // TODO: this should be a selector instead
     const params = getUpdatedParams(searchState, newParams);
     router.push(buildUrl(SearchPathname, params));
   };
@@ -56,6 +47,7 @@ export const SearchStateProvider: React.FC<{ children: ReactNode }> = ({
     // Since we're now going to be geocoding a new location, we only want filter
     // params. Remove address/place_id for existing location so that we can
     // replace it with new state
+    // TODO: this should be a selector instead
     const params = omit(searchState, [
       ...NonGeocodeParams,
       "address",
@@ -66,7 +58,9 @@ export const SearchStateProvider: React.FC<{ children: ReactNode }> = ({
     router.push(buildUrl(SearchPathname, params));
   };
 
+  // TODO: This should be a reducer instead
   const setSearchType = (newSearchType: Searchtype) => {
+    // TODO: this should be a selector instead
     const params = pick<SearchState>(searchState, ClearFiltersParams);
     if (newSearchType !== ParamDefaults.search_type) {
       params.search_type = newSearchType;
@@ -75,30 +69,17 @@ export const SearchStateProvider: React.FC<{ children: ReactNode }> = ({
   };
 
   const clearFilters = () => {
+    // TODO: this should be a selector instead
     const params = pick(searchState, ClearFiltersParams);
     router.push(buildUrl(SearchPathname, params));
   };
 
-  return (
-    <SearchStateContext.Provider
-      value={{
-        searchState,
-        searchType: searchState.search_type || ParamDefaults.search_type,
-        setSearchState,
-        setNewLocation,
-        setSearchType,
-        clearFilters
-      }}
-    >
-      {children}
-    </SearchStateContext.Provider>
-  );
-};
-
-export const useSearchState = (): SearchStateContextValue => {
-  const context = useContext(SearchStateContext);
-  if (context === undefined) {
-    throw new Error("useSearchState must be used within a SearchStateProvider");
-  }
-  return context;
-};
+  return {
+    searchState,
+    searchType,
+    setSearchState,
+    setNewLocation,
+    setSearchType,
+    clearFilters
+  };
+}

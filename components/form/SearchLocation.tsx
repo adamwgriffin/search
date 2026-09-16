@@ -4,7 +4,7 @@ import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { getPlaceAutocompletePredictions } from "@/lib/getPlaceAutocompletePredictions";
 import SearchField from "./SearchField/SearchField";
-import { useSearchState } from "@/providers/SearchStateProvider";
+import { useSearchState } from "@/hooks/useSearchState";
 
 export default function SearchLocation() {
   const { searchState, setNewLocation } = useSearchState();

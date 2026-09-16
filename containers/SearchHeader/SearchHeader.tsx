@@ -11,13 +11,11 @@ const SearchHeader: React.FC = () => {
       <HideSmallAndDown>
         <Logo />
       </HideSmallAndDown>
-      <SearchLocation />
+      {/* <SearchLocation /> */}
       <div className={styles.controls}>
         <UserMenu />
       </div>
-      <div className={styles.filters}>
-        <Filters />
-      </div>
+      <div className={styles.filters}>{/* <Filters /> */}</div>
     </header>
   );
 };

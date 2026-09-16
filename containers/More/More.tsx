@@ -10,7 +10,7 @@ import OpenHouse from "../../components/form/OpenHouse/OpenHouse";
 import Features from "../../components/form/Features/Features";
 import SoldDays from "../../components/form/SoldDays/SoldDays";
 import { SearchTypes } from "../../lib/filter";
-import { useSearchState } from "@/providers/SearchStateProvider";
+import { useSearchState } from "@/hooks/useSearchState";
 import { ParamDefaults } from "@/lib/listingSearchParams";
 import YearBuiltContainer from "../YearBuiltContainer/YearBuiltContainer";
 

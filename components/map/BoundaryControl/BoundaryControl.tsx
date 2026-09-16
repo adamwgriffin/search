@@ -1,5 +1,5 @@
 import { useGoogleMaps } from "@/providers/GoogleMapsProvider";
-import { useSearchState } from "@/providers/SearchStateProvider";
+import { useSearchState } from "@/hooks/useSearchState";
 import type { SearchStateUpdate } from "@/zod_schemas/searchStateSchema";
 import LoadingDots from "../../design_system/LoadingDots/LoadingDots";
 import styles from "./BoundaryControl.module.css";

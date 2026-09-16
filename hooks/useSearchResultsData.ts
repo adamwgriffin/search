@@ -1,5 +1,5 @@
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
-import { useSearchState } from "@/providers/SearchStateProvider";
+import { useSearchState } from "@/hooks/useSearchState";
 import { useMemo } from "react";
 import { sortListingsByLatLng } from "@/lib/listing_helpers";
 import { searchQueryOptions } from "@/lib/queries";

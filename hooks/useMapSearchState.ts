@@ -1,5 +1,5 @@
 import { convertURLBoundsParamToLatLngBoundsLiteral } from "@/lib/boundary";
-import { useSearchState } from "@/providers/SearchStateProvider";
+import { useSearchState } from "@/hooks/useSearchState";
 
 /**
  * A hook that handles computing state derived from the search state params

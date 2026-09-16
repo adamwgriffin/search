@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useSearchState } from "@/providers/SearchStateProvider";
+import { useSearchState } from "@/hooks/useSearchState";
 import type {
   SortDirection,
   SortType

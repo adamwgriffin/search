@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import YearBuilt from "@/components/form/YearBuilt/YearBuilt";
-import { useSearchState } from "@/providers/SearchStateProvider";
+import { useSearchState } from "@/hooks/useSearchState";
 import type { YearBuiltRangeFilters } from "@/types/filtersTypes";
 
 const YearBuiltContainer: React.FC = () => {

@@ -4,7 +4,7 @@ import ListingResultsPagination, {
   type Pagination
 } from "@/components/listings/ListingResultsPagination/ListingResultsPagination";
 import { useSearchResults } from "@/hooks/useSearchResults";
-import { useSearchState } from "@/providers/SearchStateProvider";
+import { useSearchState } from "@/hooks/useSearchState";
 import { ListingSearchPagination } from "@/types";
 import range from "lodash/range";
 import { useEffect, useRef } from "react";

@@ -2,6 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import applicationReducer from "./application/applicationSlice";
 import errorReducer from "./error/errorSlice";
 import userReducer from "./user/userSlice";
+import searchStateReducer from "./search/searchSlice";
 import { listingDetailApi } from "./listingDetailApi/listingDetailApi";
 
 export function makeStore() {
@@ -10,6 +11,7 @@ export function makeStore() {
       application: applicationReducer,
       error: errorReducer,
       user: userReducer,
+      search: searchStateReducer,
       [listingDetailApi.reducerPath]: listingDetailApi.reducer
     },
     middleware: (getDefaultMiddleware) =>

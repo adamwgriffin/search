@@ -1,4 +1,4 @@
-import { useSearchState } from "@/providers/SearchStateProvider";
+import { useSearchState } from "@/hooks/useSearchState";
 import { useQuery } from "@tanstack/react-query";
 import { searchQueryOptions } from "@/lib/queries";
 
