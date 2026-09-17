@@ -4,14 +4,27 @@ import Filters from "../Filters/Filters";
 import UserMenu from "../UserMenu/UserMenu";
 import HideSmallAndDown from "../../components/HideSmallAndDown/HideSmallAndDown";
 import SearchLocation from "@/components/form/SearchLocation";
+import { Suspense } from "react";
+import SearchField from "@/components/form/SearchField/SearchField";
 
+// We're using <Suspense> because some components require
+// useSearchParams(). See
+// https://nextjs.org/docs/messages/missing-suspense-with-csr-bailout
 const SearchHeader: React.FC = () => {
   return (
     <header className={styles.header}>
       <HideSmallAndDown>
         <Logo />
       </HideSmallAndDown>
-      {/* <SearchLocation /> */}
+      <Suspense
+        fallback={
+          <form name="search-form">
+            <SearchField options={[]} />
+          </form>
+        }
+      >
+        <SearchLocation />
+      </Suspense>
       <div className={styles.controls}>
         <UserMenu />
       </div>

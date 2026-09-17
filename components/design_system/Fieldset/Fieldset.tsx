@@ -1,9 +1,13 @@
-import type { NextPage } from "next";
-import type { ReactNode } from "react";
 import styles from "./Fieldset.module.css";
 
-const Fieldset: NextPage<{ children: ReactNode }> = ({ children }) => {
-  return <fieldset className={styles.fieldset}>{children}</fieldset>;
+export type FieldsetProps = React.FieldsetHTMLAttributes<HTMLFieldSetElement>;
+
+const Fieldset: React.FC<FieldsetProps> = ({ children, ...props }) => {
+  return (
+    <fieldset className={styles.fieldset} {...props}>
+      {children}
+    </fieldset>
+  );
 };
 
 export default Fieldset;
