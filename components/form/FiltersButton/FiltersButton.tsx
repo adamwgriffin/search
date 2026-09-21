@@ -1,19 +1,24 @@
-import { useAppDispatch } from "../../../hooks/app_hooks";
-import { openModal } from "../../../store/application/applicationSlice";
+import clsx from "clsx";
 import FiltersIcon from "../../design_system/icons/FiltersIcon/FiltersIcon";
 import styles from "./FiltersButton.module.css";
 
-const FiltersButton: React.FC = () => {
-  const dispatch = useAppDispatch();
+export type FiltersButtonProps =
+  React.ButtonHTMLAttributes<HTMLButtonElement> & {
+    loading?: boolean;
+  };
 
+const FiltersButton: React.FC<FiltersButtonProps> = ({
+  loading = false,
+  ...props
+}) => {
+  const className = clsx(
+    styles.filtersButton,
+    loading ? styles.loading : styles.default,
+    props.className
+  );
   return (
-    <button
-      className={styles.filtersButton}
-      onClick={() => {
-        dispatch(openModal({ modalType: "filters" }));
-      }}
-    >
-      <FiltersIcon />
+    <button {...props} className={className}>
+      <FiltersIcon className={clsx(loading && styles.iconLoading)} />
       Filters
     </button>
   );
