@@ -1,3 +1,21 @@
+@value animatePulse from '../../../styles/animations.module.css';
+
 .label {
   margin-right: 0.5rem;
+}
+
+.buttonLoading {
+  composes: animatePulse;
+  background: var(--loading-background);
+  border-color: var(--loading-outline);
+  color: var(--loading-foreground);
+}
+
+.iconLoading {
+  fill: var(--loading-foreground);
+}
+
+.buttonLoading:hover,
+.iconLoading:hover {
+  cursor: not-allowed;
 }
