@@ -1,17 +1,18 @@
 .menuOpenIcon {
   user-select: none;
   cursor: pointer;
+}
+
+.default {
   fill: var(--foreground);
 }
 
 .closed {
-  composes: menuOpenIcon;
   transform: rotate(0deg);
   transition: transform 150ms linear;
 }
 
 .open {
-  composes: menuOpenIcon;
   transform: rotate(180deg);
   transition: transform 150ms linear;
 }
