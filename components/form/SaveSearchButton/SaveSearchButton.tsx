@@ -2,6 +2,7 @@ import { useSession } from "next-auth/react";
 import { useAppDispatch } from "../../../hooks/app_hooks";
 import OutlinedButton from "../../design_system/OutlinedButton/OutlinedButton";
 import { openModal } from "../../../store/application/applicationSlice";
+import styles from "./SaveSearchButton.module.css";
 
 const SaveSearchButton: React.FC = () => {
   const { data: session } = useSession();
@@ -9,7 +10,7 @@ const SaveSearchButton: React.FC = () => {
 
   return (
     <OutlinedButton
-      textColor="var(--primary)"
+      className={styles.className}
       onClick={() =>
         dispatch(
           openModal({

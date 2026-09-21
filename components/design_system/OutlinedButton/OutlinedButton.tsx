@@ -1,30 +1,33 @@
+import clsx from "clsx";
 import styles from "./OutlinedButton.module.css";
 
 export type OutlinedButtonProps =
   React.ButtonHTMLAttributes<HTMLButtonElement> & {
     highlighted?: boolean;
     condensed?: boolean;
-    textColor?: string;
   };
 
 const OutlinedButton: React.FC<OutlinedButtonProps> = ({
   highlighted = false,
   condensed = false,
-  textColor = "inherit",
   children,
   ...props
 }) => {
+  const className = clsx(
+    styles.outlinedButton,
+    props.className,
+    highlighted && styles.highlighted
+  );
+
   return (
     <button
-      className={
-        highlighted ? styles.outlinedButtonHighlighted : styles.outlinedButton
-      }
+      {...props}
       style={{
-        color: textColor,
+        ...props.style,
         height: condensed ? "30.5938px" : "40px",
         padding: condensed ? "0 .6rem" : "0 .8rem"
       }}
-      {...props}
+      className={className}
     >
       {children}
     </button>
