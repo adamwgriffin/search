@@ -1,3 +1,16 @@
+@value animatePulse from '../../../styles/animations.module.css';
+
 .saveSearchButton {
   color: var(--primary);
+}
+
+.saveSearchButton:disabled:hover {
+  cursor: not-allowed;
+}
+
+.loading {
+  composes: animatePulse;
+  background: var(--loading-background);
+  border-color: var(--loading-outline);
+  color: var(--loading-foreground);
 }

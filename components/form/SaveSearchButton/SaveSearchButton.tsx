@@ -1,24 +1,23 @@
-import { useSession } from "next-auth/react";
-import { useAppDispatch } from "../../../hooks/app_hooks";
-import OutlinedButton from "../../design_system/OutlinedButton/OutlinedButton";
-import { openModal } from "../../../store/application/applicationSlice";
+import clsx from "clsx";
+import OutlinedButton from "@/components/design_system/OutlinedButton/OutlinedButton";
 import styles from "./SaveSearchButton.module.css";
 
-const SaveSearchButton: React.FC = () => {
-  const { data: session } = useSession();
-  const dispatch = useAppDispatch();
+export type SaveSearchButtonProps =
+  React.ButtonHTMLAttributes<HTMLButtonElement> & {
+    loading?: boolean;
+  };
 
+const SaveSearchButton: React.FC<SaveSearchButtonProps> = ({
+  loading = false,
+  ...props
+}) => {
+  const className = clsx(
+    styles.saveSearchButton,
+    loading && styles.loading,
+    props.className
+  );
   return (
-    <OutlinedButton
-      className={styles.className}
-      onClick={() =>
-        dispatch(
-          openModal({
-            modalType: session?.user ? "saveSearch" : "loginOrRegister"
-          })
-        )
-      }
-    >
+    <OutlinedButton {...props} className={className}>
       Save Search
     </OutlinedButton>
   );
