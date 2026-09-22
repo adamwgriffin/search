@@ -8,16 +8,19 @@ import {
   type ChangeEvent,
   type KeyboardEvent
 } from "react";
+import clsx from "clsx";
 import { useClickAway } from "react-use";
 import SearchButton from "../SearchButton/SearchButton";
 import LocationPinFilledIcon from "../../design_system/icons/LocationPinFilledIcon/LocationPinFilledIcon";
 import PlacePredictionText from "../PlacePredictionText/PlacePredictionText";
 import styles from "./SearchField.module.css";
+import animationStyles from "@/styles/animations.module.css";
 
 export type SearchFieldProps = {
   options: Array<google.maps.places.AutocompletePrediction>;
   value?: string;
   placeholder?: string;
+  loading?: boolean;
   onInput?: (details: string) => void;
   onClearPlaceAutocompletePredictions?: () => void;
   onSearchInitiated?: () => void;
@@ -30,9 +33,10 @@ export type SearchFieldProps = {
 const UnselectedIndex = -1;
 
 const SearchField: React.FC<SearchFieldProps> = ({
+  options,
   value,
   placeholder = "Address, Neighborhood or Zip",
-  options,
+  loading = false,
   onInput,
   onClearPlaceAutocompletePredictions,
   onSearchInitiated,
@@ -198,8 +202,13 @@ const SearchField: React.FC<SearchFieldProps> = ({
 
   const listboxId = `search-listbox-${id}`;
 
+  const parentClass = clsx(
+    styles.comboboxWrapper,
+    loading && animationStyles.animatePulse
+  );
+
   return (
-    <div className={styles.comboboxWrapper} ref={ref}>
+    <div className={parentClass} ref={ref}>
       <div className={styles.searchFieldElements}>
         <input
           id="locationSearchField"
@@ -215,13 +224,14 @@ const SearchField: React.FC<SearchFieldProps> = ({
           autoComplete="off"
           placeholder={placeholder}
           value={value}
+          disabled={loading}
           onChange={handleChange}
           onFocus={handleFocus}
           onKeyUp={handleKeyUp}
           onKeyDown={handleKeyDown}
           onClick={openDropdown}
         />
-        <SearchButton onClick={initiateSearch} />
+        <SearchButton onClick={initiateSearch} disabled={loading} />
       </div>
       <ul
         id={listboxId}

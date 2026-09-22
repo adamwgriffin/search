@@ -23,6 +23,14 @@
   border-right: 1px solid transparent;
 }
 
+.locationSearchField:disabled {
+  cursor: not-allowed;
+}
+
+.locationSearchField:disabled::placeholder {
+  color: var(--foreground-disabled);
+}
+
 .listboxOpen {
   position: absolute;
   z-index: 2;
