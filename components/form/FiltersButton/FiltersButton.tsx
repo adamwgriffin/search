@@ -16,6 +16,7 @@ const FiltersButton: React.FC<FiltersButtonProps> = ({
     loading ? styles.loading : styles.default,
     props.className
   );
+
   return (
     <button {...props} className={className}>
       <FiltersIcon className={clsx(loading && styles.iconLoading)} />
