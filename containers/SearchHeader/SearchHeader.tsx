@@ -5,7 +5,7 @@ import UserMenu from "../UserMenu/UserMenu";
 import HideSmallAndDown from "../../components/HideSmallAndDown/HideSmallAndDown";
 import SearchLocation from "@/components/form/SearchLocation";
 import { Suspense } from "react";
-import SearchField from "@/components/form/SearchField/SearchField";
+import SearchLocationFallback from "@/components/form/SearchLocationFallback";
 
 // We're using <Suspense> because some components require
 // useSearchParams(). See
@@ -16,13 +16,7 @@ const SearchHeader: React.FC = () => {
       <HideSmallAndDown>
         <Logo />
       </HideSmallAndDown>
-      <Suspense
-        fallback={
-          <form name="search-form">
-            <SearchField options={[]} />
-          </form>
-        }
-      >
+      <Suspense fallback={<SearchLocationFallback />}>
         <SearchLocation />
       </Suspense>
       <div className={styles.controls}>
