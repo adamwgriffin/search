@@ -28,7 +28,9 @@ const SearchHeader: React.FC = () => {
       <div className={styles.controls}>
         <UserMenu />
       </div>
-      <div className={styles.filters}>{/* <Filters /> */}</div>
+      <div className={styles.filters}>
+        <Filters />
+      </div>
     </header>
   );
 };
