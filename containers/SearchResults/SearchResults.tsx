@@ -1,9 +1,9 @@
 "use client";
 
+import { useSuspenseQuery } from "@tanstack/react-query";
 import ListingResultsPagination, {
   type Pagination
 } from "@/components/listings/ListingResultsPagination/ListingResultsPagination";
-import { useSearchResults } from "@/hooks/useSearchResults";
 import { useSearchState } from "@/hooks/useSearchState";
 import { ListingSearchPagination } from "@/types";
 import range from "lodash/range";
@@ -11,12 +11,12 @@ import { useEffect, useRef } from "react";
 import ListingCards from "../../components/listings/ListingCards/ListingCards";
 import ListingResultsHeader from "../../components/listings/ListingResultsHeader/ListingResultsHeader";
 import NoResults from "../../components/listings/NoResults/NoResults";
-import { useAppDispatch, useAppSelector } from "../../hooks/app_hooks";
+import { useAppDispatch } from "../../hooks/app_hooks";
 import { useOpenListingDetail } from "../../hooks/open_listing_detail_hook";
-import { selectMobileViewType } from "../../store/application/applicationSlice";
 import { setHighlightedMarker } from "../../store/application/applicationSlice";
-import styles from "./SearchResults.module.css";
 import { hasProperties } from "@/lib";
+import { searchQueryOptions } from "@/lib/queries";
+import SearchResultsBody from "@/components/SearchResultsBody/SearchResultsBody";
 
 const getPagination = (p: ListingSearchPagination): Pagination => {
   return {
@@ -32,9 +32,13 @@ const SearchResults: React.FC = () => {
   const dispatch = useAppDispatch();
   const openListingDetail = useOpenListingDetail(false);
   const searchResultsRef = useRef<HTMLDivElement>(null);
-  const mobileViewType = useAppSelector(selectMobileViewType);
-  const { data: results, isFetching } = useSearchResults();
   const { searchState, searchType, setSearchState } = useSearchState();
+  // We're using useSuspenseQuery instead of useQuery here in order to avoid
+  // hydration errors that occur when this component is wrapped inside
+  // <Suspense>
+  const { data: results, isFetching } = useSuspenseQuery(
+    searchQueryOptions(searchState)
+  );
 
   useEffect(() => {
     if (isFetching && searchResultsRef?.current?.scrollTop) {
@@ -52,15 +56,10 @@ const SearchResults: React.FC = () => {
 
   const listings = results?.listings ?? [];
 
-  const resultsClassName =
-    mobileViewType === "list"
-      ? styles.searchResultsMobileListView
-      : styles.searchResults;
-
   const searchParamsPresent = hasProperties(searchState);
 
   return (
-    <div ref={searchResultsRef} className={resultsClassName}>
+    <SearchResultsBody ref={searchResultsRef}>
       <ListingResultsHeader
         totalListings={results?.pagination?.numberAvailable ?? 0}
         loading={searchParamsPresent && isFetching}
@@ -82,7 +81,7 @@ const SearchResults: React.FC = () => {
           onClick={(page_index) => setSearchState({ page_index })}
         />
       )}
-    </div>
+    </SearchResultsBody>
   );
 };
 

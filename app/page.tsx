@@ -6,6 +6,8 @@ import ListingMap from "../containers/ListingMap/ListingMap";
 import SearchModals from "../components/SearchModals";
 import styles from "./page.module.css";
 import ReactQueryClientProvider from "@/providers/ReactQueryClientProvider";
+import SearchResultsFallback from "@/components/SearchResultsFallback";
+import { Suspense } from "react";
 
 const SearchPage: NextPage = () => {
   return (
@@ -14,7 +16,9 @@ const SearchPage: NextPage = () => {
         <div className={styles.search}>
           <SearchHeader />
           <div className={styles.results}>
-            {/* <SearchResults /> */}
+            <Suspense fallback={<SearchResultsFallback />}>
+              <SearchResults />
+            </Suspense>
             {/* <ListingMap /> */}
           </div>
           {/* <SearchModals /> */}
