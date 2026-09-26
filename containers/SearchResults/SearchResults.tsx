@@ -11,7 +11,8 @@ import { useEffect, useRef } from "react";
 import ListingCards from "../../components/listings/ListingCards/ListingCards";
 import ListingResultsHeader from "../../components/listings/ListingResultsHeader/ListingResultsHeader";
 import NoResults from "../../components/listings/NoResults/NoResults";
-import { useAppDispatch } from "../../hooks/app_hooks";
+import { useAppDispatch, useAppSelector } from "../../hooks/app_hooks";
+import { selectMobileViewType } from "../../store/application/applicationSlice";
 import { useOpenListingDetail } from "../../hooks/open_listing_detail_hook";
 import { setHighlightedMarker } from "../../store/application/applicationSlice";
 import { hasProperties } from "@/lib";
@@ -30,6 +31,7 @@ const getPagination = (p: ListingSearchPagination): Pagination => {
 
 const SearchResults: React.FC = () => {
   const dispatch = useAppDispatch();
+  const mobileViewType = useAppSelector(selectMobileViewType);
   const openListingDetail = useOpenListingDetail(false);
   const searchResultsRef = useRef<HTMLDivElement>(null);
   const { searchState, searchType, setSearchState } = useSearchState();
@@ -59,7 +61,7 @@ const SearchResults: React.FC = () => {
   const searchParamsPresent = hasProperties(searchState);
 
   return (
-    <SearchResultsBody ref={searchResultsRef}>
+    <SearchResultsBody ref={searchResultsRef} mobileViewType={mobileViewType}>
       <ListingResultsHeader
         totalListings={results?.pagination?.numberAvailable ?? 0}
         loading={searchParamsPresent && isFetching}
