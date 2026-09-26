@@ -1,6 +1,6 @@
 @value smallAndUp from '../../styles/breakpoints.module.css';
 
-.listingMap {
+.listingMapBody {
   position: relative;
   /* 100% height required for both ListingMap and GoogleMap, otherwise it
   doesn't display on mobile */
@@ -8,7 +8,7 @@
 }
 
 @media smallAndUp {
-  .listingMap {
+  .listingMapBody {
     margin: 0 1rem 0 1rem;
   }
 }

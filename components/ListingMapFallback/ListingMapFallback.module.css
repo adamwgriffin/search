@@ -1,0 +1,16 @@
+@value smallAndUp from '../../styles/breakpoints.module.css';
+@value animatePulse from '../../styles/animations.module.css';
+
+.listingMapFallback {
+  composes: animatePulse;
+  /* 100% height required for both ListingMap and GoogleMap, otherwise it
+  doesn't display */
+  height: 100%;
+  background-color: var(--loading-background);
+}
+
+@media smallAndUp {
+  .listingMapFallback {
+    border-radius: 0.5rem;
+  }
+}

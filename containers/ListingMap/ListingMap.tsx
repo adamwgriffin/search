@@ -1,5 +1,6 @@
 "use client";
 
+import ListingMapBody from "@/components/ListingMapBody/ListingMapBody";
 import BoundaryControl from "@/components/map/BoundaryControl/BoundaryControl";
 import ZoomControl from "@/components/map/ZoomControl/ZoomControl";
 import { useMapSearchState } from "@/hooks/useMapSearchState";
@@ -19,7 +20,6 @@ import {
 import { useAppSelector } from "../../hooks/app_hooks";
 import { useOpenListingDetail } from "../../hooks/open_listing_detail_hook";
 import { useGoogleMaps } from "../../providers/GoogleMapsProvider";
-import styles from "./ListingMap.module.css";
 
 const ListingMap: React.FC = () => {
   const updateFiltersOnMapIdle = useRef(false);
@@ -109,10 +109,10 @@ const ListingMap: React.FC = () => {
     }
   }, [googleMap, mapSearchState.bounds, mapSearchState.zoom]);
 
-  if (!googleLoaded) return <div className={styles.listingMap}></div>;
+  if (!googleLoaded) return <ListingMapBody></ListingMapBody>;
 
   return (
-    <div className={styles.listingMap}>
+    <ListingMapBody>
       <GoogleMap
         options={GoogleMapsMapOptions}
         onIdle={handleIdle}
@@ -138,7 +138,7 @@ const ListingMap: React.FC = () => {
         )}
         <ZoomControl onZoomIn={handleZoomIn} onZoomOut={handleZoomOut} />
       </GoogleMap>
-    </div>
+    </ListingMapBody>
   );
 };
 

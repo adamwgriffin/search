@@ -3,6 +3,7 @@ import GoogleMapsProvider from "../providers/GoogleMapsProvider";
 import SearchHeader from "../containers/SearchHeader/SearchHeader";
 import SearchResults from "../containers/SearchResults/SearchResults";
 import ListingMap from "../containers/ListingMap/ListingMap";
+import ListingMapFallback from "@/components/ListingMapFallback/ListingMapFallback";
 import SearchModals from "../components/SearchModals";
 import styles from "./page.module.css";
 import ReactQueryClientProvider from "@/providers/ReactQueryClientProvider";
@@ -19,7 +20,9 @@ const SearchPage: NextPage = () => {
             <Suspense fallback={<SearchResultsFallback />}>
               <SearchResults />
             </Suspense>
-            {/* <ListingMap /> */}
+            <Suspense fallback={<ListingMapFallback />}>
+              <ListingMap />
+            </Suspense>
           </div>
           {/* <SearchModals /> */}
         </div>
