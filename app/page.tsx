@@ -24,7 +24,9 @@ const SearchPage: NextPage = () => {
               <ListingMap />
             </Suspense>
           </div>
-          {/* <SearchModals /> */}
+          <Suspense>
+            <SearchModals />
+          </Suspense>
         </div>
       </ReactQueryClientProvider>
     </GoogleMapsProvider>
