@@ -1,15 +1,25 @@
-import type { NextPage } from "next";
+import clsx from "clsx";
 import styles from "./MenuOpenIcon.module.css";
 
-export interface MenuOpenIconProps {
+export type MenuOpenIconProps = {
   open: boolean;
-}
+  className?: string;
+};
 
-const MenuOpenIcon: NextPage<MenuOpenIconProps> = ({ open }) => {
+const MenuOpenIcon: React.FC<MenuOpenIconProps> = ({
+  open,
+  className = styles.default
+}) => {
+  const cls = clsx(
+    styles.menuOpenIcon,
+    className,
+    open ? styles.open : styles.closed
+  );
+
   return (
     <svg
       aria-hidden="true"
-      className={open ? styles.open : styles.closed}
+      className={cls}
       xmlns="http://www.w3.org/2000/svg"
       width="12"
       height="8"

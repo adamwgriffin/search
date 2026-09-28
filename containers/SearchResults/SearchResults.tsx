@@ -1,58 +1,52 @@
-import type { NextPage } from "next";
-import type { SortFilters } from "../../store/filters/filtersTypes";
-import styles from "./SearchResults.module.css";
-import ListingResultsHeader from "../../components/listings/ListingResultsHeader/ListingResultsHeader";
-import ListingResultsPagination from "../../components/listings/ListingResultsPagination/ListingResultsPagination";
-import { useAppSelector, useAppDispatch } from "../../hooks/app_hooks";
-import { useOpenListingDetail } from "../../hooks/open_listing_detail_hook";
-import { setHighlightedMarker } from "../../store/listingSearch/listingSearchSlice";
-import {
-  searchCurrentLocation,
-  searchWithUpdatedFilters
-} from "../../store/listingSearch/listingSearchCommon";
-import {
-  selectListings,
-  selectPagination,
-  selectInitialSearchComplete,
-  selectListingSearchRunning
-} from "../../store/listingSearch/listingSearchSelectors";
-import { setFilters, clearFilters } from "../../store/filters/filtersSlice";
-import {
-  selectSortBy,
-  selectSearchType
-} from "../../store/filters/filtersSelectors";
-import ListingCards from "../../components/listings/ListingCards/ListingCards";
-import NoResults from "../../components/listings/NoResults/NoResults";
-import { useEffect, useRef } from "react";
-import { selectMobileViewType } from "../../store/application/applicationSlice";
+"use client";
 
-const SearchResults: NextPage = () => {
+import { useSuspenseQuery } from "@tanstack/react-query";
+import ListingResultsPagination, {
+  type Pagination
+} from "@/components/listings/ListingResultsPagination/ListingResultsPagination";
+import { useSearchState } from "@/hooks/useSearchState";
+import { ListingSearchPagination } from "@/types";
+import range from "lodash/range";
+import { useEffect, useRef } from "react";
+import ListingCards from "../../components/listings/ListingCards/ListingCards";
+import ListingResultsHeader from "../../components/listings/ListingResultsHeader/ListingResultsHeader";
+import NoResults from "../../components/listings/NoResults/NoResults";
+import { useAppDispatch, useAppSelector } from "../../hooks/app_hooks";
+import { selectMobileViewType } from "../../store/application/applicationSlice";
+import { useOpenListingDetail } from "../../hooks/open_listing_detail_hook";
+import { setHighlightedMarker } from "../../store/application/applicationSlice";
+import { hasProperties } from "@/lib";
+import { searchQueryOptions } from "@/lib/queries";
+import SearchResultsBody from "@/components/SearchResultsBody/SearchResultsBody";
+
+const getPagination = (p: ListingSearchPagination): Pagination => {
+  return {
+    start: p.page * p.pageSize + 1,
+    end: p.page * p.pageSize + p.numberReturned,
+    total: p.numberAvailable,
+    pages: range(0, p.numberOfPages),
+    currentPage: p.page
+  };
+};
+
+const SearchResults: React.FC = () => {
   const dispatch = useAppDispatch();
-  const sortBy = useAppSelector(selectSortBy);
-  const searchType = useAppSelector(selectSearchType);
-  const listings = useAppSelector(selectListings);
-  const pagination = useAppSelector(selectPagination);
-  const initialSearchComplete = useAppSelector(selectInitialSearchComplete);
-  const listingSearchRunning = useAppSelector(selectListingSearchRunning);
+  const mobileViewType = useAppSelector(selectMobileViewType);
   const openListingDetail = useOpenListingDetail(false);
   const searchResultsRef = useRef<HTMLDivElement>(null);
-  const mobileViewType = useAppSelector(selectMobileViewType);
+  const { searchState, searchType, setSearchState } = useSearchState();
+  // We're using useSuspenseQuery instead of useQuery here in order to avoid
+  // hydration errors that occur when this component is wrapped inside
+  // <Suspense>
+  const { data: results, isFetching } = useSuspenseQuery(
+    searchQueryOptions(searchState)
+  );
 
   useEffect(() => {
-    if (listingSearchRunning && searchResultsRef?.current?.scrollTop) {
+    if (isFetching && searchResultsRef?.current?.scrollTop) {
       searchResultsRef.current.scrollTop = 0;
     }
-  }, [listingSearchRunning]);
-
-  const handleSortMenuChange = (sortParams: SortFilters) => {
-    dispatch(setFilters(sortParams));
-    dispatch(searchWithUpdatedFilters());
-  };
-
-  const handlePaginationButtonClick = (pageIndex: number) => {
-    dispatch(setFilters({ pageIndex }));
-    dispatch(searchCurrentLocation());
-  };
+  }, [isFetching]);
 
   const handleListingCardMouseEnter = (listingId: string) => {
     dispatch(setHighlightedMarker(listingId));
@@ -62,39 +56,34 @@ const SearchResults: NextPage = () => {
     dispatch(setHighlightedMarker(null));
   };
 
-  const resultsClassName =
-    mobileViewType === "list"
-      ? styles.searchResultsMobileListView
-      : styles.searchResults;
+  const listings = results?.listings ?? [];
+
+  const searchParamsPresent = hasProperties(searchState);
 
   return (
-    <div ref={searchResultsRef} className={resultsClassName}>
+    <SearchResultsBody ref={searchResultsRef} mobileViewType={mobileViewType}>
       <ListingResultsHeader
-        totalListings={pagination.total}
-        listingSearchRunning={listingSearchRunning}
-        sortBy={sortBy}
+        totalListings={results?.pagination?.numberAvailable ?? 0}
+        loading={searchParamsPresent && isFetching}
         searchType={searchType}
-        onSortMenuChange={handleSortMenuChange}
       />
-      {(listings.length > 0 || listingSearchRunning) && (
+      {(listings.length > 0 || isFetching) && (
         <ListingCards
           listings={listings}
-          listingSearchRunning={listingSearchRunning}
+          listingSearchRunning={searchParamsPresent && isFetching}
           onListingCardClick={openListingDetail}
           onListingCardMouseEnter={handleListingCardMouseEnter}
           onListingCardMouseLeave={handleListingCardMouseLeave}
         />
       )}
-      {listings.length === 0 &&
-        initialSearchComplete &&
-        !listingSearchRunning && <NoResults />}
-      {listings.length > 0 && (
+      {searchParamsPresent && listings.length === 0 && <NoResults />}
+      {listings.length > 0 && results?.pagination && (
         <ListingResultsPagination
-          {...pagination}
-          onClick={handlePaginationButtonClick}
+          {...getPagination(results.pagination)}
+          onClick={(page_index) => setSearchState({ page_index })}
         />
       )}
-    </div>
+    </SearchResultsBody>
   );
 };
 

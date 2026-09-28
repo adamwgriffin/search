@@ -11,17 +11,19 @@
   background: inherit;
   font-size: inherit;
   font-family: inherit;
+}
+
+.default {
   color: var(--foreground);
 }
 
-.outlinedButton:hover {
+.default:hover {
   background: var(--primary-light);
   color: var(--primary);
   border-color: var(--primary);
 }
 
-.outlinedButtonHighlighted {
-  composes: outlinedButton;
+.highlighted {
   background: var(--primary-light);
   color: var(--primary);
   border-color: var(--primary);

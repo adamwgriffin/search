@@ -1,7 +1,4 @@
-import {
-  MultiPolygon,
-  ViewportLatLngBounds
-} from "../store/listingMap/listingMapTypes";
+import { MultiPolygon, ViewportLatLngBounds } from "@/lib/polygon";
 import type { PropertyType } from "../lib/property_types";
 
 export type PropertyStatus = "active" | "pending" | "sold" | "rented";

@@ -1,5 +1,3 @@
-import type { FiltersState } from "../store/filters/filtersTypes";
-
 export type SortType = "listedDate" | "listPrice" | "beds" | "baths" | "sqft";
 
 export type SortDirection = "asc" | "desc";
@@ -60,15 +58,4 @@ export type ListingServiceParams = Partial<ListingServiceRequestParams>;
 export type BoundsParams = Pick<
   ListingServiceRequestParams,
   "bounds_north" | "bounds_east" | "bounds_south" | "bounds_west"
->;
-
-// FilterState attributes that have the same key/value as their listing service param counterpart (only with camel case
-// keys)
-export type ListingServiceParamFilters = Omit<
-  FiltersState,
-  | "searchType"
-  | "locationSearchField"
-  | "propertyTypes"
-  | "openHouse"
-  | "includePending"
 >;

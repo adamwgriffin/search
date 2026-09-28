@@ -21,6 +21,7 @@ export type ApplicationState = {
   modalType: ModalType | null;
   modalProps: ModalPropsTypes;
   modalOpen: boolean;
+  highlightedMarker: string | null;
 };
 
 export type OpenModalPayload = {
@@ -32,7 +33,8 @@ const initialState: ApplicationState = {
   mobileViewType: "list",
   modalType: null,
   modalProps: null,
-  modalOpen: false
+  modalOpen: false,
+  highlightedMarker: null
 };
 
 export const applicationSlice = createSlice({
@@ -60,12 +62,24 @@ export const applicationSlice = createSlice({
     resetModal(state) {
       state.modalType = initialState.modalType;
       state.modalProps = initialState.modalProps;
+    },
+
+    setHighlightedMarker: (
+      state,
+      action: PayloadAction<ApplicationState["highlightedMarker"]>
+    ) => {
+      state.highlightedMarker = action.payload;
     }
   }
 });
 
-export const { toggleMobileViewType, openModal, closeModal, resetModal } =
-  applicationSlice.actions;
+export const {
+  toggleMobileViewType,
+  openModal,
+  closeModal,
+  resetModal,
+  setHighlightedMarker
+} = applicationSlice.actions;
 
 const modalTypeOpen = (state: AppState, modalType: ModalType) =>
   state.application.modalType === modalType && state.application.modalOpen;
@@ -87,5 +101,8 @@ export const selectListingDetailModalOpen = (state: AppState) =>
 
 export const selectLoginOrRegisterModalOpen = (state: AppState) =>
   modalTypeOpen(state, "loginOrRegister");
+
+export const selectHighlightedMarker = (state: AppState) =>
+  state.application.highlightedMarker;
 
 export default applicationSlice.reducer;

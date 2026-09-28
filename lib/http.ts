@@ -1,5 +1,21 @@
 import axios from "axios";
+import { buildUrl } from "./listingSearchParams";
 
-const http = axios.create();
+export async function http<T = unknown>(
+  path: string,
+  searchParams?: object,
+  options: RequestInit = {}
+) {
+  const urlWithParams = buildUrl(path, searchParams);
+  const res = await fetch(urlWithParams, options);
+  if (!res.ok) {
+    throw new Error(await res.text());
+  }
+  const data: T = await res.json();
+  return data;
+}
 
-export default http;
+// TODO: Remove in favor of using fetch
+const axiosInstance = axios.create();
+
+export default axiosInstance;

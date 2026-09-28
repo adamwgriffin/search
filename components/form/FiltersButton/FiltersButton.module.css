@@ -1,16 +1,38 @@
 @value smallAndUp from '../../../styles/breakpoints.module.css';
+@value animatePulse from '../../../styles/animations.module.css';
 
 .filtersButton {
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  border: 1px solid var(--outline);
   border-radius: 0.5rem;
+  border-width: 1px;
+  border-style: solid;
   font-size: inherit;
   font-family: inherit;
-  color: inherit;
+}
+
+.default {
   background: var(--background);
+  border-color: var(--outline);
+  color: inherit;
+}
+
+.loading {
+  composes: animatePulse;
+  background: var(--loading-background);
+  border-color: var(--loading-outline);
+  color: var(--loading-foreground);
+}
+
+.iconLoading {
+  fill: var(--loading-foreground);
+}
+
+.loading:hover,
+.iconLoading:hover {
+  cursor: not-allowed;
 }
 
 @media smallAndUp {

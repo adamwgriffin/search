@@ -14,3 +14,9 @@
 .searchButton:hover {
   background-color: var(--search-button-background-hover);
 }
+
+.searchButton:disabled,
+.searchButton:disabled:hover {
+  background-color: var(--loading-background);
+  cursor: not-allowed;
+}

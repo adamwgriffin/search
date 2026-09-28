@@ -102,11 +102,12 @@ export const formatSqft = ({ sqft }: Listing | ListingDetail) =>
 export const formatLotSize = (sqft: number) => {
   if (sqft >= SQFT_PER_ACRE) {
     const acres = sqft / SQFT_PER_ACRE;
+    const label = acres > 1 ? "acres" : "acre";
     return (
       acres.toLocaleString(Locale, {
         minimumFractionDigits: 2,
         maximumFractionDigits: 2
-      }) + ` ${acres >= 2 ? 'acres' : 'acre'}`
+      }) + ` ${label}`
     );
   }
   return sqft.toLocaleString(Locale) + " sqft";
@@ -125,3 +126,19 @@ export const listingLocationToLatLngLiteral = (
     lng: listing?.longitude
   };
 };
+
+/**
+ * Sort listings by latitude and longitude in descending order. Sort latitude
+ * first (descending is East to West), then longitude (descending order is East
+ * to West)
+ */
+export function sortListingsByLatLng(listings: Listing[]) {
+  return listings.toSorted((a, b) => {
+    // Sort by longitude if latitude was already sorted
+    if (a.latitude === b.latitude) {
+      return b.longitude - a.longitude;
+    }
+    // Sort by latitude first.
+    return b.latitude - a.latitude;
+  });
+}

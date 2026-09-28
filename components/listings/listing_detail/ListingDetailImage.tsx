@@ -8,7 +8,7 @@ import ListingImageContainerElements from "../ListingImageContainerElements/List
 import FavoriteButton from "../../../containers/FavoriteButton/FavoriteButton";
 import ListingDetailMainImage from "./ListingDetailMainImage/ListingDetailMainImage";
 import SlideShow from "./SlideShow/SlideShow";
-import ListingBadges from '../ListingBadges/ListingBadges';
+import ListingBadges from "../ListingBadges/ListingBadges";
 
 export type ListingDetailImageProps = {
   listing: ListingDetail;

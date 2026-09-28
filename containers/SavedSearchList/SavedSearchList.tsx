@@ -1,10 +1,9 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, Suspense } from "react";
 import toast from "react-hot-toast";
 import { useAppSelector, useAppDispatch } from "../../hooks/app_hooks";
 import { selectGetSavedSearchesLoading } from "../../store/user/userSlice";
-import { usePushParamsToSearchUrl } from "../../hooks/push_params_to_search_url_hook";
 import { useGetCurrentUser } from "../../hooks/get_current_user_hook";
 import {
   getSavedSearches,
@@ -19,7 +18,6 @@ import styles from "./SavedSearchList.module.css";
 const SavedSearchList: React.FC = () => {
   const dispatch = useAppDispatch();
   const currentUser = useGetCurrentUser();
-  const pushParamsToSearchUrl = usePushParamsToSearchUrl();
   const getSavedSearchesLoading = useAppSelector(selectGetSavedSearchesLoading);
   const savedSearches = useAppSelector(selectSavedSearches);
 
@@ -34,17 +32,18 @@ const SavedSearchList: React.FC = () => {
       {!getSavedSearchesLoading &&
         savedSearches.map((savedSearch) => (
           <li key={savedSearch.id}>
-            <SavedSearchCard
-              savedSearch={savedSearch}
-              onClick={() => pushParamsToSearchUrl(savedSearch.searchState)}
-              onUpdate={(update) =>
-                dispatch(updateSavedSearch({ id: savedSearch.id, ...update }))
-              }
-              onDelete={async () => {
-                await dispatch(deleteSavedSearch(savedSearch.id));
-                toast("Saved search deleted");
-              }}
-            />
+            <Suspense>
+              <SavedSearchCard
+                savedSearch={savedSearch}
+                onUpdate={(update) =>
+                  dispatch(updateSavedSearch({ id: savedSearch.id, ...update }))
+                }
+                onDelete={async () => {
+                  await dispatch(deleteSavedSearch(savedSearch.id));
+                  toast("Saved search deleted");
+                }}
+              />
+            </Suspense>
           </li>
         ))}
 

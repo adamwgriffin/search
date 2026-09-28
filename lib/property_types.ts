@@ -8,12 +8,12 @@ export type PropertyType =
 
 export type PropertyTypeIDArray = Array<PropertyType>;
 
-export interface PropertyTypeConfig {
+export type PropertyTypeData = {
   id: PropertyType;
   label: string;
-}
+};
 
-export const PropertyTypes: PropertyTypeConfig[] = Object.seal([
+export const PropertyTypesData: PropertyTypeData[] = Object.seal([
   {
     id: "single-family",
     label: "House"
@@ -41,5 +41,5 @@ export const PropertyTypes: PropertyTypeConfig[] = Object.seal([
 ]);
 
 export const getPropertyTypeLabel = (propertyType: PropertyType) => {
-  return PropertyTypes.find((p) => p.id === propertyType)?.label;
+  return PropertyTypesData.find((p) => p.id === propertyType)?.label;
 };

@@ -1,0 +1,18 @@
+@value smallAndUp, largeAndUp from '../../../styles/breakpoints.module.css';
+
+.menu {
+  right: auto;
+}
+
+@media smallAndUp {
+  .menu {
+    min-width: 440px;
+    padding: 1rem;
+  }
+}
+
+@media largeAndUp {
+  .menu {
+    right: 0;
+  }
+}

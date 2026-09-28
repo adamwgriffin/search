@@ -1,7 +1,7 @@
 import FavoriteButton from "../../../containers/FavoriteButton/FavoriteButton";
 import type { Listing } from "../../../types/listing_types";
 import ListingMainImage from "../listing_detail/ListingMainImage";
-import ListingBadges from '../ListingBadges/ListingBadges';
+import ListingBadges from "../ListingBadges/ListingBadges";
 import ListingImageContainer from "../ListingImageContainer/ListingImageContainer";
 import ListingImageContainerElements from "../ListingImageContainerElements/ListingImageContainerElements";
 import styles from "./ListingCardImage.module.css";

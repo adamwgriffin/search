@@ -1,3 +1,5 @@
+"use client";
+
 import { useState } from "react";
 import MenuButton from "../../design_system/MenuButton/MenuButton";
 import PriceContainer from "../../../containers/PriceContainer/PriceContainer";

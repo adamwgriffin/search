@@ -1,39 +1,43 @@
-import type { NextPage } from "next";
-import type { BedsAndBathsFilters } from "../../../store/filters/filtersTypes";
 import { useId } from "react";
-import styles from "./BedsAndBaths.module.css";
+import RadioButton from "@/components/design_system/RadioButton/RadioButton";
+import { useSearchState } from "@/hooks/useSearchState";
 import RadioButtonGroup from "../../design_system/RadioButtonGroup/RadioButtonGroup";
-import {
-  DefaultBedBathCount,
-  countOptions,
-  RadioButtonGroups
-} from "./beds_and_baths_helpers";
+import styles from "./BedsAndBaths.module.css";
 
-export interface BedsAndBathsProps {
-  countArr?: number[];
-  bedsAndBaths: BedsAndBathsFilters;
-  onChange?: (param: Partial<BedsAndBathsFilters>) => void;
-}
+export const BedBathValues = [0, 1, 2, 3, 4, 5];
 
-const BedsAndBaths: NextPage<BedsAndBathsProps> = ({
-  countArr = DefaultBedBathCount,
-  bedsAndBaths,
-  onChange
-}) => {
+const BedsAndBaths: React.FC = () => {
+  // Name needs to be unique because this component is in two places & it won't
+  // work right otherwise
   const id = useId();
+  const { searchState, setSearchState } = useSearchState();
 
   return (
     <fieldset className={styles.bedsAndBaths}>
-      {RadioButtonGroups.map(({ param, label }) => (
-        <RadioButtonGroup
-          key={param}
-          // name needs to be unique because this component is in two places & it won't work right otherwise
-          name={`${param}_${id}`}
-          label={label}
-          options={countOptions(param, countArr, bedsAndBaths)}
-          onChange={(value) => onChange?.({ [param]: value || null })}
-        />
-      ))}
+      <RadioButtonGroup label="Beds">
+        {BedBathValues.map((value) => (
+          <RadioButton
+            key={`${`beds_min_${id}`}-radio-${value}`}
+            name={`beds_min_${id}`}
+            label={value === 0 ? "Any" : `${value}+`}
+            value={value}
+            checked={(searchState.beds_min ?? 0) === value}
+            onChange={() => setSearchState({ beds_min: value })}
+          />
+        ))}
+      </RadioButtonGroup>
+      <RadioButtonGroup label="Baths">
+        {BedBathValues.map((value) => (
+          <RadioButton
+            key={`${`baths_min_${id}`}-radio-${value}`}
+            name={`baths_min_${id}`}
+            label={value === 0 ? "Any" : `${value}+`}
+            value={value}
+            checked={(searchState.baths_min ?? 0) === value}
+            onChange={() => setSearchState({ baths_min: value })}
+          />
+        ))}
+      </RadioButtonGroup>
     </fieldset>
   );
 };

@@ -1,4 +1,6 @@
 import { z } from "zod";
+import { booleanEnum } from ".";
+import { featureFiltersSchema } from ".";
 
 export const sortTypeSchema = z.enum([
   "listedDate",
@@ -21,10 +23,6 @@ export const paginationParamsSchema = z.object({
 
 export type PaginationParams = z.infer<typeof paginationParamsSchema>;
 
-const booleanEnum = z
-  .enum(["true", "false"])
-  .transform((value) => value === "true");
-
 export const listingFilterParamsSchema = z
   .object({
     price_min: z.coerce.number(),
@@ -44,20 +42,13 @@ export const listingFilterParamsSchema = z
     sold_days: z.coerce.number(),
     property_type: z.string(),
     status: z.string(),
-    waterfront: booleanEnum,
-    view: booleanEnum,
-    fireplace: booleanEnum,
-    basement: booleanEnum,
-    garage: booleanEnum,
-    new_construction: booleanEnum,
-    pool: booleanEnum,
-    air_conditioning: booleanEnum,
     rental: booleanEnum,
     sold_in_last: z.coerce.number(),
     open_house_after: z.string(),
     open_house_before: z.string()
   })
-  .extend(paginationParamsSchema.shape);
+  .merge(featureFiltersSchema)
+  .merge(paginationParamsSchema);
 
 export type ListingFilterParams = z.infer<typeof listingFilterParamsSchema>;
 

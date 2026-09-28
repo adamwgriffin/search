@@ -8,6 +8,7 @@ export type ToggleOpenButtonProps =
     label: string;
     highlighted?: boolean;
     condensed?: boolean;
+    loading?: boolean;
   };
 
 const ToggleOpenButton: React.FC<ToggleOpenButtonProps> = ({
@@ -15,16 +16,21 @@ const ToggleOpenButton: React.FC<ToggleOpenButtonProps> = ({
   label,
   highlighted = false,
   condensed = false,
+  loading = false,
   ...props
 }) => {
   return (
     <OutlinedButton
       highlighted={highlighted || open}
       condensed={condensed}
+      className={loading ? styles.buttonLoading : undefined}
       {...props}
     >
       <span className={styles.label}>{label}</span>
-      <MenuOpenIcon open={open} />
+      <MenuOpenIcon
+        open={open}
+        className={loading ? styles.iconLoading : undefined}
+      />
     </OutlinedButton>
   );
 };

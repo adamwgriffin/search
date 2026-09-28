@@ -55,7 +55,7 @@
   }
 
   .icon {
-    transition: all 0.2s ease-out 0.2s;
+    transition: font-size 0.2s ease-out 0.2s;
   }
 
   .listingMarker:hover .icon {

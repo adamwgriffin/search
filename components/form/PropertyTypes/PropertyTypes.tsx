@@ -1,37 +1,20 @@
-import type { NextPage } from "next";
-import type {
-  PropertyType,
-  PropertyTypeConfig
-} from "../../../lib/property_types";
-import type { ChangeEvent } from "react";
 import { Fragment } from "react";
-import styles from "./PropertyTypes.module.css";
+import { PropertyTypesData } from "../../../lib/property_types";
 import Fieldset from "../../design_system/Fieldset/Fieldset";
 import Legend from "../../design_system/Legend/Legend";
+import styles from "./PropertyTypes.module.css";
+import { useSearchState } from "@/hooks/useSearchState";
 
-interface PropertyTypeProps {
-  propertyTypes: Readonly<PropertyTypeConfig[]>;
-  params: PropertyType[];
-  onChange: (updatedPropertyTypes: PropertyType[]) => void;
-}
+const PropertyTypes: React.FC = () => {
+  const { searchState, setSearchState } = useSearchState();
 
-const PropertyTypes: NextPage<PropertyTypeProps> = ({
-  propertyTypes,
-  params,
-  onChange
-}) => {
-  const handleChange = (e: ChangeEvent<HTMLInputElement>, id: PropertyType) => {
-    const updatedPropertyTypes = e.target.checked
-      ? params.concat(id)
-      : params.filter((t) => t !== id);
-    onChange(updatedPropertyTypes);
-  };
+  const propertyTypes = searchState.property_type?.split(",") ?? [];
 
   return (
     <Fieldset>
       <Legend>Home Type</Legend>
       <div className={styles.propertyType}>
-        {propertyTypes.map(({ label, id }) => (
+        {PropertyTypesData.map(({ label, id }) => (
           <Fragment key={`property-type-${label}-${id}`}>
             <input
               type="checkbox"
@@ -39,8 +22,15 @@ const PropertyTypes: NextPage<PropertyTypeProps> = ({
               className={styles.checkbox}
               name={id}
               value={id}
-              checked={params.includes(id)}
-              onChange={(e) => handleChange(e, id)}
+              checked={propertyTypes.includes(id)}
+              onChange={(e) => {
+                const updatedPropertyTypes = e.target.checked
+                  ? propertyTypes.concat(id)
+                  : propertyTypes.filter((t) => t !== id);
+                setSearchState({
+                  property_type: updatedPropertyTypes.join(",")
+                });
+              }}
             />
             <label htmlFor={id} className={styles.label}>
               {label}

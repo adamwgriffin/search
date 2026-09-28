@@ -1,16 +1,5 @@
-import type { PaginationParams } from "../zod_schemas/listingSearchParamsSchema";
-import get from "lodash/get";
 import { DefaultPageSize } from "../config";
-
-export const objectsValuesEqual = (
-  obj1: object,
-  obj2: object,
-  attrs: string[]
-): boolean => {
-  return attrs.every((attr) => {
-    return get(obj1, attr) === get(obj2, attr);
-  });
-};
+import type { PaginationParams } from "../zod_schemas/listingSearchParamsSchema";
 
 export const getPaginationParams = (
   query: Partial<PaginationParams>
@@ -67,3 +56,13 @@ export const elementIsVisible = (
     elementRect.bottom <= containerRect.bottom
   );
 };
+
+/**
+ * Check if an object has any properties
+ */
+export function hasProperties(obj: object): boolean {
+  for (const key in obj) {
+    return true;
+  }
+  return false;
+}

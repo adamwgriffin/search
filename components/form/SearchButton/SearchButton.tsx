@@ -1,12 +1,12 @@
-import type { NextPage } from "next";
 import SearchButtonIcon from "../../design_system/icons/SearchButtonIcon/SearchButtonIcon";
 import styles from "./SearchButton.module.css";
 
-export interface SearchButtonProps {
+export type SearchButtonProps = {
+  disabled?: boolean;
   onClick?: () => void;
-}
+};
 
-const SearchButton: NextPage<SearchButtonProps> = ({ onClick }) => {
+const SearchButton: React.FC<SearchButtonProps> = ({ disabled, onClick }) => {
   return (
     <button
       className={styles.searchButton}
@@ -16,6 +16,7 @@ const SearchButton: NextPage<SearchButtonProps> = ({ onClick }) => {
       tabIndex={0}
       aria-label="Search"
       onClick={onClick}
+      disabled={disabled}
     >
       <SearchButtonIcon />
     </button>

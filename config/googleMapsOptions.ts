@@ -7,7 +7,11 @@ export const GoogleStreetViewMaxImageSize = 640;
 
 export type LibraryName = keyof LibraryMap;
 
-export const DefaultGoogleMapsLibraries: LibraryName[] = ["maps", "places", "marker"];
+export const DefaultGoogleMapsLibraries: LibraryName[] = [
+  "maps",
+  "places",
+  "marker"
+];
 
 // Options for @googlemaps/loader, which loads Google Maps by creating a script
 // tag with these params in it. Things like your api key and the libraries you
@@ -48,7 +52,7 @@ export const GoogleMapsAutocompleteOptions = {
   componentRestrictions: { country: ["us"] }
 };
 
-export const GoogleMapsPolygonOptions: google.maps.PolygonOptions = {
+export const MapBoundaryStyleOptions: google.maps.Data.StyleOptions = {
   strokeColor: "#006AFF",
   strokeOpacity: 0.5,
   strokeWeight: 3,

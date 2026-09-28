@@ -2,7 +2,7 @@ import MinimalHeader from "../../../components/header/MinimalHeader/MinimalHeade
 import AccountBody from "../../../components/AccountBody/AccountBody";
 import SavedSearchList from "../../../containers/SavedSearchList/SavedSearchList";
 
-export default function Favorites() {
+export default function SavedSearches() {
   return (
     <>
       <MinimalHeader />

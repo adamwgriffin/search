@@ -1,12 +1,16 @@
-import type { NextPage } from "next";
+import clsx from "clsx";
 import styles from "./FiltersIcon.module.css";
 
-const FiltersIcon: NextPage = () => {
+export type FiltersIconProps = {
+  className?: string;
+};
+
+const FiltersIcon: React.FC<FiltersIconProps> = ({ className }) => {
   return (
     <svg
       viewBox="0 0 16 16"
       xmlns="http://www.w3.org/2000/svg"
-      className={styles.filtersIcon}
+      className={clsx(styles.filtersIcon, className)}
       aria-hidden="true"
       role="presentation"
       focusable="false"
