@@ -37,7 +37,6 @@ export function useSearchState() {
   }, [searchParams]);
 
   const setSearchState = (newParams: SearchStateUpdate) => {
-    // TODO: this should be a selector instead
     const params = getUpdatedParams(searchState, newParams);
     router.push(buildUrl(SearchPathname, params));
   };
@@ -47,7 +46,6 @@ export function useSearchState() {
     // Since we're now going to be geocoding a new location, we only want filter
     // params. Remove address/place_id for existing location so that we can
     // replace it with new state
-    // TODO: this should be a selector instead
     const params = omit(searchState, [
       ...NonGeocodeParams,
       "address",
@@ -58,7 +56,6 @@ export function useSearchState() {
     router.push(buildUrl(SearchPathname, params));
   };
 
-  // TODO: This should be a reducer instead
   const setSearchType = (newSearchType: Searchtype) => {
     // TODO: this should be a selector instead
     const params = pick<SearchState>(searchState, ClearFiltersParams);
