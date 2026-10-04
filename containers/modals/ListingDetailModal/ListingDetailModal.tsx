@@ -1,20 +1,19 @@
 "use client";
 
-import { skipToken } from "@reduxjs/toolkit/query/react";
+import { useQuery, skipToken } from "@tanstack/react-query";
 import { useAppDispatch, useAppSelector } from "../../../hooks/app_hooks";
 import {
   selectListingDetailModalOpen,
   selectListingModalSlug,
-  closeModal,
-  resetModal
+  closeModal
 } from "../../../store/application/applicationSlice";
-import { useGetListingDetailQuery } from "../../../store/listingDetailApi/listingDetailApi";
 import Modal from "../../../components/design_system/modal/Modal/Modal";
 import ModalHeader from "../../../components/design_system/modal/ModalHeader/ModalHeader";
 import ModalBody from "../../../components/design_system/modal/ModalBody/ModalBody";
 import ListingDetail from "../../../components/listings/listing_detail/ListingDetail/ListingDetail";
 import LoadingDots from "../../../components/design_system/LoadingDots/LoadingDots";
 import styles from "./ListingDetailModal.module.css";
+import { fetchListingDetail } from "@/lib/fetchListings";
 
 const ListingDetailModal: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -24,8 +23,11 @@ const ListingDetailModal: React.FC = () => {
   const {
     data: listing,
     error,
-    isLoading
-  } = useGetListingDetailQuery(listingSlug ?? skipToken);
+    isFetching
+  } = useQuery({
+    queryKey: ["listingSlug", listingSlug],
+    queryFn: listingSlug ? () => fetchListingDetail(listingSlug) : skipToken
+  });
 
   return (
     <Modal
@@ -35,12 +37,12 @@ const ListingDetailModal: React.FC = () => {
     >
       <ModalHeader title="" onClose={() => dispatch(closeModal())} />
       <ModalBody>
-        {isLoading && (
+        {isFetching && (
           <div className={styles.loadingState}>
             <LoadingDots />
           </div>
         )}
-        {listing && <ListingDetail listing={listing} />}
+        {listingSlug && listing && <ListingDetail listing={listing} />}
         {error && (
           <div className={styles.loadingState}>Something went wrong :(</div>
         )}

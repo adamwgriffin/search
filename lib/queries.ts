@@ -9,7 +9,6 @@ export function searchQueryOptions(searchState: SearchState) {
     // only be able to change when the underlying searchParams url object it
     // depends on changes.
     queryKey: ["search", searchState],
-    queryFn: () => fetchListings(searchState),
-    staleTime: 1000 * 60
+    queryFn: () => fetchListings(searchState)
   });
 }

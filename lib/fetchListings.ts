@@ -6,6 +6,7 @@ import { ListingFilterParams } from "@/zod_schemas/listingSearchParamsSchema";
 import { type SearchState } from "@/zod_schemas/searchStateSchema";
 import { SearchTypes } from "./filter";
 import { ParamDefaults } from "./listingSearchParams";
+import type { ListingDetail } from "@/types/listing_types";
 
 /** Remove params from search state that the listing service does not recognize.
  Some of the params in state are only meant for the app state, or are meant to
@@ -128,4 +129,8 @@ export async function fetchListings(state: SearchState) {
     return searchBounds(state);
   }
   return {};
+}
+
+export async function fetchListingDetail(listingSlug: string) {
+  return http<ListingDetail>(`/api/listing_detail/${listingSlug}`);
 }

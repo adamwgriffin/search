@@ -3,7 +3,6 @@ import applicationReducer from "./application/applicationSlice";
 import errorReducer from "./error/errorSlice";
 import userReducer from "./user/userSlice";
 import searchStateReducer from "./search/searchSlice";
-import { listingDetailApi } from "./listingDetailApi/listingDetailApi";
 
 export function makeStore() {
   return configureStore({
@@ -11,11 +10,8 @@ export function makeStore() {
       application: applicationReducer,
       error: errorReducer,
       user: userReducer,
-      search: searchStateReducer,
-      [listingDetailApi.reducerPath]: listingDetailApi.reducer
-    },
-    middleware: (getDefaultMiddleware) =>
-      getDefaultMiddleware().concat(listingDetailApi.middleware)
+      search: searchStateReducer
+    }
   });
 }
 
