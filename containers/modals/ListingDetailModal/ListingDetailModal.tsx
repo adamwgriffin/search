@@ -26,8 +26,7 @@ const ListingDetailModal: React.FC = () => {
     isFetching
   } = useQuery({
     queryKey: ["listingSlug", listingSlug],
-    queryFn: listingSlug ? () => fetchListingDetail(listingSlug) : skipToken,
-    staleTime: 1000 * 60
+    queryFn: listingSlug ? () => fetchListingDetail(listingSlug) : skipToken
   });
 
   return (

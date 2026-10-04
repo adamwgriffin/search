@@ -13,7 +13,6 @@ export default function SearchLocation() {
   const { data, isError, error } = useQuery({
     queryKey: ["searchString", searchString],
     queryFn: () => getPlaceAutocompletePredictions(searchString),
-    staleTime: 1000 * 60,
     placeholderData: keepPreviousData
   });
 
