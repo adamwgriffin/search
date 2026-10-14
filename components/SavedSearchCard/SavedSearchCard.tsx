@@ -10,6 +10,7 @@ import type { SavedSearch } from "@prisma/client";
 import { type SearchState } from "@/zod_schemas/searchStateSchema";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
+import Fieldset from "@/components/design_system/Fieldset/Fieldset";
 
 export type SavedSearchCard = {
   savedSearch: SavedSearch;
@@ -60,27 +61,32 @@ const SavedSearchCard: React.FC<SavedSearchCard> = ({ savedSearch }) => {
   const searchState = savedSearch.searchState as SearchState;
 
   return (
-    <div
+    <form
       className={styles.savedSearch}
       onClick={() => setSearchState(searchState)}
     >
       <div className={styles.body}>
         <h2 className={styles.heading}>{savedSearch.name}</h2>
-        <p>{getSearchDescription(searchState)}</p>
-        <label htmlFor={messageCadenceId} className={formStyles.label}>
-          Email Me
-        </label>
-        <select
-          id={messageCadenceId}
-          className={formStyles.select}
-          onChange={(e) => updateSavedSearch(Number(e.target.value))}
-          onClick={(e) => e.stopPropagation()}
-          value={savedSearch.messageCadence}
-        >
-          <option value={1}>Daily</option>
-          <option value={7}>Weekly</option>
-          <option value={0}>Never</option>
-        </select>
+        <p className={styles.description}>
+          {getSearchDescription(searchState)}
+        </p>
+        <Fieldset>
+          <label htmlFor={messageCadenceId} className={formStyles.label}>
+            Email Me
+          </label>
+          <select
+            id={messageCadenceId}
+            className={formStyles.select}
+            onChange={(e) => updateSavedSearch(Number(e.target.value))}
+            onClick={(e) => e.stopPropagation()}
+            disabled={updateSavedSearchPending}
+            value={savedSearch.messageCadence}
+          >
+            <option value={1}>Daily</option>
+            <option value={7}>Weekly</option>
+            <option value={0}>Never</option>
+          </select>
+        </Fieldset>
       </div>
       <div className={styles.footer}>
         <button
@@ -95,7 +101,7 @@ const SavedSearchCard: React.FC<SavedSearchCard> = ({ savedSearch }) => {
           <MdDelete className={styles.deleteButtonIcon} />
         </button>
       </div>
-    </div>
+    </form>
   );
 };
 
