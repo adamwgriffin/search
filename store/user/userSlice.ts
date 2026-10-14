@@ -2,7 +2,6 @@ import type { SearchState } from "@/zod_schemas/searchStateSchema";
 import type { SavedSearch, User } from "@prisma/client";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { createSlice } from "@reduxjs/toolkit";
-import omit from "lodash/omit";
 import type { AppState } from "..";
 import axiosInstance from "../../lib/http";
 import { createAppAsyncThunk } from "../../lib/store_helpers";
@@ -23,10 +22,6 @@ export type CreateSavedSearchData = Omit<
   "id" | "createdAt" | "updatedAt"
 >;
 
-export type UpdateSavedSearchData = {
-  id: SavedSearchData["id"];
-} & Partial<SavedSearchData>;
-
 export type CurrentUser = Pick<
   User,
   "id" | "name" | "email" | "image" | "favoriteIds"
@@ -41,17 +36,13 @@ export type UserState = {
   previousFavoriteIds: string[];
   favoriteListings: Listing[];
   getFavoriteListingsLoading: boolean;
-  savedSearches: SavedSearchData[];
-  getSavedSearchesLoading: boolean;
 };
 
 const initialState: UserState = {
   currentUser: null,
   previousFavoriteIds: [],
   favoriteListings: [],
-  getFavoriteListingsLoading: false,
-  savedSearches: [],
-  getSavedSearchesLoading: false
+  getFavoriteListingsLoading: false
 };
 
 export const getCurrentUser = createAppAsyncThunk<
@@ -63,8 +54,8 @@ export const getCurrentUser = createAppAsyncThunk<
 });
 
 /**
- * Optimistically updates currentUser.favoriteIds with the given listingId. Adds the ID if it doesn't exist, otherwise
- * removes it.
+ * Optimistically updates currentUser.favoriteIds with the given listingId. Adds
+ * the ID if it doesn't exist, otherwise removes it.
  */
 export const toggleFavorite = createAppAsyncThunk<
   DefaultAPIResponse,
@@ -108,33 +99,6 @@ export const createSavedSearch = createAppAsyncThunk<
     newSavedSearchData
   );
   return res.data;
-});
-
-export const getSavedSearches = createAppAsyncThunk<
-  SavedSearchData[],
-  User["id"]
->("user/getSavedSearches", async (userId) => {
-  const res = await axiosInstance.get(`/api/saved_searches/${userId}`);
-  return res.data;
-});
-
-export const updateSavedSearch = createAppAsyncThunk<
-  SavedSearchData,
-  UpdateSavedSearchData
->("user/updateSavedSearch", async (savedSearchUpdate) => {
-  const res = await axiosInstance.put<SavedSearchData>(
-    `/api/saved_search/${savedSearchUpdate.id}`,
-    omit(savedSearchUpdate, "id")
-  );
-  return res.data;
-});
-
-export const deleteSavedSearch = createAppAsyncThunk<
-  SavedSearchData["id"],
-  SavedSearchData["id"]
->("user/deleteSavedSearch", async (id) => {
-  await axiosInstance.delete<DefaultAPIResponse>(`/api/saved_search/${id}`);
-  return id;
 });
 
 export const userSlice = createSlice({
@@ -187,46 +151,12 @@ export const userSlice = createSlice({
       state.getFavoriteListingsLoading = false;
     });
 
-    // if the request to add the favorite fails for some reason, undo the optimistic update that added it to
-    // currentUser.favoriteIds.
+    // if the request to add the favorite fails for some reason, undo the
+    // optimistic update that added it to currentUser.favoriteIds.
     builder.addCase(toggleFavorite.rejected, (state, action) => {
       console.error(action.error);
       if (!state.currentUser) return;
       state.currentUser.favoriteIds = state.previousFavoriteIds;
-    });
-
-    builder.addCase(getSavedSearches.pending, (state) => {
-      state.getSavedSearchesLoading = true;
-    });
-
-    builder.addCase(getSavedSearches.fulfilled, (state, action) => {
-      state.savedSearches = action.payload;
-      state.getSavedSearchesLoading = false;
-    });
-
-    builder.addCase(getSavedSearches.rejected, (state) => {
-      state.getSavedSearchesLoading = false;
-    });
-
-    builder.addCase(updateSavedSearch.fulfilled, (state, action) => {
-      const index = state.savedSearches.findIndex(
-        (s) => s.id === action.payload.id
-      );
-      state.savedSearches[index] = action.payload;
-    });
-
-    builder.addCase(updateSavedSearch.rejected, (_state, action) =>
-      console.error(action.error)
-    );
-
-    builder.addCase(deleteSavedSearch.fulfilled, (state, action) => {
-      state.savedSearches = state.savedSearches.filter(
-        (s) => s.id !== action.payload
-      );
-    });
-
-    builder.addCase(deleteSavedSearch.rejected, (_state, action) => {
-      console.error(action.error);
     });
   }
 });
@@ -245,11 +175,5 @@ export const selectFavoriteListings = (state: AppState) =>
 
 export const selectGetFavoriteListingsLoading = (state: AppState) =>
   state.user.getFavoriteListingsLoading;
-
-export const selectSavedSearches = (state: AppState) =>
-  state.user.savedSearches;
-
-export const selectGetSavedSearchesLoading = (state: AppState) =>
-  state.user.getSavedSearchesLoading;
 
 export default userSlice.reducer;

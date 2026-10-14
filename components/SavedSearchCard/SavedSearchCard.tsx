@@ -1,63 +1,133 @@
-import type { SavedSearchData } from "../../store/user/userSlice";
+"use client";
+
+import toast from "react-hot-toast";
 import { MdDelete } from "react-icons/md";
 import { getSearchDescription } from "../../lib/saved_search_helpers";
 import formStyles from "../../styles/forms.module.css";
 import styles from "./SavedSearchCard.module.css";
 import { useSearchState } from "@/hooks/useSearchState";
+import type { SavedSearch } from "@prisma/client";
+import { searchStateSchema } from "@/zod_schemas/searchStateSchema";
+import { useMutation } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
+import Fieldset from "@/components/design_system/Fieldset/Fieldset";
+import { useOptimistic, useTransition } from "react";
 
 export type SavedSearchCard = {
-  savedSearch: SavedSearchData;
-  onUpdate?: (savedSearchUpdate: Partial<SavedSearchData>) => void;
-  onDelete?: () => void;
+  savedSearch: SavedSearch;
 };
 
-const SavedSearchCard: React.FC<SavedSearchCard> = ({
-  savedSearch,
-  onUpdate,
-  onDelete
-}) => {
+const SavedSearchCard: React.FC<SavedSearchCard> = ({ savedSearch }) => {
+  const router = useRouter();
+  const [isPending, startTransition] = useTransition();
+  const [optimisticCadence, setOptimisticCadence] = useOptimistic(
+    savedSearch.messageCadence
+  );
+  const [isDeleted, setOptimisticDeleted] = useOptimistic(false);
   const { setSearchState } = useSearchState();
 
+  const deleteMutation = useMutation({
+    mutationFn: async () => {
+      const res = await fetch(`/api/saved_search/${savedSearch.id}`, {
+        method: "DELETE"
+      });
+      if (!res.ok) throw new Error("Failed to delete");
+    }
+  });
+
+  const updateMutation = useMutation({
+    mutationFn: async (messageCadence: number) => {
+      const res = await fetch(`/api/saved_search/${savedSearch.id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ messageCadence })
+      });
+      if (!res.ok) throw new Error("Failed to update");
+    }
+  });
+
+  function handleChangeMessageCadence(e: React.ChangeEvent<HTMLSelectElement>) {
+    const messageCadence = Number(e.target.value);
+
+    startTransition(async () => {
+      setOptimisticCadence(messageCadence);
+      try {
+        await updateMutation.mutateAsync(messageCadence);
+        toast("Saved search updated");
+        // Code after an await is no longer inside the transition so we need to
+        // start a new one for the refresh
+        startTransition(() => router.refresh());
+      } catch {
+        toast("Couldn't update saved search. Please try again.");
+      }
+    });
+  }
+
+  function handleDelete() {
+    startTransition(async () => {
+      // Card disappears immediately
+      setOptimisticDeleted(true);
+      try {
+        await deleteMutation.mutateAsync();
+        toast("Saved search deleted");
+        startTransition(() => router.refresh());
+      } catch {
+        // Transition ends, optimistic value reverts, card reappears
+        toast("Couldn't delete saved search. Please try again.");
+      }
+    });
+  }
+
+  if (isDeleted) return null;
+
   const messageCadenceId = `messageCadence_${savedSearch.id}`;
+  // Use Zod schema to make sure the data is valid and convert it to the
+  // expected type instead of JsonValue type we get from the db
+  const searchState =
+    searchStateSchema.safeParse(savedSearch.searchState).data ?? {};
 
   return (
-    <div
+    <form
       className={styles.savedSearch}
-      onClick={() => setSearchState(savedSearch.searchState)}
+      onClick={() => setSearchState(searchState)}
     >
       <div className={styles.body}>
         <h2 className={styles.heading}>{savedSearch.name}</h2>
-        <p>{getSearchDescription(savedSearch.searchState)}</p>
-        <label htmlFor={messageCadenceId} className={formStyles.label}>
-          Email Me
-        </label>
-        <select
-          id={messageCadenceId}
-          className={formStyles.select}
-          onChange={(e) =>
-            onUpdate?.({ messageCadence: Number(e.target.value) })
-          }
-          onClick={(e) => e.stopPropagation()}
-          value={savedSearch.messageCadence}
-        >
-          <option value={1}>Daily</option>
-          <option value={7}>Weekly</option>
-          <option value={0}>Never</option>
-        </select>
+        <p className={styles.description}>
+          {getSearchDescription(searchState)}
+        </p>
+        <Fieldset>
+          <label htmlFor={messageCadenceId} className={formStyles.label}>
+            Email Me
+          </label>
+          <select
+            id={messageCadenceId}
+            className={formStyles.select}
+            onChange={handleChangeMessageCadence}
+            onClick={(e) => e.stopPropagation()}
+            disabled={isPending}
+            value={optimisticCadence}
+          >
+            <option value={1}>Daily</option>
+            <option value={7}>Weekly</option>
+            <option value={0}>Never</option>
+          </select>
+        </Fieldset>
       </div>
       <div className={styles.footer}>
         <button
           className={styles.deleteButton}
+          disabled={isPending}
           onClick={(e) => {
             e.stopPropagation();
-            onDelete?.();
+            handleDelete();
           }}
           title="Delete Saved Search"
         >
           <MdDelete className={styles.deleteButtonIcon} />
         </button>
       </div>
-    </div>
+    </form>
   );
 };
 
