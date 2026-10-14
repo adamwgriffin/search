@@ -11,6 +11,7 @@ import { type SearchState } from "@/zod_schemas/searchStateSchema";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import Fieldset from "@/components/design_system/Fieldset/Fieldset";
+import { useOptimistic, useTransition } from "react";
 
 export type SavedSearchCard = {
   savedSearch: SavedSearch;
@@ -18,6 +19,10 @@ export type SavedSearchCard = {
 
 const SavedSearchCard: React.FC<SavedSearchCard> = ({ savedSearch }) => {
   const router = useRouter();
+  const [isPending, startTransition] = useTransition();
+  const [optimisticCadence, setOptimisticCadence] = useOptimistic(
+    savedSearch.messageCadence
+  );
   const { setSearchState } = useSearchState();
 
   const { mutate: deleteSavedSearch, isPending: deleteSavedSearchPending } =
@@ -39,22 +44,33 @@ const SavedSearchCard: React.FC<SavedSearchCard> = ({ savedSearch }) => {
       }
     });
 
-  const { mutate: updateSavedSearch, isPending: updateSavedSearchPending } =
-    useMutation({
-      mutationFn: async (messageCadence: number) => {
-        const res = await fetch(`/api/saved_search/${savedSearch.id}`, {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ messageCadence })
-        });
-        if (!res.ok) throw new Error("Failed to update");
-      },
-      onSuccess: () => {
+  const updateMutation = useMutation({
+    mutationFn: async (messageCadence: number) => {
+      const res = await fetch(`/api/saved_search/${savedSearch.id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ messageCadence })
+      });
+      if (!res.ok) throw new Error("Failed to update");
+    }
+  });
+
+  function handleChangeMessageCadence(e: React.ChangeEvent<HTMLSelectElement>) {
+    const messageCadence = Number(e.target.value);
+
+    startTransition(async () => {
+      setOptimisticCadence(messageCadence);
+      try {
+        await updateMutation.mutateAsync(messageCadence);
         toast("Saved search updated");
-        router.refresh();
-      },
-      onError: () => toast("Couldn't update saved search. Please try again.")
+        // Code after an await is no longer inside the transition so we need to
+        // start a new one for the refresh
+        startTransition(() => router.refresh());
+      } catch {
+        toast("Couldn't update saved search. Please try again.");
+      }
     });
+  }
 
   const messageCadenceId = `messageCadence_${savedSearch.id}`;
   // TODO: Could parse with Zod instead of casting the type
@@ -77,10 +93,10 @@ const SavedSearchCard: React.FC<SavedSearchCard> = ({ savedSearch }) => {
           <select
             id={messageCadenceId}
             className={formStyles.select}
-            onChange={(e) => updateSavedSearch(Number(e.target.value))}
+            onChange={handleChangeMessageCadence}
             onClick={(e) => e.stopPropagation()}
-            disabled={updateSavedSearchPending}
-            value={savedSearch.messageCadence}
+            disabled={isPending}
+            value={optimisticCadence}
           >
             <option value={1}>Daily</option>
             <option value={7}>Weekly</option>
