@@ -7,7 +7,7 @@ import formStyles from "../../styles/forms.module.css";
 import styles from "./SavedSearchCard.module.css";
 import { useSearchState } from "@/hooks/useSearchState";
 import type { SavedSearch } from "@prisma/client";
-import { type SearchState } from "@/zod_schemas/searchStateSchema";
+import { searchStateSchema } from "@/zod_schemas/searchStateSchema";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import Fieldset from "@/components/design_system/Fieldset/Fieldset";
@@ -24,7 +24,6 @@ const SavedSearchCard: React.FC<SavedSearchCard> = ({ savedSearch }) => {
     savedSearch.messageCadence
   );
   const [isDeleted, setOptimisticDeleted] = useOptimistic(false);
-
   const { setSearchState } = useSearchState();
 
   const deleteMutation = useMutation({
@@ -82,8 +81,10 @@ const SavedSearchCard: React.FC<SavedSearchCard> = ({ savedSearch }) => {
   if (isDeleted) return null;
 
   const messageCadenceId = `messageCadence_${savedSearch.id}`;
-  // TODO: Could parse with Zod instead of casting the type
-  const searchState = savedSearch.searchState as SearchState;
+  // Use Zod schema to make sure the data is valid and convert it to the
+  // expected type instead of JsonValue type we get from the db
+  const searchState =
+    searchStateSchema.safeParse(savedSearch.searchState).data ?? {};
 
   return (
     <form
