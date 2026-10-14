@@ -23,26 +23,18 @@ const SavedSearchCard: React.FC<SavedSearchCard> = ({ savedSearch }) => {
   const [optimisticCadence, setOptimisticCadence] = useOptimistic(
     savedSearch.messageCadence
   );
+  const [isDeleted, setOptimisticDeleted] = useOptimistic(false);
+
   const { setSearchState } = useSearchState();
 
-  const { mutate: deleteSavedSearch, isPending: deleteSavedSearchPending } =
-    useMutation({
-      mutationFn: async () => {
-        const res = await fetch(`/api/saved_search/${savedSearch.id}`, {
-          method: "DELETE"
-        });
-        if (!res.ok) throw new Error("Failed to delete");
-      },
-      onSuccess: () => {
-        toast("Saved search deleted");
-        // We need this to refresh the list of cards since it's generated on the
-        // server.
-        router.refresh();
-      },
-      onError: () => {
-        toast("Couldn't delete saved search. Please try again.");
-      }
-    });
+  const deleteMutation = useMutation({
+    mutationFn: async () => {
+      const res = await fetch(`/api/saved_search/${savedSearch.id}`, {
+        method: "DELETE"
+      });
+      if (!res.ok) throw new Error("Failed to delete");
+    }
+  });
 
   const updateMutation = useMutation({
     mutationFn: async (messageCadence: number) => {
@@ -71,6 +63,23 @@ const SavedSearchCard: React.FC<SavedSearchCard> = ({ savedSearch }) => {
       }
     });
   }
+
+  function handleDelete() {
+    startTransition(async () => {
+      // Card disappears immediately
+      setOptimisticDeleted(true);
+      try {
+        await deleteMutation.mutateAsync();
+        toast("Saved search deleted");
+        startTransition(() => router.refresh());
+      } catch {
+        // Transition ends, optimistic value reverts, card reappears
+        toast("Couldn't delete saved search. Please try again.");
+      }
+    });
+  }
+
+  if (isDeleted) return null;
 
   const messageCadenceId = `messageCadence_${savedSearch.id}`;
   // TODO: Could parse with Zod instead of casting the type
@@ -107,10 +116,10 @@ const SavedSearchCard: React.FC<SavedSearchCard> = ({ savedSearch }) => {
       <div className={styles.footer}>
         <button
           className={styles.deleteButton}
-          disabled={deleteSavedSearchPending}
+          disabled={isPending}
           onClick={(e) => {
             e.stopPropagation();
-            deleteSavedSearch();
+            handleDelete();
           }}
           title="Delete Saved Search"
         >
