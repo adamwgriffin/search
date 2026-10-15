@@ -1,13 +1,11 @@
-import type { NextPage } from "next";
+export type HeartProps = {
+  className?: string;
+};
 
-export interface HeartProps {
-  id: string;
-}
-
-const HeartIcon: NextPage<HeartProps> = ({ id }) => {
+const HeartIcon: React.FC<HeartProps> = ({ className }) => {
   return (
     <svg
-      id={id}
+      className={className}
       width="1.5rem"
       height="1.5rem"
       viewBox="0 0 150 130"

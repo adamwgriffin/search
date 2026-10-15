@@ -2,8 +2,9 @@ import HeartIcon from "../../components/design_system/icons/HeartIcon/HeartIcon"
 import { useAppDispatch } from "../../hooks/app_hooks";
 import { useGetCurrentUser } from "../../hooks/get_current_user_hook";
 import { openModal } from "../../store/application/applicationSlice";
-import { toggleFavorite } from "../../store/user/userSlice";
+import { useToggleFavorite } from "@/hooks/toggle_favorite_hook";
 import styles from "./FavoriteButton.module.css";
+import toast from "react-hot-toast";
 
 export type FavoriteButtonProps = {
   listingId: string;
@@ -11,12 +12,23 @@ export type FavoriteButtonProps = {
 
 const FavoriteButton: React.FC<FavoriteButtonProps> = ({ listingId }) => {
   const dispatch = useAppDispatch();
-  const currentUser = useGetCurrentUser();
-  const favoriteIds = currentUser?.favoriteIds || [];
+  const { data: currentUser } = useGetCurrentUser();
+  const { mutate: toggleFavorite } = useToggleFavorite();
+  const isFavorite = currentUser?.favoriteIds.includes(listingId) ?? false;
 
-  const toggleFavoriteOrOpenModal = () => {
+  const toggleFavoriteOrOpenModal = (
+    e: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    e.preventDefault();
+    e.stopPropagation();
     if (currentUser) {
-      dispatch(toggleFavorite(listingId));
+      toggleFavorite(
+        { listingId, isFavorite },
+        {
+          onError: () =>
+            toast.error("Couldn't update favorite. Please try again.")
+        }
+      );
     } else {
       dispatch(openModal({ modalType: "loginOrRegister" }));
     }
@@ -24,25 +36,14 @@ const FavoriteButton: React.FC<FavoriteButtonProps> = ({ listingId }) => {
 
   return (
     <button
+      type="button"
       className={styles.favoriteButton}
-      onClick={(e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        toggleFavoriteOrOpenModal();
-      }}
-      onKeyDown={(e) => {
-        if (e.key === "Enter") {
-          e.preventDefault();
-          toggleFavoriteOrOpenModal();
-        }
-      }}
+      aria-label="Favorite"
+      aria-pressed={isFavorite}
+      onClick={toggleFavoriteOrOpenModal}
     >
       <HeartIcon
-        id={
-          favoriteIds.includes(listingId)
-            ? styles.favoriteStroke
-            : styles.favoriteFilled
-        }
+        className={isFavorite ? styles.favoriteStroke : styles.favoriteFilled}
       />
     </button>
   );

@@ -5,15 +5,15 @@ import authOptions from "../../../lib/auth_options";
 import prisma from "../../../lib/prismadb";
 
 // The findUnique method returns a subset of the entire User type
-export type UserQueryResult = Pick<
+export type CurrentUser = Pick<
   User,
-  "id" | "name" | "email" | "image" | "image" | "favoriteIds"
-> | null;
+  "id" | "name" | "email" | "image" | "favoriteIds"
+>;
 
 // There's currently a bug in the type definitions for GET that causes a
 // Typescript error when we build the project. Explicitly typing the return
 // value for the function allows us to work around this.
-export async function GET(): Promise<NextResponse<UserQueryResult>> {
+export async function GET(): Promise<NextResponse<CurrentUser | null>> {
   const session = await getServerSession(authOptions);
   if (!session?.user) {
     return NextResponse.json(null);

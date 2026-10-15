@@ -1,18 +1,25 @@
-import { useEffect } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
-import { useAppSelector, useAppDispatch } from "./app_hooks";
-import { getCurrentUser, selectCurrentUser } from "../store/user/userSlice";
+import { CurrentUser } from "@/app/api/current_user/route";
 
+async function fetchCurrentUser() {
+  const res = await fetch("/api/current_user");
+  if (!res.ok) throw new Error("Failed to fetch user");
+  return res.json() as Promise<CurrentUser>;
+}
+
+/** The query key used for the currentUser query. It's used by other queries for
+ * optimitic updates. */
+export const currentUserQueryKey = (userId?: string) =>
+  ["currentUser", userId] as const;
+
+/** Fetch the currently logged-in user data */
 export const useGetCurrentUser = () => {
-  const { status } = useSession();
-  const dispatch = useAppDispatch();
-  const currentUser = useAppSelector(selectCurrentUser);
+  const { data: session, status } = useSession();
 
-  useEffect(() => {
-    if (status === "authenticated" && !currentUser) {
-      dispatch(getCurrentUser());
-    }
-  }, [currentUser, dispatch, status]);
-
-  return currentUser;
+  return useQuery({
+    queryKey: currentUserQueryKey(session?.user?.id),
+    queryFn: fetchCurrentUser,
+    enabled: status === "authenticated"
+  });
 };
