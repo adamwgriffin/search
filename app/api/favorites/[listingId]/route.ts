@@ -9,10 +9,7 @@ export type FavoritesParams = {
   }>;
 };
 
-export async function POST(
-  _request: Request,
-  { params }: FavoritesParams
-) {
+export async function POST(_request: Request, { params }: FavoritesParams) {
   const session = await getServerSession(authOptions);
   if (!session?.user) {
     return new NextResponse(null, { status: 401 });
@@ -56,10 +53,7 @@ export async function POST(
   return new NextResponse(null, { status: 200 });
 }
 
-export async function DELETE(
-  _request: Request,
-  { params }: FavoritesParams
-) {
+export async function DELETE(_request: Request, { params }: FavoritesParams) {
   const session = await getServerSession(authOptions);
   if (!session?.user) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });

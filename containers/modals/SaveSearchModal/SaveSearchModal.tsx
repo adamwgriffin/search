@@ -16,11 +16,9 @@ import {
   selectSaveSearchModalOpen
 } from "../../../store/application/applicationSlice";
 import type { SavedSearchData } from "../../../store/user/userSlice";
-import {
-  createSavedSearch,
-  selectCurrentUser
-} from "../../../store/user/userSlice";
+import { createSavedSearch } from "../../../store/user/userSlice";
 import formStyles from "../../../styles/forms.module.css";
+import { useGetCurrentUser } from "@/hooks/get_current_user_hook";
 
 export type SaveSearchFormData = Pick<
   SavedSearchData,
@@ -31,7 +29,7 @@ const SaveSearchModal: React.FC = () => {
   const dispatch = useAppDispatch();
   const modalOpen = useAppSelector(selectSaveSearchModalOpen);
   const { searchState } = useSearchState();
-  const currentUser = useAppSelector(selectCurrentUser);
+  const { data: currentUser } = useGetCurrentUser();
 
   const { register, handleSubmit } = useForm<SaveSearchFormData>({
     defaultValues: {

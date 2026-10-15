@@ -13,17 +13,17 @@
   transform: scale(1.1);
 }
 
-#favoriteStroke,
-#favoriteFilled {
+.favoriteStroke,
+.favoriteFilled {
   stroke: white;
   fill: rgba(0, 0, 0, 0.5);
 }
 
-#favoriteStroke {
+.favoriteStroke {
   animation: 300ms addFavorite forwards;
 }
 
-#favoriteFilled {
+.favoriteFilled {
   animation: 300ms removeFavorite forwards ease-in-out;
 }
 

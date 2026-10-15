@@ -15,7 +15,6 @@ import Avatar from "../../components/header/Avatar/Avatar";
 import ThemeSwitcher from "../../components/header/ThemeSwitcher/ThemeSwitcher";
 import { useAppDispatch } from "../../hooks/app_hooks";
 import { openModal } from "../../store/application/applicationSlice";
-import { resetCurrentUser } from "../../store/user/userSlice";
 import styles from "./UserMenu.module.css";
 
 export const pathRequiresAuth = (pathname: string | null) =>
@@ -33,7 +32,6 @@ const UserMenu: NextPage = () => {
       ? { callbackUrl: "/", redirect: true }
       : { redirect: false };
     await signOut(signOutOptions);
-    dispatch(resetCurrentUser());
     toast("You're logged out");
   }, [dispatch, pathname, toggleMenu]);
 

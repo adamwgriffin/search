@@ -17,12 +17,12 @@ const FavoritesList: React.FC = () => {
   const getFavoriteListingsLoading = useAppSelector(
     selectGetFavoriteListingsLoading
   );
-  const currentUser = useGetCurrentUser();
+  const { data: currentUser } = useGetCurrentUser();
   const openListingDetail = useOpenListingDetail(false);
 
   useEffect(() => {
     if (currentUser?.favoriteIds.length) {
-      dispatch(getFavoriteListings());
+      dispatch(getFavoriteListings(currentUser.favoriteIds));
     }
   }, [dispatch, currentUser?.favoriteIds]);
 
