@@ -1,6 +1,10 @@
 "use client";
 
 import { useSearchState } from "@/hooks/useSearchState";
+import {
+  useCreateSavedSearch,
+  type SavedSearchData
+} from "@/hooks/useCreateSavedSearch";
 import { useCallback } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
@@ -15,10 +19,8 @@ import {
   closeModal,
   selectSaveSearchModalOpen
 } from "../../../store/application/applicationSlice";
-import type { SavedSearchData } from "../../../store/user/userSlice";
-import { createSavedSearch } from "../../../store/user/userSlice";
 import formStyles from "../../../styles/forms.module.css";
-import { useGetCurrentUser } from "@/hooks/get_current_user_hook";
+import { useSession } from "next-auth/react";
 
 export type SaveSearchFormData = Pick<
   SavedSearchData,
@@ -29,7 +31,8 @@ const SaveSearchModal: React.FC = () => {
   const dispatch = useAppDispatch();
   const modalOpen = useAppSelector(selectSaveSearchModalOpen);
   const { searchState } = useSearchState();
-  const { data: currentUser } = useGetCurrentUser();
+  const { data: session } = useSession();
+  const { mutate: createSavedSearch, isPending } = useCreateSavedSearch();
 
   const { register, handleSubmit } = useForm<SaveSearchFormData>({
     defaultValues: {
@@ -41,23 +44,30 @@ const SaveSearchModal: React.FC = () => {
   const handleClose = useCallback(() => dispatch(closeModal()), [dispatch]);
 
   const handleSave = useCallback(
-    async (formData: SaveSearchFormData) => {
-      if (!currentUser?.id) {
-        console.error("No user user id available");
+    (formData: SaveSearchFormData) => {
+      if (!session?.user.id) {
+        toast.error("Couldn't save search. User must be logged in.");
         return;
       }
-      await dispatch(
-        createSavedSearch({
-          userId: currentUser.id,
+      createSavedSearch(
+        {
+          userId: session.user.id,
           name: formData.name,
           messageCadence: Number(formData.messageCadence),
           searchState
-        })
+        },
+        {
+          onSuccess: () => {
+            handleClose();
+            toast("Saved search created");
+          },
+          onError: () => {
+            toast.error("Couldn't save search. Please try again.");
+          }
+        }
       );
-      handleClose();
-      toast("Saved search created");
     },
-    [currentUser?.id, dispatch, handleClose, searchState]
+    [session?.user.id, createSavedSearch, handleClose, searchState]
   );
 
   return (
@@ -99,7 +109,9 @@ const SaveSearchModal: React.FC = () => {
           <TextButton type="button" onClick={handleClose}>
             Cancel
           </TextButton>
-          <ContainedButton type="submit">Save</ContainedButton>
+          <ContainedButton type="submit" disabled={isPending}>
+            Save
+          </ContainedButton>
         </ModalFooter>
       </form>
     </Modal>
