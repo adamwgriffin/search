@@ -6,16 +6,16 @@ import { useFavoriteListings } from "@/hooks/useFavoriteListings";
 import ListingCards from "@/components/listings/ListingCards/ListingCards";
 
 const FavoritesList: React.FC = () => {
-  const { data: currentUser } = useGetCurrentUser();
-  const { data: favoriteListings = [], isLoading } = useFavoriteListings(
-    currentUser?.favoriteIds
-  );
+  const { data: currentUser, isLoading: currentUserLoading } =
+    useGetCurrentUser();
+  const { data: favoriteListings = [], isLoading: favoriteListingsLoading } =
+    useFavoriteListings(currentUser?.favoriteIds);
   const openListingDetail = useOpenListingDetail(false);
 
   return (
     <ListingCards
       listings={favoriteListings}
-      listingSearchRunning={!currentUser || isLoading}
+      listingSearchRunning={currentUserLoading || favoriteListingsLoading}
       onListingCardClick={openListingDetail}
     />
   );
