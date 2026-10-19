@@ -92,6 +92,7 @@ const SaveSearchModal: React.FC = () => {
               id="searchName"
               type="text"
               className={formStyles.input}
+              autoComplete="off"
               {...register("name")}
             />
           </div>
