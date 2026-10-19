@@ -5,7 +5,7 @@ import {
   useCreateSavedSearch,
   type SavedSearchData
 } from "@/hooks/useCreateSavedSearch";
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import ContainedButton from "../../../components/design_system/ContainedButton/ContainedButton";
@@ -33,13 +33,18 @@ const SaveSearchModal: React.FC = () => {
   const { searchState } = useSearchState();
   const { data: session } = useSession();
   const { mutate: createSavedSearch, isPending } = useCreateSavedSearch();
-
-  const { register, handleSubmit } = useForm<SaveSearchFormData>({
+  const { register, handleSubmit, resetField } = useForm<SaveSearchFormData>({
     defaultValues: {
       name: searchState.address ?? "Saved Search",
       messageCadence: 1
     }
   });
+
+  useEffect(() => {
+    resetField("name", {
+      defaultValue: searchState.address ?? "Saved Search"
+    });
+  }, [resetField, searchState.address]);
 
   const handleClose = useCallback(() => dispatch(closeModal()), [dispatch]);
 
