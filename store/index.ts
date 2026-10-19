@@ -1,7 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 import applicationReducer from "./application/applicationSlice";
 import errorReducer from "./error/errorSlice";
-import userReducer from "./user/userSlice";
 import searchStateReducer from "./search/searchSlice";
 
 export function makeStore() {
@@ -9,7 +8,6 @@ export function makeStore() {
     reducer: {
       application: applicationReducer,
       error: errorReducer,
-      user: userReducer,
       search: searchStateReducer
     }
   });

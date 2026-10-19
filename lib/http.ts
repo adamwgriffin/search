@@ -1,4 +1,3 @@
-import axios from "axios";
 import { buildUrl } from "./listingSearchParams";
 
 export async function http<T = unknown>(
@@ -14,8 +13,3 @@ export async function http<T = unknown>(
   const data: T = await res.json();
   return data;
 }
-
-// TODO: Remove in favor of using fetch
-const axiosInstance = axios.create();
-
-export default axiosInstance;
