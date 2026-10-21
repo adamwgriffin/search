@@ -1,7 +1,5 @@
 "use client";
 
-import { AuthPathRegex } from "@/config";
-import type { NextPage } from "next";
 import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -16,11 +14,9 @@ import ThemeSwitcher from "../../components/header/ThemeSwitcher/ThemeSwitcher";
 import { useAppDispatch } from "../../hooks/app_hooks";
 import { openModal } from "../../store/application/applicationSlice";
 import styles from "./UserMenu.module.css";
+import { pathRequiresAuth } from "@/lib";
 
-export const pathRequiresAuth = (pathname: string | null) =>
-  AuthPathRegex.test(String(pathname));
-
-const UserMenu: NextPage = () => {
+const UserMenu: React.FC = () => {
   const dispatch = useAppDispatch();
   const { data: session } = useSession();
   const pathname = usePathname();
