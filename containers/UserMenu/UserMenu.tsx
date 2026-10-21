@@ -49,8 +49,8 @@ const UserMenu: NextPage = () => {
         {session?.user ? (
           <>
             <header className={styles.header}>
-              <Avatar src={session?.user?.image} />
-              <h1 className={styles.name}>{session?.user?.name}</h1>
+              <Avatar src={session.user.image ?? ""} />
+              <h1 className={styles.name}>{session.user.name}</h1>
             </header>
             <ul className={styles.menuListWithSeparator}>
               <li className={styles.menuItem}>
