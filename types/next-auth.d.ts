@@ -1,11 +1,17 @@
-import NextAuth from "next-auth";
+import type { DefaultSession } from "next-auth";
 
-// extending the Session interface to include the database ID for the user that we're adding via the authOptions
-// callbacks functions
+// extending the Session interface to include the database ID for the user that
+// we're adding via the authOptions callbacks functions
 declare module "next-auth" {
   interface Session {
     user: {
-      id: string;
+      id?: string;
     } & DefaultSession["user"];
+  }
+}
+
+declare module "next-auth/jwt" {
+  interface JWT {
+    id?: string;
   }
 }

@@ -25,8 +25,9 @@ const authOptions: NextAuthOptions = {
       return token;
     },
     async session({ session, token }) {
-      // Send the user id from that database to the client. This was added to the token in the jwt() callbacka above.
-      // This is accessible via the useSession() hook
+      // Send the user id from that database to the client. This was added to
+      // the token in the jwt() callback above. This is accessible via the
+      // useSession() hook
       session.user.id = token.id;
       return session;
     }
