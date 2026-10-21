@@ -1,10 +1,3 @@
 .avatarImage {
   border-radius: 50%;
 }
-
-.noImage {
-  height: 30px;
-  width: 30px;
-  border-radius: 50%;
-  margin: 0 auto;
-}
