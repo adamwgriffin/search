@@ -6,5 +6,5 @@ export type MenuButtonFallbackProps = {
 };
 
 export default function MenuButtonFallback(props: MenuButtonFallbackProps) {
-  return <ToggleOpenButton {...props} open={false} loading />;
+  return <ToggleOpenButton {...props} open={false} />;
 }

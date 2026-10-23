@@ -1,4 +1,4 @@
-import { DefaultPageSize } from "../config";
+import { AuthPathRegex, DefaultPageSize } from "../config";
 import type { PaginationParams } from "../zod_schemas/listingSearchParamsSchema";
 
 export const getPaginationParams = (
@@ -66,3 +66,6 @@ export function hasProperties(obj: object): boolean {
   }
   return false;
 }
+
+export const pathRequiresAuth = (pathname: string | null) =>
+  AuthPathRegex.test(String(pathname));
