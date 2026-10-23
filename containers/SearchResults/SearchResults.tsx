@@ -8,16 +8,12 @@ import { useSearchState } from "@/hooks/useSearchState";
 import { ListingSearchPagination } from "@/types";
 import range from "lodash/range";
 import { useEffect, useRef } from "react";
-import ListingCards from "../../components/listings/ListingCards/ListingCards";
-import ListingResultsHeader from "../../components/listings/ListingResultsHeader/ListingResultsHeader";
-import NoResults from "../../components/listings/NoResults/NoResults";
-import { useAppDispatch, useAppSelector } from "../../hooks/app_hooks";
-import { selectMobileViewType } from "../../store/application/applicationSlice";
-import { useOpenListingDetail } from "../../hooks/open_listing_detail_hook";
-import { setHighlightedMarker } from "../../store/application/applicationSlice";
-import { hasProperties } from "@/lib";
+import ListingResultsHeader from "@/components/listings/ListingResultsHeader/ListingResultsHeader";
+import { useAppSelector } from "@/hooks/app_hooks";
+import { selectMobileViewType } from "@/store/application/applicationSlice";
 import { searchQueryOptions } from "@/lib/queries";
 import SearchResultsBody from "@/components/SearchResultsBody/SearchResultsBody";
+import ListingResults from "@/components/listings/ListingResults/ListingResults";
 
 const getPagination = (p: ListingSearchPagination): Pagination => {
   return {
@@ -30,53 +26,30 @@ const getPagination = (p: ListingSearchPagination): Pagination => {
 };
 
 const SearchResults: React.FC = () => {
-  const dispatch = useAppDispatch();
   const mobileViewType = useAppSelector(selectMobileViewType);
-  const openListingDetail = useOpenListingDetail(false);
   const searchResultsRef = useRef<HTMLDivElement>(null);
   const { searchState, searchType, setSearchState } = useSearchState();
   // We're using useSuspenseQuery instead of useQuery here in order to avoid
   // hydration errors that occur when this component is wrapped inside
   // <Suspense>
-  const { data: results, isFetching } = useSuspenseQuery(
+  const { data: results, isPending: isFetching } = useSuspenseQuery(
     searchQueryOptions(searchState)
   );
 
-  useEffect(() => {
-    if (isFetching && searchResultsRef?.current?.scrollTop) {
-      searchResultsRef.current.scrollTop = 0;
-    }
-  }, [isFetching]);
-
-  const handleListingCardMouseEnter = (listingId: string) => {
-    dispatch(setHighlightedMarker(listingId));
-  };
-
-  const handleListingCardMouseLeave = () => {
-    dispatch(setHighlightedMarker(null));
-  };
+  if (searchResultsRef?.current?.scrollTop) {
+    searchResultsRef.current.scrollTop = 0;
+  }
 
   const listings = results?.listings ?? [];
-
-  const searchParamsPresent = hasProperties(searchState);
 
   return (
     <SearchResultsBody ref={searchResultsRef} mobileViewType={mobileViewType}>
       <ListingResultsHeader
         totalListings={results?.pagination?.numberAvailable ?? 0}
-        loading={searchParamsPresent && isFetching}
+        loading={isFetching}
         searchType={searchType}
       />
-      {(listings.length > 0 || isFetching) && (
-        <ListingCards
-          listings={listings}
-          listingSearchRunning={searchParamsPresent && isFetching}
-          onListingCardClick={openListingDetail}
-          onListingCardMouseEnter={handleListingCardMouseEnter}
-          onListingCardMouseLeave={handleListingCardMouseLeave}
-        />
-      )}
-      {searchParamsPresent && listings.length === 0 && <NoResults />}
+      <ListingResults />
       {listings.length > 0 && results?.pagination && (
         <ListingResultsPagination
           {...getPagination(results.pagination)}
