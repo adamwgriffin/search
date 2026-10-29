@@ -1,10 +1,9 @@
-import type { ListingDetailParams } from "../../api/listing_detail/[slug]/route";
-import GoogleMapsProvider from "../../../providers/GoogleMapsProvider";
-import mongooseConnect from "../../../lib/mongooseConnect";
-import { getListingDetail } from "../../../lib/listing_search_helpers";
-import ListingDetailHeader from "../../../containers/ListingDetailHeader/ListingDetailHeader";
-import ListingDetail from "../../../components/listings/listing_detail/ListingDetail/ListingDetail";
-import LoginOrRegisterModal from "../../../containers/modals/LoginOrRegisterModal/LoginOrRegisterModal";
+import type { ListingDetailParams } from "@/app/api/listing_detail/[slug]/route";
+import GoogleMapsProvider from "@/providers/GoogleMapsProvider";
+import { getListingDetail } from "@/lib/listing_search_helpers";
+import ListingDetailHeader from "@/containers/ListingDetailHeader/ListingDetailHeader";
+import ListingDetail from "@/components/listings/listing_detail/ListingDetail/ListingDetail";
+import LoginOrRegisterModal from "@/containers/modals/LoginOrRegisterModal/LoginOrRegisterModal";
 import styles from "./page.module.css";
 import ReactQueryClientProvider from "@/providers/ReactQueryClientProvider";
 
@@ -13,7 +12,6 @@ const ListingPage: React.FC<ListingDetailParams> = async ({ params }) => {
   let error = false;
 
   try {
-    await mongooseConnect();
     const { slug } = await params;
     const listing = await getListingDetail(slug);
     // We have to serialize the listing because we get errors when trying to pass

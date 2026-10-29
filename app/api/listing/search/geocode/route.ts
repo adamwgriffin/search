@@ -1,21 +1,18 @@
-import type { GeocodeBoundaryQueryParams } from "../../../../../zod_schemas/geocodeBoundarySearchSchema";
+import type { GeocodeBoundaryQueryParams } from "@/zod_schemas/geocodeBoundarySearchSchema";
 import { type NextRequest, NextResponse } from "next/server";
-import mongooseConnect from "../../../../../lib/mongooseConnect";
 import {
   getResponseForBoundary,
   getResponseForListingAddress,
   getResponseForPlaceId
-} from "../../../../../lib/listing_search_helpers";
+} from "@/lib/listing_search_helpers";
 import {
   geocode,
   getGeocodeParamsFromQuery,
   isListingAddressType
-} from "../../../../../lib/geocoder";
-import { geocodeBoundaryQuerySchema } from "../../../../../zod_schemas/geocodeBoundarySearchSchema";
+} from "@/lib/geocoder";
+import { geocodeBoundaryQuerySchema } from "@/zod_schemas/geocodeBoundarySearchSchema";
 
 export async function GET(request: NextRequest) {
-  await mongooseConnect();
-
   const searchParamsObject: GeocodeBoundaryQueryParams = Object.fromEntries(
     request.nextUrl.searchParams.entries()
   );
