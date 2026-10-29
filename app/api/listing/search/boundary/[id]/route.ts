@@ -1,15 +1,13 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
-import mongooseConnect from "../../../../../../lib/mongooseConnect";
-import Listing from "../../../../../../models/ListingModel";
-import Boundary from "../../../../../../models/BoundaryModel";
-import { getPaginationParams } from "../../../../../../lib";
-import { getBoundaryGeometryWithBounds } from "../../../../../../lib/listing_search_helpers";
-import listingSearchBoundaryView from "../../../../../../views/listingSearchBoundaryView";
+import db from "@/lib/db";
+import { getPaginationParams } from "@/lib";
+import { getBoundaryGeometryWithBounds } from "@/lib/listing_search_helpers";
+import listingSearchBoundaryView from "@/views/listingSearchBoundaryView";
 import {
   type BoundarySearchParams,
   boundarySearchRequestSchema
-} from "../../../../../../zod_schemas/boundarySearchRequestSchema";
+} from "@/zod_schemas/boundarySearchRequestSchema";
 
 export type BoundaryRequstParams = {
   params: Promise<BoundarySearchParams>;
@@ -19,8 +17,6 @@ export async function GET(
   request: NextRequest,
   { params }: BoundaryRequstParams
 ) {
-  await mongooseConnect();
-
   const searchParamsObject = Object.fromEntries(
     request.nextUrl.searchParams.entries()
   );
@@ -39,7 +35,7 @@ export async function GET(
     params: { id }
   } = result.data;
 
-  const boundary = await Boundary.findById(id);
+  const boundary = await db.Boundary.findById(id);
   if (!boundary) {
     return NextResponse.json(
       { message: `No boundary found for boundary id ${id}.` },
@@ -55,7 +51,7 @@ export async function GET(
       listingSearchBoundaryView(boundary, null, pagination)
     );
   }
-  const results = await Listing.findWithinBounds(bounds, query, pagination);
+  const results = await db.Listing.findWithinBounds(bounds, query, pagination);
   return NextResponse.json(
     listingSearchBoundaryView(boundary, results, pagination)
   );

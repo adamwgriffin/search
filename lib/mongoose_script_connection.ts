@@ -1,8 +1,8 @@
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 
-// This is intended to only be used for running node scripts. The mongooseConnect module is intended for use with
-// Next.js rather than this one.
+// This is intended to only be used for running node scripts. The db module is
+// intended for use with Next.js rather than this one.
 
 dotenv.config();
 

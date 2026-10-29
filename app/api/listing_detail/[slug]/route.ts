@@ -1,7 +1,5 @@
-import type { NextRequest } from "next/server";
-import { NextResponse } from "next/server";
-import mongooseConnect from "../../../../lib/mongooseConnect";
-import { getListingDetail } from "../../../../lib/listing_search_helpers";
+import { type NextRequest, NextResponse } from "next/server";
+import { getListingDetail } from "@/lib/listing_search_helpers";
 
 export type ListingDetailParams = {
   params: Promise<{
@@ -13,7 +11,6 @@ export async function GET(
   _request: NextRequest,
   { params }: ListingDetailParams
 ) {
-  await mongooseConnect();
   const requestParams = await params;
 
   const listing = await getListingDetail(requestParams.slug);

@@ -1,9 +1,9 @@
 import type { Polygon, MultiPolygon } from "geojson";
-import type { ListingAddress } from "../zod_schemas/listingSchema";
-import type { IBoundary } from "../models/BoundaryModel";
-import type { GeocodeBoundaryQueryParams } from "../zod_schemas/geocodeBoundarySearchSchema";
-import type { BoundsParams } from "../zod_schemas/listingSearchParamsSchema";
-import type { BoundarySearchQueryParams } from "../zod_schemas/boundarySearchRequestSchema";
+import type { ListingAddress } from "@/zod_schemas/listingSchema";
+import type { IBoundary } from "@/models/BoundaryModel";
+import type { GeocodeBoundaryQueryParams } from "@/zod_schemas/geocodeBoundarySearchSchema";
+import type { BoundsParams } from "@/zod_schemas/listingSearchParamsSchema";
+import type { BoundarySearchQueryParams } from "@/zod_schemas/boundarySearchRequestSchema";
 import { bboxPolygon, feature, featureCollection, intersect } from "@turf/turf";
 import { differenceInDays } from "date-fns";
 import {
@@ -16,10 +16,9 @@ import {
   AddressType,
   GeocodeResult
 } from "@googlemaps/google-maps-services-js";
-import Listing from "../models/ListingModel";
+import db from "./db";
 import { ListingDetailResultWithSelectedFields } from "../types/listing_search_response_types";
 import { ListingDetailResultProjectionFields } from "../config";
-import Boundary from "../models/BoundaryModel";
 import { getPaginationParams } from ".";
 import listingSearchBoundaryView from "../views/listingSearchBoundaryView";
 import listingSearchGeocodeNoBoundaryView from "../views/listingSearchGeocodeNoBoundaryView";
@@ -92,9 +91,9 @@ export const getListingForAddressSearch = async (
 ) => {
   const listingAddress = addressComponentsToListingAddress(address_components);
   if (listingAddressHasRequiredFields(listingAddress)) {
-    return Listing.findByPlaceIdOrAddress(place_id, listingAddress);
+    return db.Listing.findByPlaceIdOrAddress(place_id, listingAddress);
   } else {
-    return Listing.findOne<ListingDetailResultWithSelectedFields>(
+    return db.Listing.findOne<ListingDetailResultWithSelectedFields>(
       { placeId: place_id },
       ListingDetailResultProjectionFields
     );
@@ -114,13 +113,13 @@ export const getResponseForPlaceId = async (
   if (isListingAddressType(getAddressTypesFromParams(address_types))) return;
 
   const pagination = getPaginationParams(queryParams);
-  const boundary = await Boundary.findOne({ placeId: place_id });
+  const boundary = await db.Boundary.findOne({ placeId: place_id });
   if (!boundary) {
     const { geometry } = (await getPlaceDetails({ place_id })).data.result;
     if (!geometry) return;
     return listingSearchGeocodeNoBoundaryView(geometry.viewport);
   }
-  const results = await Listing.findWithinBounds(
+  const results = await db.Listing.findWithinBounds(
     boundary.geometry,
     queryParams,
     pagination
@@ -145,11 +144,11 @@ export const getResponseForBoundary = async (
   queryParams: GeocodeBoundaryQueryParams
 ) => {
   const pagination = getPaginationParams(queryParams);
-  const boundary = await Boundary.findOne({ placeId: place_id });
+  const boundary = await db.Boundary.findOne({ placeId: place_id });
   if (!boundary) {
     return listingSearchGeocodeNoBoundaryView(geometry.viewport);
   }
-  const results = await Listing.findWithinBounds(
+  const results = await db.Listing.findWithinBounds(
     boundary.geometry,
     queryParams,
     pagination
@@ -158,7 +157,7 @@ export const getResponseForBoundary = async (
 };
 
 export const getListingDetail = async (slug: string) => {
-  const listing = await Listing.findOne(
+  const listing = await db.Listing.findOne(
     { slug },
     ListingDetailResultProjectionFields
   ).lean();
