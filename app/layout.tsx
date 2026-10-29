@@ -17,8 +17,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    // Using suppressHydrationWarning per next-themes docs because next-themes updates <html>, which will always cause a
-    // warning
+    // Using suppressHydrationWarning per next-themes docs because next-themes
+    // updates <html>, which will always cause a warning
     <html lang="en" suppressHydrationWarning>
       <body>
         <SessionProvider>
