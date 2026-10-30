@@ -1,14 +1,15 @@
 import { useMutation } from "@tanstack/react-query";
-import type { SavedSearch } from "@prisma/client";
-import type { SearchState } from "@/zod_schemas/searchStateSchema";
+import type { ISavedSearch } from "@/models/SavedSearchModel";
 
+// A saved search as serialized to JSON by the API
 export type SavedSearchData = Omit<
-  SavedSearch,
-  "createdAt" | "updatedAt" | "searchState"
+  ISavedSearch,
+  "userId" | "createdAt" | "updatedAt"
 > & {
+  id: string;
+  userId: string;
   createdAt: string;
   updatedAt: string;
-  searchState: SearchState;
 };
 
 export type CreateSavedSearchData = Omit<

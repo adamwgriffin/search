@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
-import prisma from "../../../../lib/prismadb";
+import { isValidObjectId } from "mongoose";
+import db from "../../../../lib/db";
 
 export type SavedSearchesParams = {
   params: Promise<{
@@ -8,10 +9,11 @@ export type SavedSearchesParams = {
 };
 
 export async function GET(_request: Request, { params }: SavedSearchesParams) {
-  const savedSearch = await prisma.savedSearch.findMany({
-    where: {
-      userId: (await params).userId
-    }
-  });
+  const { userId } = await params;
+  if (!isValidObjectId(userId)) {
+    return NextResponse.json({ error: "Invalid user ID" }, { status: 400 });
+  }
+
+  const savedSearch = await db.SavedSearch.find({ userId });
   return NextResponse.json(savedSearch);
 }

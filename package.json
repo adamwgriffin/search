@@ -4,7 +4,6 @@
   "scripts": {
     "dev": "next dev --webpack",
     "build": "next build --webpack",
-    "postinstall": "prisma generate",
     "start": "next start",
     "lint": "next lint --dir .",
     "format": "prettier --write .",
@@ -14,15 +13,11 @@
     "seed_listing_data": "bun run ./bin/seed_listing_data",
     "seed_boundary_data": "bun run ./bin/seed_boundary_data",
     "seed_dev_data": "bun run ./bin/seed_boundary_data && bun run ./bin/seed_listing_data",
-    "generate_and_seed_listing_data": "bun run ./bin/generate_listing_data && bun run ./bin/seed_listing_data",
-    "prisma:generate:local": "dotenv -e .env.local prisma generate",
-    "prisma:validate:local": "dotenv -e .env.local prisma validate"
+    "generate_and_seed_listing_data": "bun run ./bin/generate_listing_data && bun run ./bin/seed_listing_data"
   },
   "dependencies": {
     "@googlemaps/google-maps-services-js": "^3.4.2",
     "@googlemaps/js-api-loader": "^2.1.1",
-    "@next-auth/prisma-adapter": "^1.0.7",
-    "@prisma/client": "^6.19.3",
     "@reduxjs/toolkit": "^2.12.0",
     "@tanstack/react-query": "^5.66.7",
     "@turf/turf": "^7.3.5",
@@ -70,7 +65,6 @@
     "jest": "^30.4.2",
     "jest-environment-jsdom": "^30.4.1",
     "prettier": "^3.9.4",
-    "prisma": "^6.19.3",
     "typescript": "^6.0.3",
     "yargs": "18.0.0"
   }

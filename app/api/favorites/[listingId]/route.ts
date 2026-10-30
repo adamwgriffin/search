@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth/next";
+import { isValidObjectId } from "mongoose";
 import authOptions from "../../../../lib/auth_options";
-import prisma from "../../../../lib/prismadb";
+import db from "../../../../lib/db";
 
 export type FavoritesParams = {
   params: Promise<{
@@ -17,38 +18,21 @@ export async function POST(_request: Request, { params }: FavoritesParams) {
 
   const { listingId } = await params;
 
-  if (!listingId || typeof listingId !== "string") {
+  if (!isValidObjectId(listingId)) {
     return NextResponse.json({ error: "Invalid listing ID" }, { status: 400 });
   }
 
-  const currentUser = await prisma.user.findUnique({
-    where: {
-      id: session.user.id
-    },
-    select: {
-      favoriteIds: true
-    }
-  });
+  const { matchedCount } = await db.User.updateOne(
+    { _id: session.user.id },
+    { $addToSet: { favoriteIds: listingId } }
+  );
 
-  if (!currentUser) {
+  if (matchedCount === 0) {
     return NextResponse.json(
       { error: "Current user not found" },
       { status: 404 }
     );
   }
-
-  const favoriteIds = Array.from(
-    new Set([...currentUser.favoriteIds, listingId])
-  );
-
-  await prisma.user.update({
-    where: {
-      id: session.user.id
-    },
-    data: {
-      favoriteIds
-    }
-  });
 
   return new NextResponse(null, { status: 200 });
 }
@@ -61,38 +45,21 @@ export async function DELETE(_request: Request, { params }: FavoritesParams) {
 
   const { listingId } = await params;
 
-  if (!listingId || typeof listingId !== "string") {
-    throw new Error("Invalid ID");
+  if (!isValidObjectId(listingId)) {
+    return NextResponse.json({ error: "Invalid listing ID" }, { status: 400 });
   }
 
-  const currentUser = await prisma.user.findUnique({
-    where: {
-      id: session.user.id
-    },
-    select: {
-      favoriteIds: true
-    }
-  });
+  const { matchedCount } = await db.User.updateOne(
+    { _id: session.user.id },
+    { $pull: { favoriteIds: listingId } }
+  );
 
-  if (!currentUser) {
+  if (matchedCount === 0) {
     return NextResponse.json(
       { error: "Current user not found" },
       { status: 404 }
     );
   }
-
-  const favoriteIds = (currentUser.favoriteIds || []).filter(
-    (id) => id !== listingId
-  );
-
-  await prisma.user.update({
-    where: {
-      id: session.user.id
-    },
-    data: {
-      favoriteIds
-    }
-  });
 
   return new NextResponse(null, { status: 200 });
 }
