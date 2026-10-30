@@ -1,11 +1,10 @@
 import type { NextAuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import GithubProvider from "next-auth/providers/github";
-import { PrismaAdapter } from "@next-auth/prisma-adapter";
-import prisma from "../lib/prismadb";
+import { MongooseAdapter } from "./mongoose_adapter";
 
 const authOptions: NextAuthOptions = {
-  adapter: PrismaAdapter(prisma),
+  adapter: MongooseAdapter(),
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID!,

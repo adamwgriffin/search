@@ -2,6 +2,11 @@ import mongoose, { type ConnectOptions } from "mongoose";
 import { attachDatabasePool } from "@vercel/functions";
 import Listing from "@/models/ListingModel";
 import Boundary from "@/models/BoundaryModel";
+import User from "@/models/UserModel";
+import Account from "@/models/AccountModel";
+import SavedSearch from "@/models/SavedSearchModel";
+import Session from "@/models/SessionModel";
+import VerificationToken from "@/models/VerificationTokenModel";
 
 export const DefaultConnectOptions: ConnectOptions = {
   // Fail fast if the database can't be reached instead of waiting the default
@@ -86,6 +91,26 @@ export class Database {
 
   get Boundary() {
     return this.getModel(Boundary);
+  }
+
+  get User() {
+    return this.getModel(User);
+  }
+
+  get Account() {
+    return this.getModel(Account);
+  }
+
+  get SavedSearch() {
+    return this.getModel(SavedSearch);
+  }
+
+  get Session() {
+    return this.getModel(Session);
+  }
+
+  get VerificationToken() {
+    return this.getModel(VerificationToken);
   }
 }
 
