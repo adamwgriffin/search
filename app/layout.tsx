@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
-import "../styles/globals.css";
-import SessionProvider from "../providers/SessionProvider";
-import StyledJsxRegistry from "../providers/StyledJsxRegistry";
-import ReduxProvider from "../providers/ReduxProvider";
-import ThemeProvider from "../providers/ThemeProvider";
-import ToastProvider from "../providers/ToastProvider";
+import "@/styles/globals.css";
+import SessionProvider from "@/providers/SessionProvider";
+import StyledJsxRegistry from "@/providers/StyledJsxRegistry";
+import ReduxProvider from "@/providers/ReduxProvider";
+import ThemeProvider from "@/providers/ThemeProvider";
+import ToastProvider from "@/providers/ToastProvider";
 
 export const metadata: Metadata = {
   title: "Awsom",

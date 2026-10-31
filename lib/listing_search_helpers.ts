@@ -17,12 +17,12 @@ import {
   GeocodeResult
 } from "@googlemaps/google-maps-services-js";
 import db from "./db";
-import { ListingDetailResultWithSelectedFields } from "../types/listing_search_response_types";
-import { ListingDetailResultProjectionFields } from "../config";
+import { ListingDetailResultWithSelectedFields } from "@/types/listing_search_response_types";
+import { ListingDetailResultProjectionFields } from "@/config";
 import { getPaginationParams } from ".";
-import listingSearchBoundaryView from "../views/listingSearchBoundaryView";
-import listingSearchGeocodeNoBoundaryView from "../views/listingSearchGeocodeNoBoundaryView";
-import { listingAddressSchema } from "../zod_schemas/listingSchema";
+import listingSearchBoundaryView from "@/views/listingSearchBoundaryView";
+import listingSearchGeocodeNoBoundaryView from "@/views/listingSearchGeocodeNoBoundaryView";
+import { listingAddressSchema } from "@/zod_schemas/listingSchema";
 
 export const daysOnMarket = (
   listedDate: Date,

@@ -1,9 +1,9 @@
 import { useState, useCallback } from "react";
-import MenuButton from "../../design_system/MenuButton/MenuButton";
-import PaginationButton from "../PaginationButton/PaginationButton";
-import ArrowRight from "../../design_system/icons/ArrorRight/ArrowRight";
-import ArrowLeft from "../../design_system/icons/ArrowLeft/ArrowLeft";
-import PageButton from "../PageButton/PageButton";
+import MenuButton from "@/components/design_system/MenuButton/MenuButton";
+import PaginationButton from "@/components/listings/PaginationButton/PaginationButton";
+import ArrowRight from "@/components/design_system/icons/ArrorRight/ArrowRight";
+import ArrowLeft from "@/components/design_system/icons/ArrowLeft/ArrowLeft";
+import PageButton from "@/components/listings/PageButton/PageButton";
 import styles from "./ListingResultsPagination.module.css";
 
 export type Pagination = {

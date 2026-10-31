@@ -1,10 +1,10 @@
-import type { SquareFeetRangeFilters } from "../../../types/filtersTypes";
+import type { SquareFeetRangeFilters } from "@/types/filtersTypes";
 import styles from "./SquareFeet.module.css";
-import formStyles from "../../../styles/forms.module.css";
+import formStyles from "@/styles/forms.module.css";
 import { NumericFormat } from "react-number-format";
-import Fieldset from "../../design_system/Fieldset/Fieldset";
-import Legend from "../../design_system/Legend/Legend";
-import InputRangeSeparator from "../../design_system/InputRangeSeparator/InputRangeSeparator";
+import Fieldset from "@/components/design_system/Fieldset/Fieldset";
+import Legend from "@/components/design_system/Legend/Legend";
+import InputRangeSeparator from "@/components/design_system/InputRangeSeparator/InputRangeSeparator";
 import { useRef } from "react";
 
 export type SquareFeetProps = {

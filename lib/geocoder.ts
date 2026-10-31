@@ -5,8 +5,8 @@ import type {
   ReverseGeocodeResponse
 } from "@googlemaps/google-maps-services-js";
 import { Client, AddressType } from "@googlemaps/google-maps-services-js";
-import type { BoundaryType } from "../models/BoundaryModel";
-import type { ListingAddress } from "../zod_schemas/listingSchema";
+import type { BoundaryType } from "@/models/BoundaryModel";
+import type { ListingAddress } from "@/zod_schemas/listingSchema";
 
 export type GeocodeRequestParams = Omit<GeocodeRequest["params"], "key">;
 

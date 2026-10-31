@@ -1,5 +1,5 @@
-import Fieldset from "../Fieldset/Fieldset";
-import Legend from "../Legend/Legend";
+import Fieldset from "@/components/design_system/Fieldset/Fieldset";
+import Legend from "@/components/design_system/Legend/Legend";
 import styles from "./RadioButtonGroup.module.css";
 
 export type RadioButtonGroupProps = {

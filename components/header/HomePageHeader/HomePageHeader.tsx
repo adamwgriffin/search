@@ -1,7 +1,7 @@
 import type { NextPage } from "next";
 import styles from "./HomePageHeader.module.css";
-import Logo from "../Logo/Logo";
-import UserMenu from "../../../containers/UserMenu/UserMenu";
+import Logo from "@/components/header/Logo/Logo";
+import UserMenu from "@/containers/UserMenu/UserMenu";
 
 const HomePageHeader: NextPage = () => {
   return (

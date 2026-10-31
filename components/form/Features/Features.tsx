@@ -1,7 +1,7 @@
 import { useCallback } from "react";
-import formStyles from "../../../styles/forms.module.css";
-import Fieldset from "../../design_system/Fieldset/Fieldset";
-import Legend from "../../design_system/Legend/Legend";
+import formStyles from "@/styles/forms.module.css";
+import Fieldset from "@/components/design_system/Fieldset/Fieldset";
+import Legend from "@/components/design_system/Legend/Legend";
 import styles from "./Features.module.css";
 import { type FeatureFilters } from "@/zod_schemas";
 

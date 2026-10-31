@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { isValidObjectId } from "mongoose";
-import db from "../../../../lib/db";
+import db from "@/lib/db";
 
 export type SavedSearchParams = {
   params: Promise<{

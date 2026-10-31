@@ -1,10 +1,10 @@
 import { type KeyboardEvent, useId, useState, useRef } from "react";
 import { NumericFormat } from "react-number-format";
-import { formatAbbreviatedPrice } from "../../../lib/listing_helpers";
-import { elementIsVisible } from "../../../lib";
-import MenuContainter from "../../design_system/MenuContainter/MenuContainter";
-import MenuDropdown from "../../design_system/MenuDropdown/MenuDropdown";
-import MenuOpenIcon from "../../design_system/icons/MenuOpenIcon/MenuOpenIcon";
+import { formatAbbreviatedPrice } from "@/lib/listing_helpers";
+import { elementIsVisible } from "@/lib";
+import MenuContainter from "@/components/design_system/MenuContainter/MenuContainter";
+import MenuDropdown from "@/components/design_system/MenuDropdown/MenuDropdown";
+import MenuOpenIcon from "@/components/design_system/icons/MenuOpenIcon/MenuOpenIcon";
 import styles from "./Price.module.css";
 
 export type PriceProps = {

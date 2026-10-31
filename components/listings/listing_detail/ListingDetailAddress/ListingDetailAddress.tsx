@@ -1,5 +1,5 @@
-import type { ListingAddress } from "../../../../types/listing_types";
-import { cityStateZip } from "../../../../lib/listing_helpers";
+import type { ListingAddress } from "@/types/listing_types";
+import { cityStateZip } from "@/lib/listing_helpers";
 import styles from "./ListingDetailAddress.module.css";
 
 export type ListingDetailAddressProps = {

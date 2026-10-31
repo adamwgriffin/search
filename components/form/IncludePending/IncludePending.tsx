@@ -1,7 +1,7 @@
 import type { NextPage } from "next";
 import type { ChangeEvent } from "react";
-import Fieldset from "../../design_system/Fieldset/Fieldset";
-import formStyles from "../../../styles/forms.module.css";
+import Fieldset from "@/components/design_system/Fieldset/Fieldset";
+import formStyles from "@/styles/forms.module.css";
 
 interface IncludePendingProps {
   includePending: boolean;

@@ -2,18 +2,18 @@
 
 import { useCallback } from "react";
 import { useSearchState } from "@/hooks/useSearchState";
-import ContainedButton from "../../../components/design_system/ContainedButton/ContainedButton";
-import Footer from "../../../components/design_system/Footer/Footer";
-import Modal from "../../../components/design_system/modal/Modal/Modal";
-import ModalBody from "../../../components/design_system/modal/ModalBody/ModalBody";
-import ModalHeader from "../../../components/design_system/modal/ModalHeader/ModalHeader";
-import TextButton from "../../../components/design_system/TextButton/TextButton";
-import { useAppDispatch, useAppSelector } from "../../../hooks/app_hooks";
+import ContainedButton from "@/components/design_system/ContainedButton/ContainedButton";
+import Footer from "@/components/design_system/Footer/Footer";
+import Modal from "@/components/design_system/modal/Modal/Modal";
+import ModalBody from "@/components/design_system/modal/ModalBody/ModalBody";
+import ModalHeader from "@/components/design_system/modal/ModalHeader/ModalHeader";
+import TextButton from "@/components/design_system/TextButton/TextButton";
+import { useAppDispatch, useAppSelector } from "@/hooks/app_hooks";
 import {
   closeModal,
   selectFiltersModalOpen
-} from "../../../store/application/applicationSlice";
-import More from "../../More/More";
+} from "@/store/application/applicationSlice";
+import More from "@/containers/More/More";
 import { useSearchResults } from "@/hooks/useSearchResults";
 
 const showListingsMessage = (n: number) =>

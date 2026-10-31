@@ -1,10 +1,10 @@
 "use client";
 
-import type { PhotoGalleryImage } from "../../../../types/listing_types";
+import type { PhotoGalleryImage } from "@/types/listing_types";
 import { useState, useCallback, useLayoutEffect } from "react";
 import { useEvent } from "react-use";
-import { buildSrcSet } from "../../../../lib/listing_image_helpers";
-import { sliceWrap } from "../../../../lib";
+import { buildSrcSet } from "@/lib/listing_image_helpers";
+import { sliceWrap } from "@/lib";
 import styles from "./SlideShow.module.css";
 
 export type SlideShowProps = {

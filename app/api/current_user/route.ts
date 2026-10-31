@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth/next";
-import type { IUser } from "../../../models/UserModel";
-import authOptions from "../../../lib/auth_options";
-import db from "../../../lib/db";
+import type { IUser } from "@/models/UserModel";
+import authOptions from "@/lib/auth_options";
+import db from "@/lib/db";
 
 // The subset of the User fields selected below, as serialized to JSON
 export type CurrentUser = Pick<IUser, "name" | "email" | "image"> & {

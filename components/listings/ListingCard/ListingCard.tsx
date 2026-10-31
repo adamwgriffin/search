@@ -1,12 +1,9 @@
 import Link from "next/link";
 import type { MouseEvent } from "react";
-import {
-  cityStateZip,
-  formatPriceFromListing
-} from "../../../lib/listing_helpers";
-import type { Listing } from "../../../types/listing_types";
-import ListingCardImage from "../ListingCardImage/ListingCardImage";
-import ListingInfo from "../ListingInfo/ListingInfo";
+import { cityStateZip, formatPriceFromListing } from "@/lib/listing_helpers";
+import type { Listing } from "@/types/listing_types";
+import ListingCardImage from "@/components/listings/ListingCardImage/ListingCardImage";
+import ListingInfo from "@/components/listings/ListingInfo/ListingInfo";
 import styles from "./ListingCard.module.css";
 
 export type ListingCardProps = {

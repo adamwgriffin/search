@@ -1,7 +1,7 @@
 import { type ReactNode, useId } from "react";
-import MenuContainter from "../MenuContainter/MenuContainter";
-import MenuDropdown from "../MenuDropdown/MenuDropdown";
-import ToggleOpenButton from "../ToggleOpenButton/ToggleOpenButton";
+import MenuContainter from "@/components/design_system/MenuContainter/MenuContainter";
+import MenuDropdown from "@/components/design_system/MenuDropdown/MenuDropdown";
+import ToggleOpenButton from "@/components/design_system/ToggleOpenButton/ToggleOpenButton";
 
 export type MenuButtonProps = {
   open: boolean;

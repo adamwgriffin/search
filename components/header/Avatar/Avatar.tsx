@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import NoUserImageIcon from "../../design_system/icons/NoUserImageIcon/NoUserImageIcon";
+import NoUserImageIcon from "@/components/design_system/icons/NoUserImageIcon/NoUserImageIcon";
 import styles from "./Avatar.module.css";
 
 export type AvatarProps = Pick<

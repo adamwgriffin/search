@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { listingFilterParamsSchema } from "./listingSearchParamsSchema";
-import { DefaultMaxDistance } from "../config";
+import { DefaultMaxDistance } from "@/config";
 
 export const radiusSearchQuerySchema = z
   .object({

@@ -1,12 +1,12 @@
-import type { IListing } from "../models/ListingModel";
+import type { IListing } from "@/models/ListingModel";
 import fs from "fs";
 import path from "path";
 import yargs from "yargs";
 import {
   connectToDatabase,
   disconnectDatabase
-} from "../lib/mongoose_script_connection";
-import Listing from "../models/ListingModel";
+} from "@/lib/mongoose_script_connection";
+import Listing from "@/models/ListingModel";
 
 const DefaultFilePath = path.join(
   __dirname,

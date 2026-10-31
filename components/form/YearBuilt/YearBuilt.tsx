@@ -1,10 +1,10 @@
-import type { YearBuiltRangeFilters } from "../../../types/filtersTypes";
+import type { YearBuiltRangeFilters } from "@/types/filtersTypes";
 import { useRef } from "react";
 import styles from "./YearBuilt.module.css";
-import formStyles from "../../../styles/forms.module.css";
-import Fieldset from "../../design_system/Fieldset/Fieldset";
-import Legend from "../../design_system/Legend/Legend";
-import InputRangeSeparator from "../../design_system/InputRangeSeparator/InputRangeSeparator";
+import formStyles from "@/styles/forms.module.css";
+import Fieldset from "@/components/design_system/Fieldset/Fieldset";
+import Legend from "@/components/design_system/Legend/Legend";
+import InputRangeSeparator from "@/components/design_system/InputRangeSeparator/InputRangeSeparator";
 
 export type YearBuiltProps = {
   yearBuiltRange: YearBuiltRangeFilters;

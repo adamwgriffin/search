@@ -1,4 +1,4 @@
-import type { PropertDetailsSection } from "../../../../types/listing_types";
+import type { PropertDetailsSection } from "@/types/listing_types";
 import { Fragment } from "react";
 import styles from "./PropertyDetails.module.css";
 

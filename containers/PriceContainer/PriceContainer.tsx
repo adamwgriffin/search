@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useSearchState } from "@/hooks/useSearchState";
 import type { PriceRangeFilters } from "@/types/filtersTypes";
-import PriceRange from "../../components/form/PriceRange/PriceRange";
+import PriceRange from "@/components/form/PriceRange/PriceRange";
 
 const PriceContainer: React.FC = () => {
   const { searchState, setSearchState } = useSearchState();

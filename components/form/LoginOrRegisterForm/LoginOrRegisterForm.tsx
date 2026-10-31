@@ -6,7 +6,7 @@ import { type SignInOptions, signIn } from "next-auth/react";
 import toast from "react-hot-toast";
 import { FcGoogle } from "react-icons/fc";
 import { AiFillGithub } from "react-icons/ai";
-import LoginButton from "../LoginButton/LoginButton";
+import LoginButton from "@/components/form/LoginButton/LoginButton";
 import styles from "./LoginOrRegisterForm.module.css";
 
 export interface LoginOrRegisterFormProps {

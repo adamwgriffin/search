@@ -1,5 +1,5 @@
 import type { NextPage } from "next";
-import styles from "../../../../styles/icons.module.css";
+import styles from "@/styles/icons.module.css";
 
 const ArrowLeft: NextPage = () => {
   return (

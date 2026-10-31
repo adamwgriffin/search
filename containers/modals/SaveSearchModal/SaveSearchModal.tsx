@@ -8,18 +8,18 @@ import {
 import { useCallback, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
-import ContainedButton from "../../../components/design_system/ContainedButton/ContainedButton";
-import ModalFooter from "../../../components/design_system/Footer/Footer";
-import Modal from "../../../components/design_system/modal/Modal/Modal";
-import ModalBody from "../../../components/design_system/modal/ModalBody/ModalBody";
-import ModalHeader from "../../../components/design_system/modal/ModalHeader/ModalHeader";
-import TextButton from "../../../components/design_system/TextButton/TextButton";
-import { useAppDispatch, useAppSelector } from "../../../hooks/app_hooks";
+import ContainedButton from "@/components/design_system/ContainedButton/ContainedButton";
+import ModalFooter from "@/components/design_system/Footer/Footer";
+import Modal from "@/components/design_system/modal/Modal/Modal";
+import ModalBody from "@/components/design_system/modal/ModalBody/ModalBody";
+import ModalHeader from "@/components/design_system/modal/ModalHeader/ModalHeader";
+import TextButton from "@/components/design_system/TextButton/TextButton";
+import { useAppDispatch, useAppSelector } from "@/hooks/app_hooks";
 import {
   closeModal,
   selectSaveSearchModalOpen
-} from "../../../store/application/applicationSlice";
-import formStyles from "../../../styles/forms.module.css";
+} from "@/store/application/applicationSlice";
+import formStyles from "@/styles/forms.module.css";
 import { useSession } from "next-auth/react";
 
 export type SaveSearchFormData = Pick<

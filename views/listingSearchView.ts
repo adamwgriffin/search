@@ -1,9 +1,9 @@
-import type { ListingSearchAggregateResult } from "../models/ListingModel";
-import type { PaginationParams } from "../zod_schemas/listingSearchParamsSchema";
+import type { ListingSearchAggregateResult } from "@/models/ListingModel";
+import type { PaginationParams } from "@/zod_schemas/listingSearchParamsSchema";
 import type {
   ListingResultWithSelectedFields,
   ListingSearchResponse
-} from "../types/listing_search_response_types";
+} from "@/types/listing_search_response_types";
 
 const listingSearchView = <T = ListingResultWithSelectedFields>(
   results: ListingSearchAggregateResult<T> | null,

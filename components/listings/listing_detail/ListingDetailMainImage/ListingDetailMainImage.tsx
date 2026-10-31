@@ -1,10 +1,7 @@
 import { type ImgHTMLAttributes, useState } from "react";
-import {
-  buildSrcSet,
-  streetViewImageUrl
-} from "../../../../lib/listing_image_helpers";
+import { buildSrcSet, streetViewImageUrl } from "@/lib/listing_image_helpers";
 import styles from "./ListingDetailMainImage.module.css";
-import { GoogleStreetViewMaxImageSize } from "../../../../config/googleMapsOptions";
+import { GoogleStreetViewMaxImageSize } from "@/config/googleMapsOptions";
 
 export type ListingDetailMainImageProps = {
   imageUrl: string | undefined;

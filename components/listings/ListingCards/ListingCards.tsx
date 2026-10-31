@@ -1,5 +1,5 @@
-import type { Listing } from "../../../types/listing_types";
-import ListingCard from "../ListingCard/ListingCard";
+import type { Listing } from "@/types/listing_types";
+import ListingCard from "@/components/listings/ListingCard/ListingCard";
 import ListingCardList from "@/components/listings/ListingCardList/ListingCardList";
 
 export type ListingCardProps = {

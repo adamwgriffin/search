@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import MenuButton from "../../design_system/MenuButton/MenuButton";
-import PriceContainer from "../../../containers/PriceContainer/PriceContainer";
+import MenuButton from "@/components/design_system/MenuButton/MenuButton";
+import PriceContainer from "@/containers/PriceContainer/PriceContainer";
 import styles from "./PriceMenuButton.module.css";
 
 const PriceMenuButton: React.FC = () => {

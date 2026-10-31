@@ -1,5 +1,5 @@
-import { AuthPathRegex, DefaultPageSize } from "../config";
-import type { PaginationParams } from "../zod_schemas/listingSearchParamsSchema";
+import { AuthPathRegex, DefaultPageSize } from "@/config";
+import type { PaginationParams } from "@/zod_schemas/listingSearchParamsSchema";
 
 export const getPaginationParams = (
   query: Partial<PaginationParams>

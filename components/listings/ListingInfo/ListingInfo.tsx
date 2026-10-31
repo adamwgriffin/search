@@ -1,10 +1,6 @@
-import type { Listing, ListingDetail } from "../../../types/listing_types";
+import type { Listing, ListingDetail } from "@/types/listing_types";
 import styles from "./ListingInfo.module.css";
-import {
-  getBathrooms,
-  formatSqft,
-  formatLotSize
-} from "../../../lib/listing_helpers";
+import { getBathrooms, formatSqft, formatLotSize } from "@/lib/listing_helpers";
 
 export type ListingInfoProps = {
   listing: Listing | ListingDetail;

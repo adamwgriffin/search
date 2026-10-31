@@ -1,7 +1,7 @@
 import {
   GoogleMapsStreetViewURL,
   GoogleStreetViewMaxImageSize
-} from "../config/googleMapsOptions";
+} from "@/config/googleMapsOptions";
 
 /**
  * Image size widths to use for <img> srcset attribute. Used to let the browser

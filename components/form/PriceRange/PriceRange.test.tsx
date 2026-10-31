@@ -1,7 +1,7 @@
 import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import PriceRange, { maxLabel, minLabel } from "./PriceRange";
-import { formatAbbreviatedPrice } from "../../../lib/listing_helpers";
+import { formatAbbreviatedPrice } from "@/lib/listing_helpers";
 
 describe("PriceRange", () => {
   it("includes a Min Price field", () => {

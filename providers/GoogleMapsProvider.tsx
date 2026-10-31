@@ -17,7 +17,7 @@ import {
   type LibraryName,
   DefaultGoogleMapsLoaderOptions,
   DefaultGoogleMapsLibraries
-} from "../config/googleMapsOptions";
+} from "@/config/googleMapsOptions";
 
 export type GoogleMapsContextInterface = {
   googleLoaded: boolean;

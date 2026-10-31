@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth/next";
 import { isValidObjectId } from "mongoose";
-import authOptions from "../../../../lib/auth_options";
-import db from "../../../../lib/db";
+import authOptions from "@/lib/auth_options";
+import db from "@/lib/db";
 
 export type FavoritesParams = {
   params: Promise<{

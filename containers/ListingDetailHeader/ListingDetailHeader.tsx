@@ -1,8 +1,8 @@
 import styles from "./ListingDetailHeader.module.css";
-import Logo from "../../components/header/Logo/Logo";
+import Logo from "@/components/header/Logo/Logo";
 import SearchLocation from "@/components/form/SearchLocation";
-import UserMenu from "../UserMenu/UserMenu";
-import HideSmallAndDown from "../../components/HideSmallAndDown/HideSmallAndDown";
+import UserMenu from "@/containers/UserMenu/UserMenu";
+import HideSmallAndDown from "@/components/HideSmallAndDown/HideSmallAndDown";
 
 const ListingDetailHeader: React.FC = () => {
   return (

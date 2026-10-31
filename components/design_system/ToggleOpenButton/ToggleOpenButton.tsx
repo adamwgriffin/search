@@ -1,5 +1,5 @@
-import MenuOpenIcon from "../icons/MenuOpenIcon/MenuOpenIcon";
-import OutlinedButton from "../OutlinedButton/OutlinedButton";
+import MenuOpenIcon from "@/components/design_system/icons/MenuOpenIcon/MenuOpenIcon";
+import OutlinedButton from "@/components/design_system/OutlinedButton/OutlinedButton";
 import styles from "./ToggleOpenButton.module.css";
 
 export type ToggleOpenButtonProps =

@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import FiltersIcon from "../../design_system/icons/FiltersIcon/FiltersIcon";
+import FiltersIcon from "@/components/design_system/icons/FiltersIcon/FiltersIcon";
 import styles from "./FiltersButton.module.css";
 
 export type FiltersButtonProps =

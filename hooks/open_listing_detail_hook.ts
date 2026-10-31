@@ -1,6 +1,6 @@
 import { useMedia } from "react-use";
 import { useAppDispatch } from "./app_hooks";
-import { openModal } from "../store/application/applicationSlice";
+import { openModal } from "@/store/application/applicationSlice";
 
 export const addUrlToBrowserHistory = (url: string) => {
   const currentUrl = window.location.href;

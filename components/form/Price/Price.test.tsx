@@ -1,8 +1,8 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import Price from "./Price";
-import { prices } from "../PriceRange/PriceRange";
-import { formatAbbreviatedPrice } from "../../../lib/listing_helpers";
+import { prices } from "@/components/form/PriceRange/PriceRange";
+import { formatAbbreviatedPrice } from "@/lib/listing_helpers";
 
 describe("Price", () => {
   it("formats the price that was entered", async () => {

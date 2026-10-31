@@ -1,5 +1,5 @@
 import { backOff } from "exponential-backoff";
-import type { ListingAddress } from "../zod_schemas/listingSchema";
+import type { ListingAddress } from "@/zod_schemas/listingSchema";
 import type {
   IListing,
   PhotoGalleryImage,
@@ -9,7 +9,7 @@ import type {
   OpenHouse,
   PropertyType,
   ListingAmenities
-} from "../models/ListingModel";
+} from "@/models/ListingModel";
 import type { Point, Polygon, MultiPolygon } from "geojson";
 import { bbox, randomPoint, booleanPointInPolygon } from "@turf/turf";
 import { faker } from "@faker-js/faker";
@@ -18,14 +18,14 @@ import {
   reverseGeocode,
   addressComponentsToListingAddress,
   getNeighborhoodFromAddressComponents
-} from "../lib/geocoder";
+} from "@/lib/geocoder";
 import {
   PropertyTypes,
   PropertyStatuses,
   RentalPropertyStatuses
-} from "../models/ListingModel";
+} from "@/models/ListingModel";
 import { listingAddressHasRequiredFields } from "./listing_search_helpers";
-import { galleryData } from "../data/seed_data/development/photo_galleries";
+import { galleryData } from "@/data/seed_data/development/photo_galleries";
 
 export type GeneratedListingGeocodeData = {
   address: ListingAddress;

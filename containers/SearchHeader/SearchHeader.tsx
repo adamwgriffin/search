@@ -1,8 +1,8 @@
 import styles from "./SearchHeader.module.css";
-import Logo from "../../components/header/Logo/Logo";
-import Filters from "../Filters/Filters";
-import UserMenu from "../UserMenu/UserMenu";
-import HideSmallAndDown from "../../components/HideSmallAndDown/HideSmallAndDown";
+import Logo from "@/components/header/Logo/Logo";
+import Filters from "@/containers/Filters/Filters";
+import UserMenu from "@/containers/UserMenu/UserMenu";
+import HideSmallAndDown from "@/components/HideSmallAndDown/HideSmallAndDown";
 import SearchLocation from "@/components/form/SearchLocation";
 import { Suspense } from "react";
 import SearchLocationFallback from "@/components/form/SearchLocationFallback";

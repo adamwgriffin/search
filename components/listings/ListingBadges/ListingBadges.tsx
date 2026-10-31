@@ -1,5 +1,5 @@
-import type { Listing, ListingDetail } from "../../../types/listing_types";
-import ListingStatusIndicator from "../ListingStatusIndicator/ListingStatusIndicator";
+import type { Listing, ListingDetail } from "@/types/listing_types";
+import ListingStatusIndicator from "@/components/listings/ListingStatusIndicator/ListingStatusIndicator";
 
 export type ListingBadgesProps = {
   listing: Listing | ListingDetail;

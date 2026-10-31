@@ -10,9 +10,9 @@ import {
 } from "react";
 import clsx from "clsx";
 import { useClickAway } from "react-use";
-import SearchButton from "../SearchButton/SearchButton";
-import LocationPinFilledIcon from "../../design_system/icons/LocationPinFilledIcon/LocationPinFilledIcon";
-import PlacePredictionText from "../PlacePredictionText/PlacePredictionText";
+import SearchButton from "@/components/form/SearchButton/SearchButton";
+import LocationPinFilledIcon from "@/components/design_system/icons/LocationPinFilledIcon/LocationPinFilledIcon";
+import PlacePredictionText from "@/components/form/PlacePredictionText/PlacePredictionText";
 import styles from "./SearchField.module.css";
 import animationStyles from "@/styles/animations.module.css";
 
