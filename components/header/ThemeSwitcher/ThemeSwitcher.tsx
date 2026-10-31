@@ -1,17 +1,12 @@
-import type { NextPage } from "next";
-import { useState, useEffect } from "react";
 import { useTheme } from "next-themes";
 import styles from "./ThemeSwitcher.module.css";
 import Fieldset from "@/components/design_system/Fieldset/Fieldset";
+import { useIsMounted } from "@/hooks/useIsMounted";
 
-const ThemeSwitcher: NextPage = () => {
-  const [mounted, setMounted] = useState(false);
+const ThemeSwitcher: React.FC = () => {
+  // The theme isn't known on the server, so only render the UI on the client
+  const mounted = useIsMounted();
   const { theme, setTheme } = useTheme();
-
-  // useEffect only runs on the client, so now we can safely show the UI
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   if (!mounted) {
     return null;
