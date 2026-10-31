@@ -1,4 +1,4 @@
-import type { CountOption } from "../types";
+import type { CountOption } from "@/types";
 
 export const SearchTypes = {
   Buy: "buy",

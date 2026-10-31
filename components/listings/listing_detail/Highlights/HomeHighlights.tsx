@@ -1,7 +1,7 @@
-import type { ListingDetail } from "../../../../types/listing_types";
-import { getPropertyTypeLabel } from "../../../../lib/property_types";
-import { formatSqft, formatLotSize } from "../../../../lib/listing_helpers";
-import { Locale } from "../../../../config";
+import type { ListingDetail } from "@/types/listing_types";
+import { getPropertyTypeLabel } from "@/lib/property_types";
+import { formatSqft, formatLotSize } from "@/lib/listing_helpers";
+import { Locale } from "@/config";
 import styles from "./HomeHighlights.module.css";
 
 export type HomeHighlightsProps = {

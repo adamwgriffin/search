@@ -1,12 +1,12 @@
-import type { IBoundary } from "../models/BoundaryModel";
+import type { IBoundary } from "@/models/BoundaryModel";
 import fs from "fs";
 import path from "path";
 import yargs from "yargs";
 import {
   connectToDatabase,
   disconnectDatabase
-} from "../lib/mongoose_script_connection";
-import Boundary from "../models/BoundaryModel";
+} from "@/lib/mongoose_script_connection";
+import Boundary from "@/models/BoundaryModel";
 
 const DefaultFilePath = path.join(
   __dirname,

@@ -2,7 +2,7 @@ import type { NextPage } from "next";
 import { useState, useEffect } from "react";
 import { useTheme } from "next-themes";
 import styles from "./ThemeSwitcher.module.css";
-import Fieldset from "../../design_system/Fieldset/Fieldset";
+import Fieldset from "@/components/design_system/Fieldset/Fieldset";
 
 const ThemeSwitcher: NextPage = () => {
   const [mounted, setMounted] = useState(false);

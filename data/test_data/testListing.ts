@@ -1,4 +1,4 @@
-import { Listing } from '../../types/listing_types';
+import { Listing } from '@/types/listing_types';
 
 export const testListing: Listing = {
   _id: "67551812abee9fa84021f954",

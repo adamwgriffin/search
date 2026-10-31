@@ -1,17 +1,17 @@
 "use client";
 
 import { useQuery, skipToken } from "@tanstack/react-query";
-import { useAppDispatch, useAppSelector } from "../../../hooks/app_hooks";
+import { useAppDispatch, useAppSelector } from "@/hooks/app_hooks";
 import {
   selectListingDetailModalOpen,
   selectListingModalSlug,
   closeModal
-} from "../../../store/application/applicationSlice";
-import Modal from "../../../components/design_system/modal/Modal/Modal";
-import ModalHeader from "../../../components/design_system/modal/ModalHeader/ModalHeader";
-import ModalBody from "../../../components/design_system/modal/ModalBody/ModalBody";
-import ListingDetail from "../../../components/listings/listing_detail/ListingDetail/ListingDetail";
-import LoadingDots from "../../../components/design_system/LoadingDots/LoadingDots";
+} from "@/store/application/applicationSlice";
+import Modal from "@/components/design_system/modal/Modal/Modal";
+import ModalHeader from "@/components/design_system/modal/ModalHeader/ModalHeader";
+import ModalBody from "@/components/design_system/modal/ModalBody/ModalBody";
+import ListingDetail from "@/components/listings/listing_detail/ListingDetail/ListingDetail";
+import LoadingDots from "@/components/design_system/LoadingDots/LoadingDots";
 import styles from "./ListingDetailModal.module.css";
 import { fetchListingDetail } from "@/lib/fetchListings";
 

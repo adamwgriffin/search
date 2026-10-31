@@ -1,7 +1,7 @@
-import type { PriceRangeFilters } from "../../../types/filtersTypes";
+import type { PriceRangeFilters } from "@/types/filtersTypes";
 import { type KeyboardEvent, useState } from "react";
-import Price from "../Price/Price";
-import InputRangeSeparator from "../../design_system/InputRangeSeparator/InputRangeSeparator";
+import Price from "@/components/form/Price/Price";
+import InputRangeSeparator from "@/components/design_system/InputRangeSeparator/InputRangeSeparator";
 import styles from "./PriceRange.module.css";
 
 export type PriceRangeProps = {

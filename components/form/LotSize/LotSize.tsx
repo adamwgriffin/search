@@ -1,8 +1,8 @@
-import type { LotSizeFilter } from "../../../types/filtersTypes";
-import { LotSizeValues } from "../../../lib/filter";
-import formStyles from "../../../styles/forms.module.css";
-import Fieldset from "../../design_system/Fieldset/Fieldset";
-import Legend from "../../design_system/Legend/Legend";
+import type { LotSizeFilter } from "@/types/filtersTypes";
+import { LotSizeValues } from "@/lib/filter";
+import formStyles from "@/styles/forms.module.css";
+import Fieldset from "@/components/design_system/Fieldset/Fieldset";
+import Legend from "@/components/design_system/Legend/Legend";
 
 export type LotSizeProps = {
   lotSizeMin: number | null;

@@ -2,8 +2,8 @@
 
 import toast from "react-hot-toast";
 import { MdDelete } from "react-icons/md";
-import { getSearchDescription } from "../../lib/saved_search_helpers";
-import formStyles from "../../styles/forms.module.css";
+import { getSearchDescription } from "@/lib/saved_search_helpers";
+import formStyles from "@/styles/forms.module.css";
 import styles from "./SavedSearchCard.module.css";
 import { useSearchState } from "@/hooks/useSearchState";
 import type { SavedSearchData } from "@/hooks/useCreateSavedSearch";

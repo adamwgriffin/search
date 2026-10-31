@@ -3,9 +3,9 @@ import { useSearchState } from "@/hooks/useSearchState";
 import type {
   SortDirection,
   SortType
-} from "../../../types/listing_service_params_types";
-import MenuButton from "../../design_system/MenuButton/MenuButton";
-import CheckIcon from "../../design_system/icons/CheckIcon/CheckIcon";
+} from "@/types/listing_service_params_types";
+import MenuButton from "@/components/design_system/MenuButton/MenuButton";
+import CheckIcon from "@/components/design_system/icons/CheckIcon/CheckIcon";
 import styles from "./SortMenu.module.css";
 
 export interface SortTypeLabels {

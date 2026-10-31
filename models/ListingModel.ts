@@ -1,12 +1,12 @@
 import type { MultiPolygon, Point, Polygon } from "geojson";
-import type { GeocodeBoundaryQueryParams } from "../zod_schemas/geocodeBoundarySearchSchema";
+import type { GeocodeBoundaryQueryParams } from "@/zod_schemas/geocodeBoundarySearchSchema";
 import type {
   ListingResultWithSelectedFields,
   ListingRadiusResultWithSelectedFields,
   ListingDetailResultWithSelectedFields
-} from "../types/listing_search_response_types";
-import type { ListingAddress } from "../zod_schemas/listingSchema";
-import type { PaginationParams } from "../zod_schemas/listingSearchParamsSchema";
+} from "@/types/listing_search_response_types";
+import type { ListingAddress } from "@/zod_schemas/listingSchema";
+import type { PaginationParams } from "@/zod_schemas/listingSearchParamsSchema";
 import mongoose, { Model, ProjectionFields, Schema, model } from "mongoose";
 import slugify from "slugify";
 import PointSchema from "./PointSchema";
@@ -14,12 +14,12 @@ import {
   ListingResultProjectionFields,
   ListingRadiusResultProjectionFields,
   ListingDetailResultProjectionFields
-} from "../config";
+} from "@/config";
 import {
   buildFilterQueries,
   buildfilterQueriesObject,
   listingSortQuery
-} from "../lib/listing_query_helpers";
+} from "@/lib/listing_query_helpers";
 
 export const PropertyTypes = [
   "single-family",

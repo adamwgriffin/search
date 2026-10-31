@@ -1,15 +1,15 @@
 "use client";
 
 import { useCallback } from "react";
-import { useAppDispatch, useAppSelector } from "../../../hooks/app_hooks";
+import { useAppDispatch, useAppSelector } from "@/hooks/app_hooks";
 import {
   selectLoginOrRegisterModalOpen,
   closeModal
-} from "../../../store/application/applicationSlice";
-import Modal from "../../../components/design_system/modal/Modal/Modal";
-import ModalHeader from "../../../components/design_system/modal/ModalHeader/ModalHeader";
-import ModalBody from "../../../components/design_system/modal/ModalBody/ModalBody";
-import LoginOrRegisterForm from "../../../components/form/LoginOrRegisterForm/LoginOrRegisterForm";
+} from "@/store/application/applicationSlice";
+import Modal from "@/components/design_system/modal/Modal/Modal";
+import ModalHeader from "@/components/design_system/modal/ModalHeader/ModalHeader";
+import ModalBody from "@/components/design_system/modal/ModalBody/ModalBody";
+import LoginOrRegisterForm from "@/components/form/LoginOrRegisterForm/LoginOrRegisterForm";
 
 const LoginOrRegisterModal: React.FC = () => {
   const dispatch = useAppDispatch();

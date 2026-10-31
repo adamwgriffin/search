@@ -10,16 +10,16 @@ import { getNewSearchStateFromMap } from "@/lib/listingSearchParams";
 import { useSearchState } from "@/hooks/useSearchState";
 import { selectHighlightedMarker } from "@/store/application/applicationSlice";
 import { useCallback, useEffect, useRef } from "react";
-import GoogleMap from "../../components/map/GoogleMap/GoogleMap";
-import ListingMarker from "../../components/map/ListingMarker/ListingMarker";
-import MapBoundary from "../../components/map/MapBoundary/MapBoundary";
+import GoogleMap from "@/components/map/GoogleMap/GoogleMap";
+import ListingMarker from "@/components/map/ListingMarker/ListingMarker";
+import MapBoundary from "@/components/map/MapBoundary/MapBoundary";
 import {
   GoogleMapsMapOptions,
   MapBoundaryStyleOptions
-} from "../../config/googleMapsOptions";
-import { useAppSelector } from "../../hooks/app_hooks";
-import { useOpenListingDetail } from "../../hooks/open_listing_detail_hook";
-import { useGoogleMaps } from "../../providers/GoogleMapsProvider";
+} from "@/config/googleMapsOptions";
+import { useAppSelector } from "@/hooks/app_hooks";
+import { useOpenListingDetail } from "@/hooks/open_listing_detail_hook";
+import { useGoogleMaps } from "@/providers/GoogleMapsProvider";
 
 const ListingMap: React.FC = () => {
   const updateFiltersOnMapIdle = useRef(false);

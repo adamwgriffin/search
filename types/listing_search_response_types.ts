@@ -1,10 +1,10 @@
 import type { Types } from "mongoose";
-import type { IListing } from "../models/ListingModel";
-import type { IBoundary } from "../models/BoundaryModel";
+import type { IListing } from "@/models/ListingModel";
+import type { IBoundary } from "@/models/BoundaryModel";
 import {
   ListingResultProjectionFields,
   ListingDetailResultProjectionFields
-} from "../config";
+} from "@/config";
 import { LatLngBounds } from "@googlemaps/google-maps-services-js";
 
 export type AdditionalListingResultFields = {

@@ -2,8 +2,8 @@ import type {
   Listing,
   ListingDetail,
   ListingAddress
-} from "../types/listing_types";
-import { Locale, Currency } from "../config";
+} from "@/types/listing_types";
+import { Locale, Currency } from "@/config";
 
 export interface FormatPriceOptions {
   numberFormatOptions?: Intl.NumberFormatOptions;

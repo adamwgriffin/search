@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
-import { testListing } from "../../../data/test_data/testListing";
-import type { Listing } from "../../../types/listing_types";
+import { testListing } from "@/data/test_data/testListing";
+import type { Listing } from "@/types/listing_types";
 import ListingInfo from "./ListingInfo";
 
 const bedsRegex = /[0-9]+bd/;

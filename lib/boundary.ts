@@ -1,4 +1,4 @@
-import type { Boundary, GeoJSONBoundary, ViewportLatLngBounds } from "../types";
+import type { Boundary, GeoJSONBoundary, ViewportLatLngBounds } from "@/types";
 
 // Setting id on the top level instead of inside "properties" makes it so
 // map.data.getFeatureById() will find it automatically without us having to

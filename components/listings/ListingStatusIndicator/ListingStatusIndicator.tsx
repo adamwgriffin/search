@@ -1,4 +1,4 @@
-import type { PropertyStatus } from "../../../types/listing_types";
+import type { PropertyStatus } from "@/types/listing_types";
 import styles from "./ListingStatusIndicator.module.css";
 import capitalize from "lodash/capitalize";
 

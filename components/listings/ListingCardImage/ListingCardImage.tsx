@@ -1,9 +1,9 @@
-import FavoriteButton from "../../../containers/FavoriteButton/FavoriteButton";
-import type { Listing } from "../../../types/listing_types";
-import ListingMainImage from "../listing_detail/ListingMainImage";
-import ListingBadges from "../ListingBadges/ListingBadges";
-import ListingImageContainer from "../ListingImageContainer/ListingImageContainer";
-import ListingImageContainerElements from "../ListingImageContainerElements/ListingImageContainerElements";
+import FavoriteButton from "@/containers/FavoriteButton/FavoriteButton";
+import type { Listing } from "@/types/listing_types";
+import ListingMainImage from "@/components/listings/listing_detail/ListingMainImage";
+import ListingBadges from "@/components/listings/ListingBadges/ListingBadges";
+import ListingImageContainer from "@/components/listings/ListingImageContainer/ListingImageContainer";
+import ListingImageContainerElements from "@/components/listings/ListingImageContainerElements/ListingImageContainerElements";
 import styles from "./ListingCardImage.module.css";
 
 export type ListingCardImageProps = {

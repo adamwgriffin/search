@@ -2,12 +2,12 @@
 
 import { useState } from "react";
 import { useSearchState } from "@/hooks/useSearchState";
-import More from "../../../containers/More/More";
-import ContainedButton from "../../design_system/ContainedButton/ContainedButton";
-import Footer from "../../design_system/Footer/Footer";
-import MenuContainter from "../../design_system/MenuContainter/MenuContainter";
-import TextButton from "../../design_system/TextButton/TextButton";
-import ToggleOpenButton from "../../design_system/ToggleOpenButton/ToggleOpenButton";
+import More from "@/containers/More/More";
+import ContainedButton from "@/components/design_system/ContainedButton/ContainedButton";
+import Footer from "@/components/design_system/Footer/Footer";
+import MenuContainter from "@/components/design_system/MenuContainter/MenuContainter";
+import TextButton from "@/components/design_system/TextButton/TextButton";
+import ToggleOpenButton from "@/components/design_system/ToggleOpenButton/ToggleOpenButton";
 import styles from "./MoreMenuButton.module.css";
 
 const MoreMenuButton: React.FC = () => {

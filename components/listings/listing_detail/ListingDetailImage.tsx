@@ -1,14 +1,14 @@
 "use client";
 
-import type { ListingDetail } from "../../../types/listing_types";
+import type { ListingDetail } from "@/types/listing_types";
 import { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
-import ListingImageContainer from "../ListingImageContainer/ListingImageContainer";
-import ListingImageContainerElements from "../ListingImageContainerElements/ListingImageContainerElements";
-import FavoriteButton from "../../../containers/FavoriteButton/FavoriteButton";
+import ListingImageContainer from "@/components/listings/ListingImageContainer/ListingImageContainer";
+import ListingImageContainerElements from "@/components/listings/ListingImageContainerElements/ListingImageContainerElements";
+import FavoriteButton from "@/containers/FavoriteButton/FavoriteButton";
 import ListingDetailMainImage from "./ListingDetailMainImage/ListingDetailMainImage";
 import SlideShow from "./SlideShow/SlideShow";
-import ListingBadges from "../ListingBadges/ListingBadges";
+import ListingBadges from "@/components/listings/ListingBadges/ListingBadges";
 
 export type ListingDetailImageProps = {
   listing: ListingDetail;

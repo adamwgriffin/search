@@ -1,6 +1,6 @@
 import type { ChangeEvent } from "react";
-import formStyles from "../../../styles/forms.module.css";
-import Fieldset from "../../design_system/Fieldset/Fieldset";
+import formStyles from "@/styles/forms.module.css";
+import Fieldset from "@/components/design_system/Fieldset/Fieldset";
 
 interface OpenHouseProps {
   checked: boolean;

@@ -4,12 +4,12 @@ import type {
   Polygon,
   MultiPolygon
 } from "geojson";
-import type { IBoundary } from "../models/BoundaryModel";
+import type { IBoundary } from "@/models/BoundaryModel";
 import fs from "fs";
 import path from "path";
 import yargs from "yargs";
-import { geocode } from "../lib/geocoder";
-import { sleep } from "../lib";
+import { geocode } from "@/lib/geocoder";
+import { sleep } from "@/lib";
 
 type PolyOrMultiPolyFeature = Feature<Polygon> | Feature<MultiPolygon>;
 type PolyOrMultiPolyCollection =

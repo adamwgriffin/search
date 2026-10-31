@@ -1,9 +1,9 @@
 import type { NextPage } from "next";
-import type { SearchTypeOption } from "../../../types/filtersTypes";
-import { SearchTypeLabels, SearchTypes } from "../../../lib/filter";
+import type { SearchTypeOption } from "@/types/filtersTypes";
+import { SearchTypeLabels, SearchTypes } from "@/lib/filter";
 import { Fragment } from "react";
 import styles from "./SearchTypeSelector.module.css";
-import Fieldset from "../../design_system/Fieldset/Fieldset";
+import Fieldset from "@/components/design_system/Fieldset/Fieldset";
 
 export interface SearchTypeProps {
   searchType: SearchTypeOption;

@@ -1,7 +1,7 @@
-import type { SearchTypeOption } from "../../../types/filtersTypes";
+import type { SearchTypeOption } from "@/types/filtersTypes";
 import ContentLoader from "react-content-loader";
-import SortMenu from "../../form/SortMenu/SortMenu";
-import { SearchTypes } from "../../../lib/filter";
+import SortMenu from "@/components/form/SortMenu/SortMenu";
+import { SearchTypes } from "@/lib/filter";
 import ListingResultsHeaderBody from "@/components/ListingResultsHeaderBody/ListingResultsHeaderBody";
 
 export type ListingResultsHeaderProps = {

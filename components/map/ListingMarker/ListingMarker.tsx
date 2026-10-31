@@ -1,14 +1,14 @@
 "use client";
 
-import type { Listing } from "../../../types/listing_types";
+import type { Listing } from "@/types/listing_types";
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
-import { useGoogleMaps } from "../../../providers/GoogleMapsProvider";
+import { useGoogleMaps } from "@/providers/GoogleMapsProvider";
 import ListingMarkerContent from "@/components/map/ListingMarkerContent/ListingMarkerContent";
 import {
   useGoogleMapsEventListener,
   useDomEventListener
-} from "../../../providers/GoogleMapsProvider";
+} from "@/providers/GoogleMapsProvider";
 
 export type ListingMarkerProps = {
   listing: Listing;

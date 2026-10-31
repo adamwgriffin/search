@@ -1,5 +1,5 @@
 import mongoose, { Schema, Types, model, type Model } from "mongoose";
-import type { SearchState } from "../zod_schemas/searchStateSchema";
+import type { SearchState } from "@/zod_schemas/searchStateSchema";
 import { toJSONOptions } from "./schemaOptions";
 
 export interface ISavedSearch {

@@ -1,4 +1,4 @@
-import SearchButtonIcon from "../../design_system/icons/SearchButtonIcon/SearchButtonIcon";
+import SearchButtonIcon from "@/components/design_system/icons/SearchButtonIcon/SearchButtonIcon";
 import styles from "./SearchButton.module.css";
 
 export type SearchButtonProps = {

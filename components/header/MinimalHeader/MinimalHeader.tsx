@@ -1,5 +1,5 @@
-import Logo from "../Logo/Logo";
-import UserMenu from "../../../containers/UserMenu/UserMenu";
+import Logo from "@/components/header/Logo/Logo";
+import UserMenu from "@/containers/UserMenu/UserMenu";
 import styles from "./MinimalHeader.module.css";
 
 const MinimalHeader: React.FC = () => {

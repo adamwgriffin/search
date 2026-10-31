@@ -1,16 +1,16 @@
 import Link from "next/link";
-import FavoriteButton from "../../../containers/FavoriteButton/FavoriteButton";
+import FavoriteButton from "@/containers/FavoriteButton/FavoriteButton";
 import {
   cityStateZip,
   formatPriceFromListing,
   ShortCurrencyFormat
-} from "../../../lib/listing_helpers";
-import type { Listing } from "../../../types/listing_types";
-import ListingMainImage from "../../listings/listing_detail/ListingMainImage";
-import ListingBadges from "../../listings/ListingBadges/ListingBadges";
-import ListingImageContainer from "../../listings/ListingImageContainer/ListingImageContainer";
-import ListingImageContainerElements from "../../listings/ListingImageContainerElements/ListingImageContainerElements";
-import ListingInfo from "../../listings/ListingInfo/ListingInfo";
+} from "@/lib/listing_helpers";
+import type { Listing } from "@/types/listing_types";
+import ListingMainImage from "@/components/listings/listing_detail/ListingMainImage";
+import ListingBadges from "@/components/listings/ListingBadges/ListingBadges";
+import ListingImageContainer from "@/components/listings/ListingImageContainer/ListingImageContainer";
+import ListingImageContainerElements from "@/components/listings/ListingImageContainerElements/ListingImageContainerElements";
+import ListingInfo from "@/components/listings/ListingInfo/ListingInfo";
 import styles from "./ListingMarkerContent.module.css";
 
 export type ListingMarkerContentProps = {

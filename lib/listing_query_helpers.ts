@@ -1,7 +1,7 @@
 import { subDays } from "date-fns";
 import type { QueryFilter } from "mongoose";
-import type { IListingModel } from "../models/ListingModel";
-import type { GeocodeBoundaryQueryParams } from "../zod_schemas/geocodeBoundarySearchSchema";
+import type { IListingModel } from "@/models/ListingModel";
+import type { GeocodeBoundaryQueryParams } from "@/zod_schemas/geocodeBoundarySearchSchema";
 
 /**
  * Generates a MongoDB query object that searches within a min/max range for the given field.

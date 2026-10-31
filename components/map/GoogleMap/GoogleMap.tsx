@@ -1,10 +1,10 @@
 import { type ReactNode, useRef, useEffect, useCallback } from "react";
-import { useGoogleMaps } from "../../../providers/GoogleMapsProvider";
+import { useGoogleMaps } from "@/providers/GoogleMapsProvider";
 import styles from "./GoogleMap.module.css";
 import {
   useGoogleMapsEventListener,
   useDomEventListener
-} from "../../../providers/GoogleMapsProvider";
+} from "@/providers/GoogleMapsProvider";
 
 export type GoogleMapState = {
   bounds: google.maps.LatLngBoundsLiteral | undefined;

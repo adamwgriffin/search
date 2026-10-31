@@ -1,6 +1,6 @@
 import type { NextPage } from "next";
 import styles from "./ModalHeader.module.css";
-import CloseIcon from "../../icons/CloseIcon/CloseIcon";
+import CloseIcon from "@/components/design_system/icons/CloseIcon/CloseIcon";
 
 export interface ModalHeaderProps {
   title: string;

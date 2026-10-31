@@ -1,4 +1,4 @@
-import type { SearchTypeOption } from "../types/filtersTypes";
+import type { SearchTypeOption } from "@/types/filtersTypes";
 import { SearchTypes } from "./filter";
 import { SearchTypeLabels } from "./filter";
 import { getPropertyTypeLabel } from "./property_types";

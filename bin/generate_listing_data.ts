@@ -4,7 +4,7 @@ import yargs from "yargs";
 import {
   type GeneratedListingGeocodeData,
   createRandomListingModel
-} from "../lib/random_data";
+} from "@/lib/random_data";
 
 const DefaultOutputPath = path.join(
   __dirname,

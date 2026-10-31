@@ -1,11 +1,11 @@
-import type { IBoundary } from "../models/BoundaryModel";
+import type { IBoundary } from "@/models/BoundaryModel";
 import fs from "fs";
 import path from "path";
 import yargs from "yargs";
 import {
   type GeneratedListingGeocodeData,
   generateRandomGeospatialDataForPoly
-} from "../lib/random_data";
+} from "@/lib/random_data";
 
 const VerificationMax = 10;
 

@@ -1,6 +1,6 @@
 "use client";
 
-import AppToast from "../components/AppToast/AppToast";
+import AppToast from "@/components/AppToast/AppToast";
 
 type ToastProviderProps = {
   children: React.ReactNode;

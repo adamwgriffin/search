@@ -1,8 +1,5 @@
 import { useCallback, useState } from "react";
-import {
-  buildSrcSet,
-  streetViewImageUrl
-} from "../../../lib/listing_image_helpers";
+import { buildSrcSet, streetViewImageUrl } from "@/lib/listing_image_helpers";
 
 export type ListingMainImageProps = {
   imageUrl: string | undefined;

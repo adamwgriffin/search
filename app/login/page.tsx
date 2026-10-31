@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import LoginOrRegisterForm from "../../components/form/LoginOrRegisterForm/LoginOrRegisterForm";
+import LoginOrRegisterForm from "@/components/form/LoginOrRegisterForm/LoginOrRegisterForm";
 import styles from "./login.module.css";
 
 const Login: React.FC = () => {

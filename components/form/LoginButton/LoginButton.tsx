@@ -1,5 +1,5 @@
 import type { IconType } from "react-icons";
-import ContainedButton from "../../design_system/ContainedButton/ContainedButton";
+import ContainedButton from "@/components/design_system/ContainedButton/ContainedButton";
 import styles from "./LoginButton.module.css";
 
 export interface LoginButtonProps {
