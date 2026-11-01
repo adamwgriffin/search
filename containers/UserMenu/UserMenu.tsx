@@ -29,7 +29,7 @@ const UserMenu: React.FC = () => {
       : { redirect: false };
     await signOut(signOutOptions);
     toast("You're logged out");
-  }, [dispatch, pathname, toggleMenu]);
+  }, [pathname, toggleMenu]);
 
   const handleLogin = useCallback(() => {
     toggleMenu(false);

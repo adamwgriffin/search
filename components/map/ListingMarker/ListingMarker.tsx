@@ -1,14 +1,10 @@
 "use client";
 
 import type { Listing } from "@/types/listing_types";
-import { useEffect, useState } from "react";
+import { useEffect, useEffectEvent, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { useGoogleMaps } from "@/providers/GoogleMapsProvider";
 import ListingMarkerContent from "@/components/map/ListingMarkerContent/ListingMarkerContent";
-import {
-  useGoogleMapsEventListener,
-  useDomEventListener
-} from "@/providers/GoogleMapsProvider";
 
 export type ListingMarkerProps = {
   listing: Listing;
@@ -32,10 +28,42 @@ const ListingMarker: React.FC<ListingMarkerProps> = ({
   onMouseLeave
 }) => {
   const { googleMap } = useGoogleMaps();
-  const [marker, setMarker] =
-    useState<google.maps.marker.AdvancedMarkerElement | null>(null);
-  const [markerContainer, setMarkerContainer] = useState<HTMLDivElement | null>(
+  // The container is the only thing needed during render (as the portal
+  // target), so it's created once here. ListingMap only renders markers after
+  // the Google Maps API has loaded, so this never runs on the server.
+  const [markerContainer] = useState(() => document.createElement("div"));
+  // The marker itself is only used in effects and event handlers, so it can
+  // live in a ref instead of state.
+  const markerRef = useRef<google.maps.marker.AdvancedMarkerElement | null>(
     null
+  );
+
+  const setZIndex = (
+    marker: google.maps.marker.AdvancedMarkerElement,
+    raised: boolean
+  ) => {
+    marker.zIndex = raised ? raisedZIndex : null;
+  };
+
+  // Effect events always see the latest props, so the marker doesn't need to
+  // be re-created when the handlers or highlighted state change
+  const handleClick = useEffectEvent(() => onClick?.(listing.slug));
+  const handleMouseEnter = useEffectEvent(
+    (marker: google.maps.marker.AdvancedMarkerElement) => {
+      setZIndex(marker, true);
+      onMouseEnter?.(listing._id);
+    }
+  );
+  const handleMouseLeave = useEffectEvent(
+    (marker: google.maps.marker.AdvancedMarkerElement) => {
+      setZIndex(marker, false);
+      onMouseLeave?.();
+    }
+  );
+  const applyHighlight = useEffectEvent(
+    (marker: google.maps.marker.AdvancedMarkerElement) => {
+      setZIndex(marker, !!highlighted);
+    }
   );
 
   // We use latitude/longitude separately from listing here because the
@@ -46,42 +74,37 @@ const ListingMarker: React.FC<ListingMarkerProps> = ({
   useEffect(() => {
     if (!googleMap) return;
 
-    const markerContainer = document.createElement("div");
     const marker = new google.maps.marker.AdvancedMarkerElement({
       map: googleMap,
       position: {
         lat: latitude,
         lng: longitude
       },
-      content: markerContainer
+      gmpClickable: true
     });
+    marker.append(markerContainer);
+    markerRef.current = marker;
+    applyHighlight(marker);
 
-    setMarker(marker);
-    setMarkerContainer(markerContainer);
+    const onMarkerClick = () => handleClick();
+    const onEnter = () => handleMouseEnter(marker);
+    const onLeave = () => handleMouseLeave(marker);
+    marker.addEventListener("gmp-click", onMarkerClick);
+    marker.addEventListener("mouseenter", onEnter);
+    marker.addEventListener("mouseleave", onLeave);
 
     return () => {
+      marker.removeEventListener("gmp-click", onMarkerClick);
+      marker.removeEventListener("mouseenter", onEnter);
+      marker.removeEventListener("mouseleave", onLeave);
       marker.map = null;
-      markerContainer.remove();
+      markerRef.current = null;
     };
-  }, [googleMap, latitude, longitude]);
+  }, [googleMap, latitude, longitude, markerContainer]);
 
-  useGoogleMapsEventListener(marker, "click", () => onClick?.(listing.slug));
-  useDomEventListener(marker?.element, "mouseenter", () => {
-    if (!marker) return;
-    marker.element.style.zIndex = String(raisedZIndex);
-    onMouseEnter?.(listing._id);
-  });
-  useDomEventListener(marker?.element, "mouseleave", () => {
-    if (!marker) return;
-    marker.element.style.zIndex = "";
-    onMouseLeave?.();
-  });
-
-  if (!markerContainer) return;
-
-  if (marker) {
-    marker.element.style.zIndex = highlighted ? String(raisedZIndex) : "";
-  }
+  useEffect(() => {
+    if (markerRef.current) applyHighlight(markerRef.current);
+  }, [highlighted]);
 
   return createPortal(
     <ListingMarkerContent

@@ -34,7 +34,7 @@ export function useSearchState() {
     const params = Object.fromEntries(searchParams.entries());
     const parsed = parseAndStripInvalidProperties(searchStateSchema, params);
     dispatch(setSearch(parsed));
-  }, [searchParams]);
+  }, [dispatch, searchParams]);
 
   const setSearchState = (newParams: SearchStateUpdate) => {
     const params = getUpdatedParams(searchState, newParams);

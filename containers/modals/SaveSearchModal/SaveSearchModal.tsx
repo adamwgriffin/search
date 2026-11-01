@@ -48,32 +48,29 @@ const SaveSearchModal: React.FC = () => {
 
   const handleClose = useCallback(() => dispatch(closeModal()), [dispatch]);
 
-  const handleSave = useCallback(
-    (formData: SaveSearchFormData) => {
-      if (!session?.user.id) {
-        toast.error("Couldn't save search. User must be logged in.");
-        return;
-      }
-      createSavedSearch(
-        {
-          userId: session.user.id,
-          name: formData.name,
-          messageCadence: Number(formData.messageCadence),
-          searchState
+  const handleSave = (formData: SaveSearchFormData) => {
+    if (!session?.user.id) {
+      toast.error("Couldn't save search. User must be logged in.");
+      return;
+    }
+    createSavedSearch(
+      {
+        userId: session.user.id,
+        name: formData.name,
+        messageCadence: Number(formData.messageCadence),
+        searchState
+      },
+      {
+        onSuccess: () => {
+          handleClose();
+          toast("Saved search created");
         },
-        {
-          onSuccess: () => {
-            handleClose();
-            toast("Saved search created");
-          },
-          onError: () => {
-            toast.error("Couldn't save search. Please try again.");
-          }
+        onError: () => {
+          toast.error("Couldn't save search. Please try again.");
         }
-      );
-    },
-    [session?.user.id, createSavedSearch, handleClose, searchState]
-  );
+      }
+    );
+  };
 
   return (
     <Modal

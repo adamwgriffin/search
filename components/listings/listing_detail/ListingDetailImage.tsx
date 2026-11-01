@@ -1,7 +1,7 @@
 "use client";
 
 import type { ListingDetail } from "@/types/listing_types";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { createPortal } from "react-dom";
 import ListingImageContainer from "@/components/listings/ListingImageContainer/ListingImageContainer";
 import ListingImageContainerElements from "@/components/listings/ListingImageContainerElements/ListingImageContainerElements";
@@ -9,18 +9,15 @@ import FavoriteButton from "@/containers/FavoriteButton/FavoriteButton";
 import ListingDetailMainImage from "./ListingDetailMainImage/ListingDetailMainImage";
 import SlideShow from "./SlideShow/SlideShow";
 import ListingBadges from "@/components/listings/ListingBadges/ListingBadges";
+import { useIsMounted } from "@/hooks/useIsMounted";
 
 export type ListingDetailImageProps = {
   listing: ListingDetail;
 };
 
 const ListingDetailImage: React.FC<ListingDetailImageProps> = ({ listing }) => {
-  const [isMounted, setIsMounted] = useState(false);
+  const isMounted = useIsMounted();
   const [slideShowOpen, setSlideShowOpen] = useState(false);
-
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
 
   return (
     <>

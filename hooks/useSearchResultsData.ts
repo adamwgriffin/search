@@ -23,6 +23,7 @@ export function useSearchResultsData() {
   });
 
   const results = queryResult.data;
+  const resultListings = results?.listings;
 
   // If the user changes the sort criteria, it will cause the markers to
   // re-render on the map, even if the have the exact same listing data, which
@@ -31,8 +32,8 @@ export function useSearchResultsData() {
   // order they were rendered in. Keeping the order stable by making sure they
   // always sort the same way fixes this.
   const listings = useMemo(() => {
-    return results?.listings ? sortListingsByLatLng(results.listings) : [];
-  }, [results?.listings]);
+    return resultListings ? sortListingsByLatLng(resultListings) : [];
+  }, [resultListings]);
 
   const geoJSONBoundary: GeoJSONBoundary | null = results?.boundary
     ? convertBoundaryToGeoJSON(results.boundary)

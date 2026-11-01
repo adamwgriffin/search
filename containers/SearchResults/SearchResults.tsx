@@ -7,7 +7,7 @@ import ListingResultsPagination, {
 import { useSearchState } from "@/hooks/useSearchState";
 import { ListingSearchPagination } from "@/types";
 import range from "lodash/range";
-import { useEffect, useRef } from "react";
+import { useDeferredValue, useEffect, useRef } from "react";
 import ListingResultsHeader from "@/components/listings/ListingResultsHeader/ListingResultsHeader";
 import { useAppSelector } from "@/hooks/app_hooks";
 import { selectMobileViewType } from "@/store/application/applicationSlice";
@@ -29,16 +29,26 @@ const SearchResults: React.FC = () => {
   const mobileViewType = useAppSelector(selectMobileViewType);
   const searchResultsRef = useRef<HTMLDivElement>(null);
   const { searchState, searchType, setSearchState } = useSearchState();
+  // Querying with a deferred copy of searchState means that when it changes,
+  // React keeps rendering the current results while the new query suspends in
+  // the background, instead of replacing everything with the <Suspense>
+  // fallback. The two values only differ while the new results are loading.
+  const deferredSearchState = useDeferredValue(searchState);
+  const loading = searchState !== deferredSearchState;
   // We're using useSuspenseQuery instead of useQuery here in order to avoid
   // hydration errors that occur when this component is wrapped inside
   // <Suspense>
-  const { data: results, isPending: isFetching } = useSuspenseQuery(
-    searchQueryOptions(searchState)
+  const { data: results } = useSuspenseQuery(
+    searchQueryOptions(deferredSearchState)
   );
 
-  if (searchResultsRef?.current?.scrollTop) {
-    searchResultsRef.current.scrollTop = 0;
-  }
+  // Scroll back to the top whenever a new set of results is displayed (e.g.,
+  // after changing pages or filters)
+  useEffect(() => {
+    if (searchResultsRef.current) {
+      searchResultsRef.current.scrollTop = 0;
+    }
+  }, [results]);
 
   const listings = results?.listings ?? [];
 
@@ -46,7 +56,7 @@ const SearchResults: React.FC = () => {
     <SearchResultsBody ref={searchResultsRef} mobileViewType={mobileViewType}>
       <ListingResultsHeader
         totalListings={results?.pagination?.numberAvailable ?? 0}
-        loading={isFetching}
+        loading={loading}
         searchType={searchType}
       />
       <ListingResults />
