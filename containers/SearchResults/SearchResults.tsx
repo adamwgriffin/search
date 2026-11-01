@@ -36,9 +36,13 @@ const SearchResults: React.FC = () => {
     searchQueryOptions(searchState)
   );
 
-  if (searchResultsRef?.current?.scrollTop) {
-    searchResultsRef.current.scrollTop = 0;
-  }
+  // Scroll back to the top whenever a new set of results is displayed (e.g.,
+  // after changing pages or filters)
+  useEffect(() => {
+    if (searchResultsRef.current) {
+      searchResultsRef.current.scrollTop = 0;
+    }
+  }, [results]);
 
   const listings = results?.listings ?? [];
 
