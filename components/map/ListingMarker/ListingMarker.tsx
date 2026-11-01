@@ -42,7 +42,7 @@ const ListingMarker: React.FC<ListingMarkerProps> = ({
     marker: google.maps.marker.AdvancedMarkerElement,
     raised: boolean
   ) => {
-    marker.element.style.zIndex = raised ? String(raisedZIndex) : "";
+    marker.zIndex = raised ? raisedZIndex : null;
   };
 
   // Effect events always see the latest props, so the marker doesn't need to
@@ -80,25 +80,23 @@ const ListingMarker: React.FC<ListingMarkerProps> = ({
         lat: latitude,
         lng: longitude
       },
-      content: markerContainer
+      gmpClickable: true
     });
+    marker.append(markerContainer);
     markerRef.current = marker;
     applyHighlight(marker);
 
-    const clickListener = google.maps.event.addListener(
-      marker,
-      "click",
-      handleClick
-    );
+    const onMarkerClick = () => handleClick();
     const onEnter = () => handleMouseEnter(marker);
     const onLeave = () => handleMouseLeave(marker);
-    marker.element.addEventListener("mouseenter", onEnter);
-    marker.element.addEventListener("mouseleave", onLeave);
+    marker.addEventListener("gmp-click", onMarkerClick);
+    marker.addEventListener("mouseenter", onEnter);
+    marker.addEventListener("mouseleave", onLeave);
 
     return () => {
-      clickListener.remove();
-      marker.element.removeEventListener("mouseenter", onEnter);
-      marker.element.removeEventListener("mouseleave", onLeave);
+      marker.removeEventListener("gmp-click", onMarkerClick);
+      marker.removeEventListener("mouseenter", onEnter);
+      marker.removeEventListener("mouseleave", onLeave);
       marker.map = null;
       markerRef.current = null;
     };
