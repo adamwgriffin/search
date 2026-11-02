@@ -1,15 +1,17 @@
 import { GoogleMapsAutocompleteOptions } from "@/config/googleMapsOptions";
 
-let autocompleteService: google.maps.places.AutocompleteService;
-
 export async function getPlaceAutocompletePredictions(
   searchString: string | null
-) {
+): Promise<google.maps.places.PlacePrediction[]> {
   if (!searchString) return [];
-  autocompleteService ||= new google.maps.places.AutocompleteService();
-  const res = await autocompleteService.getPlacePredictions({
-    input: searchString,
-    ...GoogleMapsAutocompleteOptions
-  });
-  return res.predictions;
+  const { suggestions } =
+    await google.maps.places.AutocompleteSuggestion.fetchAutocompleteSuggestions(
+      {
+        input: searchString,
+        ...GoogleMapsAutocompleteOptions
+      }
+    );
+  return suggestions.flatMap((s) =>
+    s.placePrediction ? [s.placePrediction] : []
+  );
 }

@@ -17,16 +17,14 @@ import styles from "./SearchField.module.css";
 import animationStyles from "@/styles/animations.module.css";
 
 export type SearchFieldProps = {
-  options: Array<google.maps.places.AutocompletePrediction>;
+  options: Array<google.maps.places.PlacePrediction>;
   value?: string;
   placeholder?: string;
   loading?: boolean;
   onInput?: (details: string) => void;
   onClearPlaceAutocompletePredictions?: () => void;
   onSearchInitiated?: () => void;
-  onOptionSelected?: (
-    option: google.maps.places.AutocompletePrediction
-  ) => void;
+  onOptionSelected?: (option: google.maps.places.PlacePrediction) => void;
   onGetPlaceAutocompletePredictions?: (val: string) => void;
 };
 
@@ -69,7 +67,7 @@ const SearchField: React.FC<SearchFieldProps> = ({
   };
 
   const setInputToNewListItemSelection = (newSelectedListItemIndex: number) => {
-    onInput?.(options[newSelectedListItemIndex].description);
+    onInput?.(options[newSelectedListItemIndex].text.text);
   };
 
   const setInputBackToLastValue = () => {
@@ -134,9 +132,7 @@ const SearchField: React.FC<SearchFieldProps> = ({
     setInputBackToLastValue();
   };
 
-  const handleListItemClick = (
-    option: google.maps.places.AutocompletePrediction
-  ) => {
+  const handleListItemClick = (option: google.maps.places.PlacePrediction) => {
     onOptionSelected?.(option);
     onClearPlaceAutocompletePredictions?.();
     closeDropdown();
@@ -243,7 +239,7 @@ const SearchField: React.FC<SearchFieldProps> = ({
           <li
             id={listItemId(index)}
             role="option"
-            key={option.place_id}
+            key={option.placeId}
             className={
               selectedListItemIndex === index
                 ? styles.listItemSelected

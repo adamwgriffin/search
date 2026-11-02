@@ -1,19 +1,18 @@
-import type { NextPage } from "next";
 import { useMemo } from "react";
 import uniq from "lodash/uniq";
 import styles from "./PlacePredictionText.module.css";
 
-export interface PlacePredictionTextProps {
-  prediction: google.maps.places.AutocompletePrediction;
-}
+export type PlacePredictionTextProps = {
+  prediction: google.maps.places.PlacePrediction;
+};
 
 const getSubStringObjs = (
-  matches: google.maps.places.PredictionSubstring[],
+  matches: google.maps.places.StringRange[],
   str: string
 ) => {
-  const matchOffsets = matches.flatMap(({ offset, length }) => [
-    offset,
-    offset + length
+  const matchOffsets = matches.flatMap(({ startOffset, endOffset }) => [
+    startOffset,
+    endOffset
   ]);
   const allOffsets = uniq([0, ...matchOffsets, str.length]);
   const allOffsetPairs = allOffsets
@@ -22,23 +21,23 @@ const getSubStringObjs = (
   return allOffsetPairs.map(([start, end]) => {
     const text = str.substring(start, end);
     const match = !!matches.find(
-      ({ offset, length }) => offset === start && offset + length === end
+      ({ startOffset, endOffset }) => startOffset === start && endOffset === end
     );
     return { text, match };
   });
 };
 
-const PlacePredictionText: NextPage<PlacePredictionTextProps> = ({
+const PlacePredictionText: React.FC<PlacePredictionTextProps> = ({
   prediction
 }) => {
+  // mainText can be null, in which case we fall back to the full text
+  const mainText = prediction.mainText ?? prediction.text;
   const mainTextSubstrings = useMemo(() => {
-    const { main_text_matched_substrings, main_text } =
-      prediction.structured_formatting;
-    if (!main_text_matched_substrings) {
-      return [{ text: main_text, match: false }];
+    if (mainText.matches.length === 0) {
+      return [{ text: mainText.text, match: false }];
     }
-    return getSubStringObjs(main_text_matched_substrings, main_text);
-  }, [prediction.structured_formatting]);
+    return getSubStringObjs(mainText.matches, mainText.text);
+  }, [mainText]);
 
   return (
     <span className="placesPredictionText">
@@ -53,7 +52,7 @@ const PlacePredictionText: NextPage<PlacePredictionTextProps> = ({
         ))}
       </span>
       <span className={styles.secondaryText}>
-        {prediction.structured_formatting.secondary_text}
+        {prediction.secondaryText?.text}
       </span>
     </span>
   );
