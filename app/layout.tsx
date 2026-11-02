@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import "@/styles/globals.css";
 import SessionProvider from "@/providers/SessionProvider";
-import StyledJsxRegistry from "@/providers/StyledJsxRegistry";
 import ReduxProvider from "@/providers/ReduxProvider";
 import ThemeProvider from "@/providers/ThemeProvider";
 import ToastProvider from "@/providers/ToastProvider";
@@ -22,13 +21,11 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body>
         <SessionProvider>
-          <StyledJsxRegistry>
-            <ReduxProvider>
-              <ThemeProvider>
-                <ToastProvider>{children}</ToastProvider>
-              </ThemeProvider>
-            </ReduxProvider>
-          </StyledJsxRegistry>
+          <ReduxProvider>
+            <ThemeProvider>
+              <ToastProvider>{children}</ToastProvider>
+            </ThemeProvider>
+          </ReduxProvider>
         </SessionProvider>
       </body>
     </html>
