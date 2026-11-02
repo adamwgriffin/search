@@ -36,12 +36,12 @@ export default function SearchLocation() {
               address: value
             });
         }}
-        onOptionSelected={(autocompletePrediction) => {
-          setValue(autocompletePrediction.description);
+        onOptionSelected={(placePrediction) => {
+          setValue(placePrediction.text.text);
           setNewLocation({
-            address: autocompletePrediction.description,
-            place_id: autocompletePrediction.place_id,
-            address_types: autocompletePrediction.types.join(",")
+            address: placePrediction.text.text,
+            place_id: placePrediction.placeId,
+            address_types: placePrediction.types.join(",")
           });
         }}
       />
