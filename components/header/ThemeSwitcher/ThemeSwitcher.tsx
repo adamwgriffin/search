@@ -1,14 +1,14 @@
 import { useTheme } from "next-themes";
 import styles from "./ThemeSwitcher.module.css";
 import Fieldset from "@/components/design_system/Fieldset/Fieldset";
-import { useIsMounted } from "@/hooks/useIsMounted";
+import { useIsHydrated } from "@/hooks/useIsHydrated";
 
 const ThemeSwitcher: React.FC = () => {
   // The theme isn't known on the server, so only render the UI on the client
-  const mounted = useIsMounted();
+  const isHydrated = useIsHydrated();
   const { theme, setTheme } = useTheme();
 
-  if (!mounted) {
+  if (!isHydrated) {
     return null;
   }
 

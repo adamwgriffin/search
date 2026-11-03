@@ -9,14 +9,14 @@ import FavoriteButton from "@/containers/FavoriteButton/FavoriteButton";
 import ListingDetailMainImage from "./ListingDetailMainImage/ListingDetailMainImage";
 import SlideShow from "./SlideShow/SlideShow";
 import ListingBadges from "@/components/listings/ListingBadges/ListingBadges";
-import { useIsMounted } from "@/hooks/useIsMounted";
+import { useIsHydrated } from "@/hooks/useIsHydrated";
 
 export type ListingDetailImageProps = {
   listing: ListingDetail;
 };
 
 const ListingDetailImage: React.FC<ListingDetailImageProps> = ({ listing }) => {
-  const isMounted = useIsMounted();
+  const isHydrated = useIsHydrated();
   const [slideShowOpen, setSlideShowOpen] = useState(false);
 
   return (
@@ -34,9 +34,9 @@ const ListingDetailImage: React.FC<ListingDetailImageProps> = ({ listing }) => {
         />
       </ListingImageContainer>
       {
-        // We're checking isMounted here because document.body doesn't exist
+        // We're checking isHydrated here because document.body doesn't exist
         // when this is first rendered on the server, which causes an error
-        isMounted &&
+        isHydrated &&
           createPortal(
             <SlideShow
               open={slideShowOpen}
