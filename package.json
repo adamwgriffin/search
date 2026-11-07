@@ -18,7 +18,6 @@
   "dependencies": {
     "@googlemaps/google-maps-services-js": "^3.4.2",
     "@googlemaps/js-api-loader": "^2.1.1",
-    "@reduxjs/toolkit": "^2.12.0",
     "@tanstack/react-query": "^5.66.7",
     "@turf/turf": "^7.3.5",
     "@vercel/functions": "^3.10.4",
@@ -37,10 +36,10 @@
     "react-icons": "^5.7.0",
     "react-modal": "^3.16.3",
     "react-number-format": "^5.4.5",
-    "react-redux": "^9.3.0",
     "react-use": "^17.6.1",
     "slugify": "^1.6.9",
-    "zod": "^4.4.3"
+    "zod": "^4.4.3",
+    "zustand": "^5.1.0"
   },
   "devDependencies": {
     "@faker-js/faker": "^10.5.0",
@@ -57,7 +56,6 @@
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
     "@types/react-modal": "^3.16.3",
-    "@types/react-redux": "^7.1.34",
     "dotenv-cli": "^11.0.0",
     "eslint": "10.6.0",
     "eslint-config-next": "^16.4.3",

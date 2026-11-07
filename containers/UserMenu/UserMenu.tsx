@@ -11,13 +11,11 @@ import MenuDropdown from "@/components/design_system/MenuDropdown/MenuDropdown";
 import HamburgerIcon from "@/components/design_system/icons/HamburgerIcon/HamburgerIcon";
 import Avatar from "@/components/header/Avatar/Avatar";
 import ThemeSwitcher from "@/components/header/ThemeSwitcher/ThemeSwitcher";
-import { useAppDispatch } from "@/hooks/app_hooks";
-import { openModal } from "@/store/application/applicationSlice";
+import { openModal } from "@/store/applicationStore";
 import styles from "./UserMenu.module.css";
 import { pathRequiresAuth } from "@/lib";
 
 const UserMenu: React.FC = () => {
-  const dispatch = useAppDispatch();
   const { data: session } = useSession();
   const pathname = usePathname();
   const [open, toggleMenu] = useToggle(false);
@@ -33,8 +31,8 @@ const UserMenu: React.FC = () => {
 
   const handleLogin = useCallback(() => {
     toggleMenu(false);
-    dispatch(openModal({ modalType: "loginOrRegister" }));
-  }, [dispatch, toggleMenu]);
+    openModal({ modalType: "loginOrRegister" });
+  }, [toggleMenu]);
 
   return (
     <MenuContainter onClickAway={() => toggleMenu(false)}>

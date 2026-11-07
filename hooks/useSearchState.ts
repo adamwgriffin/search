@@ -1,5 +1,4 @@
 import { SearchPathname } from "@/config";
-import { useAppDispatch, useAppSelector } from "@/hooks/app_hooks";
 import {
   buildUrl,
   ClearFiltersParams,
@@ -7,7 +6,7 @@ import {
   NonGeocodeParams,
   ParamDefaults
 } from "@/lib/listingSearchParams";
-import { setSearch } from "@/store/search/searchSlice";
+import { setSearch, useSearchStore } from "@/store/searchStore";
 import { parseAndStripInvalidProperties } from "@/zod_schemas";
 import {
   searchStateSchema,
@@ -24,17 +23,16 @@ import { useEffect } from "react";
 export function useSearchState() {
   const searchParams = useSearchParams();
   const router = useRouter();
-  const dispatch = useAppDispatch();
-  const searchState: SearchState = useAppSelector((state) => state.search);
-  const searchType: Searchtype = useAppSelector(
-    (state) => state.search.search_type || ParamDefaults.search_type
+  const searchState: SearchState = useSearchStore((state) => state);
+  const searchType: Searchtype = useSearchStore(
+    (state) => state.search_type || ParamDefaults.search_type
   );
 
   useEffect(() => {
     const params = Object.fromEntries(searchParams.entries());
     const parsed = parseAndStripInvalidProperties(searchStateSchema, params);
-    dispatch(setSearch(parsed));
-  }, [dispatch, searchParams]);
+    setSearch(parsed);
+  }, [searchParams]);
 
   const setSearchState = (newParams: SearchStateUpdate) => {
     const params = getUpdatedParams(searchState, newParams);

@@ -4,11 +4,13 @@ import SearchResultsBody from "@/components/SearchResultsBody/SearchResultsBody"
 import MenuButtonFallback from "@/components/form/MenuButtonFallback";
 import ListingResultsHeaderBody from "@/components/ListingResultsHeaderBody/ListingResultsHeaderBody";
 import ListingCardsLoading from "@/components/listings/ListingCardsLoading/ListingCardsLoading";
-import { useAppSelector } from "@/hooks/app_hooks";
-import { selectMobileViewType } from "@/store/application/applicationSlice";
+import {
+  selectMobileViewType,
+  useApplicationStore
+} from "@/store/applicationStore";
 
 export default function SearchResultsFallback() {
-  const mobileViewType = useAppSelector(selectMobileViewType);
+  const mobileViewType = useApplicationStore(selectMobileViewType);
 
   return (
     <SearchResultsBody mobileViewType={mobileViewType}>
