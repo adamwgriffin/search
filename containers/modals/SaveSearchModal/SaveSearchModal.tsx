@@ -5,7 +5,7 @@ import {
   useCreateSavedSearch,
   type SavedSearchData
 } from "@/hooks/useCreateSavedSearch";
-import { useCallback, useEffect } from "react";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import ContainedButton from "@/components/design_system/ContainedButton/ContainedButton";
@@ -14,11 +14,11 @@ import Modal from "@/components/design_system/modal/Modal/Modal";
 import ModalBody from "@/components/design_system/modal/ModalBody/ModalBody";
 import ModalHeader from "@/components/design_system/modal/ModalHeader/ModalHeader";
 import TextButton from "@/components/design_system/TextButton/TextButton";
-import { useAppDispatch, useAppSelector } from "@/hooks/app_hooks";
 import {
   closeModal,
-  selectSaveSearchModalOpen
-} from "@/store/application/applicationSlice";
+  selectSaveSearchModalOpen,
+  useApplicationStore
+} from "@/store/applicationStore";
 import formStyles from "@/styles/forms.module.css";
 import { useSession } from "next-auth/react";
 
@@ -28,8 +28,7 @@ export type SaveSearchFormData = Pick<
 >;
 
 const SaveSearchModal: React.FC = () => {
-  const dispatch = useAppDispatch();
-  const modalOpen = useAppSelector(selectSaveSearchModalOpen);
+  const modalOpen = useApplicationStore(selectSaveSearchModalOpen);
   const { searchState } = useSearchState();
   const { data: session } = useSession();
   const { mutate: createSavedSearch, isPending } = useCreateSavedSearch();
@@ -46,7 +45,7 @@ const SaveSearchModal: React.FC = () => {
     });
   }, [resetField, searchState.address]);
 
-  const handleClose = useCallback(() => dispatch(closeModal()), [dispatch]);
+  const handleClose = closeModal;
 
   const handleSave = (formData: SaveSearchFormData) => {
     if (!session?.user.id) {

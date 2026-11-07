@@ -4,14 +4,12 @@ import { useQuery } from "@tanstack/react-query";
 import { useSearchState } from "@/hooks/useSearchState";
 import ListingCards from "@/components/listings/ListingCards/ListingCards";
 import NoResults from "@/components/listings/NoResults/NoResults";
-import { useAppDispatch } from "@/hooks/app_hooks";
 import { useOpenListingDetail } from "@/hooks/open_listing_detail_hook";
-import { setHighlightedMarker } from "@/store/application/applicationSlice";
+import { setHighlightedMarker } from "@/store/applicationStore";
 import { searchQueryOptions } from "@/lib/queries";
 import ListingCardsLoading from "@/components/listings/ListingCardsLoading/ListingCardsLoading";
 
 const ListingResults: React.FC = () => {
-  const dispatch = useAppDispatch();
   const openListingDetail = useOpenListingDetail(false);
   const { searchState } = useSearchState();
   // We're using useSuspenseQuery instead of useQuery here in order to avoid
@@ -22,11 +20,11 @@ const ListingResults: React.FC = () => {
   );
 
   const handleListingCardMouseEnter = (listingId: string) => {
-    dispatch(setHighlightedMarker(listingId));
+    setHighlightedMarker(listingId);
   };
 
   const handleListingCardMouseLeave = () => {
-    dispatch(setHighlightedMarker(null));
+    setHighlightedMarker(null);
   };
 
   if (isFetching) {

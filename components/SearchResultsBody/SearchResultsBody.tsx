@@ -1,4 +1,4 @@
-import { type MobileViewType } from "@/store/application/applicationSlice";
+import { type MobileViewType } from "@/store/applicationStore";
 import styles from "./SearchResultsBody.module.css";
 
 export type SearchResultsBodyProps = {

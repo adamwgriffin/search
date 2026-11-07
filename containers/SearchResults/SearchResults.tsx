@@ -9,8 +9,10 @@ import { ListingSearchPagination } from "@/types";
 import range from "lodash/range";
 import { useDeferredValue, useEffect, useRef } from "react";
 import ListingResultsHeader from "@/components/listings/ListingResultsHeader/ListingResultsHeader";
-import { useAppSelector } from "@/hooks/app_hooks";
-import { selectMobileViewType } from "@/store/application/applicationSlice";
+import {
+  selectMobileViewType,
+  useApplicationStore
+} from "@/store/applicationStore";
 import { searchQueryOptions } from "@/lib/queries";
 import SearchResultsBody from "@/components/SearchResultsBody/SearchResultsBody";
 import ListingResults from "@/components/listings/ListingResults/ListingResults";
@@ -26,7 +28,7 @@ const getPagination = (p: ListingSearchPagination): Pagination => {
 };
 
 const SearchResults: React.FC = () => {
-  const mobileViewType = useAppSelector(selectMobileViewType);
+  const mobileViewType = useApplicationStore(selectMobileViewType);
   const searchResultsRef = useRef<HTMLDivElement>(null);
   const { searchState, searchType, setSearchState } = useSearchState();
   // Querying with a deferred copy of searchState means that when it changes,
